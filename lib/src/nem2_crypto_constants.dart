@@ -16,9 +16,9 @@ class nem2Const {
   /// Address character length
   static const int addressLen = 40;
 
-   /// PubicKey character length
+  /// PubicKey character length
   static const int publicKeyLen = 32;
 
   /// Private character length
-  static const int privateKeyLen = 64;
+  static const int privateKeyLen = 32;
 }

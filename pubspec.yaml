@@ -1,15 +1,16 @@
-name: nem2_crypto_dart
+name: nem2_crypto
 description: Pure Dart implementation of Ed25519 - public-key signature system.
-version: 2.0.0
+version: 1.0.0
 homepage: https://github.com/proximax-storage
 author: Eleazar Garrido <eleazar.garrido@proximax.io>
 
 environment:
-  sdk: '>=2.2.0 <3.0.0'
+  sdk: '>=2.0.0 <3.0.0'
 
 dependencies:
-  pointycastle: "^1.0.1"
-  hex: 0.1.2
+  pointycastle: ^1.0.1
+  tweetnacl: ^0.3.1
+  hex: ^0.1.2
 
 dev_dependencies:
   test: ^1.5.3
