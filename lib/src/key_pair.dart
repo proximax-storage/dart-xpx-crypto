@@ -24,7 +24,7 @@ KeyPair NewKeyPair(PrivateKey privateKey, PublicKey publicKey) {
   KeyPair kp = new KeyPair();
 
   if (publicKey == null) {
-    var raw = Signature.keyPair_fromSeed(privateKey.Raw);
+    var raw = ed25519.Signature.keyPair_fromSeed(privateKey.Raw);
     Uint8List sk = Uint8List(nem2Const.privateKeyLen);
     for (int i = 0; i < sk.lengthInBytes; i++) sk[i] = raw.secretKey[i];
     kp.privateKey.Raw = sk;
