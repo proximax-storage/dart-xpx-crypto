@@ -9,5 +9,7 @@ Uint8List HashesSha3_256(Uint8List b){
 // HashesRipemd160 return ripemd160 hash of byte
 Uint8List HashesRipemd160(Uint8List b){
   var hash = new Digest("RIPEMD-160");
-  return hash.process(b);
+  Uint8List sk = Uint8List(hash.process(b).lengthInBytes);
+    for (int i = 0; i < hash.process(b).lengthInBytes; i++) sk[i] = hash.process(b)[i];
+  return sk;
 }
