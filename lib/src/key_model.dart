@@ -2,7 +2,7 @@ part of nem2_crypto;
 
 class PrivateKey {
 // I have kept this field for compatibility
-  Uint8List Raw = null;
+  Uint8List Raw = Uint8List(64);
 
   PrivateKey();
 
@@ -19,7 +19,7 @@ PrivateKey NewPrivateKey(Uint8List raw) {
 
 // NewPrivateKeyfromHexString creates a private key from a hex strings.
 PrivateKey NewPrivateKeyFromHexString(String sHex) {
-  var raw = HEX.decode(sHex);
+  var raw = HexDecodeStringOdd(sHex);
   return NewPrivateKey(raw);
 }
 
@@ -32,7 +32,7 @@ PrivateKey NewPrivateKeyFromBigInt(BigInt val) {
 
 class PublicKey {
 // I have kept this field for compatibility
-  Uint8List Raw = null;
+  Uint8List Raw = Uint8List(32);
 
   PublicKey();
 
@@ -58,4 +58,12 @@ PublicKey NewPublicKeyFromBigInt(BigInt val) {
   var sk = new PublicKey();
   sk.Raw = encodeBigInt(val);
   return sk;
+}
+
+// HexDecodeStringOdd return padding hex representation of string
+Uint8List HexDecodeStringOdd(String s) {
+  if (s.length % 2 != 0) {
+    s = "0" + s;
+  }
+  return HEX.decode(s);
 }

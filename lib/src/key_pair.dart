@@ -24,11 +24,10 @@ KeyPair NewKeyPair(PrivateKey privateKey, PublicKey publicKey) {
   KeyPair kp = new KeyPair();
 
   if (publicKey == null) {
-    var raw = ed25519.Signature.keyPair_fromSeed(privateKey.Raw);
+    kp = ed25519.Signature.keyPair_fromSeed(privateKey.Raw);
     Uint8List sk = Uint8List(nem2Const.privateKeyLen);
-    for (int i = 0; i < sk.lengthInBytes; i++) sk[i] = raw.secretKey[i];
+    for (int i = 0; i < sk.length; i++) sk[i] = kp.privateKey.Raw[i];
     kp.privateKey.Raw = sk;
-    kp.publicKey.Raw = raw.publicKey;
   } else {
     kp.publicKey.Raw = publicKey.Raw;
     kp.privateKey.Raw = privateKey.Raw;
