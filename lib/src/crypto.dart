@@ -2,13 +2,13 @@ part of nem2_crypto;
 
 // HashesSha3_256 return sha3 256 hash of byte
 Uint8List HashesSha3_256(Uint8List b){
-  var hash = new sha3.SHA3Digest(256);
+  var hash = sha3.New256;
   return hash.process(b);
 }
 
 // HashesSha3_512 return sha3 512 hash of byte
 Uint8List HashesSha3_512(Uint8List b){
-  var hash = new sha3.SHA3Digest(512);
+  var hash = sha3.New512;
   return hash.process(b);
 }
 

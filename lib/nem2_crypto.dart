@@ -3,7 +3,6 @@ library nem2_crypto;
 import 'dart:typed_data';
 import 'dart:math';
 import 'dart:core';
-import 'dart:math' show Random, pow;
 import 'package:hex/hex.dart';
 import 'package:pointycastle/pointycastle.dart';
 import 'package:nem2_crypto/imp/ed25519.dart' as ed25519;

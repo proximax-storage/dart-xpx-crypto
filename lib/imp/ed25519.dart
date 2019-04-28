@@ -1,4 +1,4 @@
-library nem2_crypto.ad25519;
+library nem2_crypto.ed25519;
 
 import 'dart:typed_data';
 import "dart:math";
@@ -210,7 +210,7 @@ class Box {
   Uint8List before() {
     if (this._sharedKey == null) {
       this._sharedKey = Uint8List(sharedKeyLength);
-      TweetNaclFast.crypto_box_beforenm(
+      CatapultNacl.crypto_box_beforenm(
           this._sharedKey, this._theirPublicKey, this._mySecretKey);
     }
 
@@ -245,7 +245,7 @@ class Box {
     for (int i = 0; i < mlen; i++) m[i + zerobytesLength] = message[i + moff];
 
     if (0 !=
-        TweetNaclFast.crypto_box_afternm(c, m, m.length, theNonce, _sharedKey))
+        CatapultNacl.crypto_box_afternm(c, m, m.length, theNonce, _sharedKey))
       return null;
 
     // wrap byte_buf_t on c offset@boxzerobytesLength
@@ -281,7 +281,7 @@ class Box {
     for (int i = 0; i < boxlen; i++)
       c[i + boxzerobytesLength] = box[i + boxoff];
 
-    if (TweetNaclFast.crypto_box_open_afternm(
+    if (CatapultNacl.crypto_box_open_afternm(
             m, c, c.length, theNonce, _sharedKey) !=
         0) return null;
 
@@ -301,7 +301,7 @@ class Box {
   static KeyPair keyPair() {
     KeyPair kp = new KeyPair();
 
-    TweetNaclFast.crypto_box_keypair(kp.publicKey, kp.privateKey);
+    CatapultNacl.crypto_box_keypair(kp.publicKey, kp.privateKey);
     return kp;
   }
 
@@ -313,7 +313,7 @@ class Box {
     // copy sk
     for (int i = 0; i < sk.length; i++) sk[i] = secretKey[i];
 
-    TweetNaclFast.crypto_scalarmult_base(pk, sk);
+    CatapultNacl.crypto_scalarmult_base(pk, sk);
     return kp;
   }
 }
@@ -423,7 +423,7 @@ class SecretBox {
 
     for (int i = 0; i < mlen; i++) m[i + zerobytesLength] = message[i + moff];
 
-    if (0 != TweetNaclFast.crypto_secretbox(c, m, m.length, theNonce, _key))
+    if (0 != CatapultNacl.crypto_secretbox(c, m, m.length, theNonce, _key))
       return null;
 
     // TBD optimizing ...
@@ -491,7 +491,7 @@ class SecretBox {
       c[i + boxzerobytesLength] = box[i + boxoff];
 
     if (0 !=
-        TweetNaclFast.crypto_secretbox_open(m, c, c.length, theNonce, _key))
+        CatapultNacl.crypto_secretbox_open(m, c, c.length, theNonce, _key))
       return null;
 
     // wrap byte_buf_t on m offset@zerobytesLength
@@ -501,46 +501,6 @@ class SecretBox {
     for (int i = 0; i < ret.length; i++) ret[i] = m[i + zerobytesLength];
 
     return ret;
-  }
-}
-
-/*
- *   Scalar multiplication, Implements curve25519.
- * */
-class ScalarMult {
-  //Length of scalar in bytes.
-  static final int scalarLength = 32;
-
-  //Length of group element in bytes.
-  static final int groupElementLength = 32;
-
-  /*
-   *   Multiplies an integer n by a group element p and
-   *   returns the resulting group element.
-   * */
-  static Uint8List scalseMult(Uint8List n, Uint8List p) {
-    if (!(n.length == scalarLength && p.length == groupElementLength))
-      return null;
-
-    Uint8List q = Uint8List(scalarLength);
-
-    TweetNaclFast.crypto_scalarmult(q, n, p);
-
-    return q;
-  }
-
-  /*
-   *   Multiplies an integer n by a standard group element and
-   *   returns the resulting group element.
-   * */
-  static Uint8List scalseMult_base(Uint8List n) {
-    if (!(n.length == scalarLength)) return null;
-
-    Uint8List q = Uint8List(scalarLength);
-
-    TweetNaclFast.crypto_scalarmult_base(q, n);
-
-    return q;
   }
 }
 
@@ -587,7 +547,7 @@ class Signature {
     // signed message
     Uint8List sm = Uint8List(mlen + signatureLength);
 
-    TweetNaclFast.crypto_sign(sm, -1, message, moff, mlen, _mySecretKey);
+    CatapultNacl.crypto_sign(sm, -1, message, moff, mlen, _mySecretKey);
 
     return sm;
   }
@@ -619,7 +579,7 @@ class Signature {
     Uint8List tmp = Uint8List(smlen);
 
     if (0 !=
-        TweetNaclFast.crypto_sign_open(
+        CatapultNacl.crypto_sign_open(
             tmp, -1, signedMessage, smoff, smlen, _theirPublicKey)) return null;
 
     // message
@@ -652,7 +612,7 @@ class Signature {
     for (int i = 0; i < signatureLength; i++) sm[i] = signature[i];
     for (int i = 0; i < message.length; i++)
       sm[i + signatureLength] = message[i];
-    return (TweetNaclFast.crypto_sign_open(
+    return (CatapultNacl.crypto_sign_open(
             m, -1, sm, 0, sm.length, _theirPublicKey) >=
         0);
   }
@@ -663,7 +623,7 @@ class Signature {
   static KeyPair keyPair() {
     KeyPair kp = new KeyPair();
 
-    TweetNaclFast.crypto_sign_keypair(kp, false);
+    CatapultNacl.crypto_sign_keypair(kp, false);
     return kp;
   }
 
@@ -689,13 +649,13 @@ class Signature {
     for (int i = 0; i < seedLength; i++) kp.privateKey.Raw[i] = seed[i];
 
     // generate pk from sk
-    TweetNaclFast.crypto_sign_keypair(kp, true);
+    CatapultNacl.crypto_sign_keypair(kp, true);
 
     return kp;
   }
 }
 
-class TweetNaclFast {
+class CatapultNacl {
   static final Uint8List _0 =
       Uint8List.fromList([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]); //16
   static final Uint8List _9 = Uint8List.fromList([

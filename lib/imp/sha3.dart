@@ -8,7 +8,7 @@ import "package:pointycastle/src/registry/registry.dart";
 import "package:pointycastle/src/ufixnum.dart";
 
 /// Implementation of SHA-3 digest.
-class SHA3Digest extends BaseDigest implements Digest {
+class _NewDigest extends BaseDigest implements Digest {
   static final RegExp _NAME_REGEX = new RegExp(r"^SHA-3\/([0-9]+)$");
 
   /// Intended for internal use.
@@ -17,7 +17,7 @@ class SHA3Digest extends BaseDigest implements Digest {
       _NAME_REGEX,
       (_, final Match match) => () {
             int bitLength = int.parse(match.group(1));
-            return new SHA3Digest(bitLength);
+            return new _NewDigest(bitLength);
           });
 
   static final _keccakRoundConstants = new Register64List.from([
@@ -85,7 +85,7 @@ class SHA3Digest extends BaseDigest implements Digest {
   bool _squeezing;
   int _bitsAvailableForSqueezing;
 
-  SHA3Digest([int bitLength = 0]) {
+  _NewDigest([int bitLength = 0]) {
     _init(bitLength);
   }
 
@@ -467,3 +467,7 @@ class SHA3Digest extends BaseDigest implements Digest {
     data.setRange(0, laneCount * 8, byteState);
   }
 }
+
+_NewDigest New256 = new _NewDigest(256);
+
+_NewDigest New512 = new _NewDigest(512);
