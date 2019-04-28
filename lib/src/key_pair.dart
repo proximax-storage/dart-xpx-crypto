@@ -17,6 +17,10 @@ class KeyPair {
   @override
   String toString() =>
       'KeyPair[PrivateKey=$_privateKey, PublicKey=$_publicKey]';
+
+  Map<String, dynamic> toJson() {
+    return {'privateKey': _privateKey, 'publicKey': _publicKey};
+  }
 }
 
 //NewKeyPair The public key is calculated from the private key.
