@@ -468,6 +468,6 @@ class _NewDigest extends BaseDigest implements Digest {
   }
 }
 
-_NewDigest New256 = new _NewDigest(256);
+_NewDigest New256() => new _NewDigest(256);
 
-_NewDigest New512 = new _NewDigest(512);
+_NewDigest New512() => new _NewDigest(512);
