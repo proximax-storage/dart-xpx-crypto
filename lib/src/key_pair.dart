@@ -76,10 +76,3 @@ KeyPair NewRandomKeyPair() {
       64, (_) => randGen.nextInt(nem2Const.bits));
   return NewKeyPair(NewPrivateKey(Uint8List.fromList(seed.toList())), null);
 }
-
-Uint8List addUint8List(Uint8List a, Uint8List b) {
-  Uint8List hash = Uint8List(b.length + a.length);
-  for (int i = 0; i < a.length; i++) hash[i] = a[i];
-  for (int i = 0; i < b.length; i++) hash[i + a.length] = b[i];
-  return hash;
-}

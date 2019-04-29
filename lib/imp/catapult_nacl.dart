@@ -1,10 +1,49 @@
 part of nem2_crypto.ed25519;
 
 class CatapultNacl {
+  static final Uint8List _0 =
+  Uint8List.fromList([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]); //16
+  static final Uint8List _9 = Uint8List.fromList([
+    9,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ]); //32
+
   static final Int64List _gf0 =
-      Int64List.fromList([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]); //16
+  Int64List.fromList([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]); //16
   static final Int64List _gf1 =
-      Int64List.fromList([1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]); //16
+  Int64List.fromList([1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]); //16
+  static final Int64List _121665 = Int64List.fromList(
+      [0xDB41, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]); //16
 
   static final Int64List _D = Int64List.fromList([
     0x78a3,
@@ -98,6 +137,27 @@ class CatapultNacl {
     0x2b83
   ]);
 
+  static void _ts64(Uint8List x, final int xoff, Int64 u) {
+
+    x[7 + xoff] = (u & 0xff).toInt();
+    u = u.shiftRightUnsigned(8);
+    x[6 + xoff] = (u & 0xff).toInt();
+    u = u.shiftRightUnsigned(8);
+    x[5 + xoff] = (u & 0xff).toInt();
+    u = u.shiftRightUnsigned(8);
+    x[4 + xoff] = (u & 0xff).toInt();
+    u = u.shiftRightUnsigned(8);
+    x[3 + xoff] = (u & 0xff).toInt();
+    u = u.shiftRightUnsigned(8);
+    x[2 + xoff] = (u & 0xff).toInt();
+    u = u.shiftRightUnsigned(8);
+    x[1 + xoff] = (u & 0xff).toInt();
+    u = u.shiftRightUnsigned(8);
+    x[0 + xoff] = (u & 0xff).toInt();
+
+    ///u >>= 8;
+  }
+
   static int _vn(
       Uint8List x, final int xoff, Uint8List y, final int yoff, int n) {
     int i, d = 0;
@@ -105,9 +165,586 @@ class CatapultNacl {
     return (1 & (Int32(d - 1).shiftRightUnsigned(8).toInt())) - 1;
   }
 
+  static int _crypto_verify_16(
+      Uint8List x, final int xoff, Uint8List y, final int yoff) {
+    return _vn(x, xoff, y, yoff, 16);
+  }
+
+  static int crypto_verify_16(Uint8List x, Uint8List y) {
+    return _crypto_verify_16(x, 0, y, 0);
+  }
+
   static int _crypto_verify_32(
       Uint8List x, final int xoff, Uint8List y, final int yoff) {
     return _vn(x, xoff, y, yoff, 32);
+  }
+
+  static int crypto_verify_32(Uint8List x, Uint8List y) {
+    return _crypto_verify_32(x, 0, y, 0);
+  }
+
+  static void _core_salsa20(
+      Uint8List o, Uint8List p, Uint8List k, Uint8List c) {
+    int j0 = c[0] & 0xff |
+    (c[1] & 0xff) << 8 |
+    (c[2] & 0xff) << 16 |
+    (c[3] & 0xff) << 24,
+        j1 = k[0] & 0xff |
+        (k[1] & 0xff) << 8 |
+        (k[2] & 0xff) << 16 |
+        (k[3] & 0xff) << 24,
+        j2 = k[4] & 0xff |
+        (k[5] & 0xff) << 8 |
+        (k[6] & 0xff) << 16 |
+        (k[7] & 0xff) << 24,
+        j3 = k[8] & 0xff |
+        (k[9] & 0xff) << 8 |
+        (k[10] & 0xff) << 16 |
+        (k[11] & 0xff) << 24,
+        j4 = k[12] & 0xff |
+        (k[13] & 0xff) << 8 |
+        (k[14] & 0xff) << 16 |
+        (k[15] & 0xff) << 24,
+        j5 = c[4] & 0xff |
+        (c[5] & 0xff) << 8 |
+        (c[6] & 0xff) << 16 |
+        (c[7] & 0xff) << 24,
+        j6 = p[0] & 0xff |
+        (p[1] & 0xff) << 8 |
+        (p[2] & 0xff) << 16 |
+        (p[3] & 0xff) << 24,
+        j7 = p[4] & 0xff |
+        (p[5] & 0xff) << 8 |
+        (p[6] & 0xff) << 16 |
+        (p[7] & 0xff) << 24,
+        j8 = p[8] & 0xff |
+        (p[9] & 0xff) << 8 |
+        (p[10] & 0xff) << 16 |
+        (p[11] & 0xff) << 24,
+        j9 = p[12] & 0xff |
+        (p[13] & 0xff) << 8 |
+        (p[14] & 0xff) << 16 |
+        (p[15] & 0xff) << 24,
+        j10 = c[8] & 0xff |
+        (c[9] & 0xff) << 8 |
+        (c[10] & 0xff) << 16 |
+        (c[11] & 0xff) << 24,
+        j11 = k[16] & 0xff |
+        (k[17] & 0xff) << 8 |
+        (k[18] & 0xff) << 16 |
+        (k[19] & 0xff) << 24,
+        j12 = k[20] & 0xff |
+        (k[21] & 0xff) << 8 |
+        (k[22] & 0xff) << 16 |
+        (k[23] & 0xff) << 24,
+        j13 = k[24] & 0xff |
+        (k[25] & 0xff) << 8 |
+        (k[26] & 0xff) << 16 |
+        (k[27] & 0xff) << 24,
+        j14 = k[28] & 0xff |
+        (k[29] & 0xff) << 8 |
+        (k[30] & 0xff) << 16 |
+        (k[31] & 0xff) << 24,
+        j15 = c[12] & 0xff |
+        (c[13] & 0xff) << 8 |
+        (c[14] & 0xff) << 16 |
+        (c[15] & 0xff) << 24;
+
+    Int32 x0 = Int32(j0),
+        x1 = Int32(j1),
+        x2 = Int32(j2),
+        x3 = Int32(j3),
+        x4 = Int32(j4),
+        x5 = Int32(j5),
+        x6 = Int32(j6),
+        x7 = Int32(j7),
+        x8 = Int32(j8),
+        x9 = Int32(j9),
+        x10 = Int32(j10),
+        x11 = Int32(j11),
+        x12 = Int32(j12),
+        x13 = Int32(j13),
+        x14 = Int32(j14),
+        x15 = Int32(j15),
+        u;
+
+    for (int i = 0; i < 20; i += 2) {
+      u = x0 + x12 | 0;
+      x4 ^= u << 7 | u.shiftRightUnsigned(32 - 7);
+      u = x4 + x0 | 0;
+      x8 ^= u << 9 | u.shiftRightUnsigned(32 - 9);
+      u = x8 + x4 | 0;
+      x12 ^= u << 13 | u.shiftRightUnsigned(32 - 13);
+      u = x12 + x8 | 0;
+      x0 ^= u << 18 | u.shiftRightUnsigned(32 - 18);
+
+      u = x5 + x1 | 0;
+      x9 ^= u << 7 | u.shiftRightUnsigned(32 - 7);
+      u = x9 + x5 | 0;
+      x13 ^= u << 9 | u.shiftRightUnsigned(32 - 9);
+      u = x13 + x9 | 0;
+      x1 ^= u << 13 | u.shiftRightUnsigned(32 - 13);
+      u = x1 + x13 | 0;
+      x5 ^= u << 18 | u.shiftRightUnsigned(32 - 18);
+
+      u = x10 + x6 | 0;
+      x14 ^= u << 7 | u.shiftRightUnsigned(32 - 7);
+      u = x14 + x10 | 0;
+      x2 ^= u << 9 | u.shiftRightUnsigned(32 - 9);
+      u = x2 + x14 | 0;
+      x6 ^= u << 13 | u.shiftRightUnsigned(32 - 13);
+      u = x6 + x2 | 0;
+      x10 ^= u << 18 | u.shiftRightUnsigned(32 - 18);
+
+      u = x15 + x11 | 0;
+      x3 ^= u << 7 | u.shiftRightUnsigned(32 - 7);
+      u = x3 + x15 | 0;
+      x7 ^= u << 9 | u.shiftRightUnsigned(32 - 9);
+      u = x7 + x3 | 0;
+      x11 ^= u << 13 | u.shiftRightUnsigned(32 - 13);
+      u = x11 + x7 | 0;
+      x15 ^= u << 18 | u.shiftRightUnsigned(32 - 18);
+
+      u = x0 + x3 | 0;
+      x1 ^= u << 7 | u.shiftRightUnsigned(32 - 7);
+      u = x1 + x0 | 0;
+      x2 ^= u << 9 | u.shiftRightUnsigned(32 - 9);
+      u = x2 + x1 | 0;
+      x3 ^= u << 13 | u.shiftRightUnsigned(32 - 13);
+      u = x3 + x2 | 0;
+      x0 ^= u << 18 | u.shiftRightUnsigned(32 - 18);
+
+      u = x5 + x4 | 0;
+      x6 ^= u << 7 | u.shiftRightUnsigned(32 - 7);
+      u = x6 + x5 | 0;
+      x7 ^= u << 9 | u.shiftRightUnsigned(32 - 9);
+      u = x7 + x6 | 0;
+      x4 ^= u << 13 | u.shiftRightUnsigned(32 - 13);
+      u = x4 + x7 | 0;
+      x5 ^= u << 18 | u.shiftRightUnsigned(32 - 18);
+
+      u = x10 + x9 | 0;
+      x11 ^= u << 7 | u.shiftRightUnsigned(32 - 7);
+      u = x11 + x10 | 0;
+      x8 ^= u << 9 | u.shiftRightUnsigned(32 - 9);
+      u = x8 + x11 | 0;
+      x9 ^= u << 13 | u.shiftRightUnsigned(32 - 13);
+      u = x9 + x8 | 0;
+      x10 ^= u << 18 | u.shiftRightUnsigned(32 - 18);
+
+      u = x15 + x14 | 0;
+      x12 ^= u << 7 | u.shiftRightUnsigned(32 - 7);
+      u = x12 + x15 | 0;
+      x13 ^= u << 9 | u.shiftRightUnsigned(32 - 9);
+      u = x13 + x12 | 0;
+      x14 ^= u << 13 | u.shiftRightUnsigned(32 - 13);
+      u = x14 + x13 | 0;
+      x15 ^= u << 18 | u.shiftRightUnsigned(32 - 18);
+    }
+    x0 = x0 + j0 | 0;
+    x1 = x1 + j1 | 0;
+    x2 = x2 + j2 | 0;
+    x3 = x3 + j3 | 0;
+    x4 = x4 + j4 | 0;
+    x5 = x5 + j5 | 0;
+    x6 = x6 + j6 | 0;
+    x7 = x7 + j7 | 0;
+    x8 = x8 + j8 | 0;
+    x9 = x9 + j9 | 0;
+    x10 = x10 + j10 | 0;
+    x11 = x11 + j11 | 0;
+    x12 = x12 + j12 | 0;
+    x13 = x13 + j13 | 0;
+    x14 = x14 + j14 | 0;
+    x15 = x15 + j15 | 0;
+
+    o[0] = (x0.shiftRightUnsigned(0) & 0xff).toInt();
+    o[1] = (x0.shiftRightUnsigned(8) & 0xff).toInt();
+    o[2] = (x0.shiftRightUnsigned(16) & 0xff).toInt();
+    o[3] = (x0.shiftRightUnsigned(24) & 0xff).toInt();
+
+    o[4] = (x1.shiftRightUnsigned(0) & 0xff).toInt();
+    o[5] = (x1.shiftRightUnsigned(8) & 0xff).toInt();
+    o[6] = (x1.shiftRightUnsigned(16) & 0xff).toInt();
+    o[7] = (x1.shiftRightUnsigned(24) & 0xff).toInt();
+
+    o[8] = (x2.shiftRightUnsigned(0) & 0xff).toInt();
+    o[9] = (x2.shiftRightUnsigned(8) & 0xff).toInt();
+    o[10] = (x2.shiftRightUnsigned(16) & 0xff).toInt();
+    o[11] = (x2.shiftRightUnsigned(24) & 0xff).toInt();
+
+    o[12] = (x3.shiftRightUnsigned(0) & 0xff).toInt();
+    o[13] = (x3.shiftRightUnsigned(8) & 0xff).toInt();
+    o[14] = (x3.shiftRightUnsigned(16) & 0xff).toInt();
+    o[15] = (x3.shiftRightUnsigned(24) & 0xff).toInt();
+
+    o[16] = (x4.shiftRightUnsigned(0) & 0xff).toInt();
+    o[17] = (x4.shiftRightUnsigned(8) & 0xff).toInt();
+    o[18] = (x4.shiftRightUnsigned(16) & 0xff).toInt();
+    o[19] = (x4.shiftRightUnsigned(24) & 0xff).toInt();
+
+    o[20] = (x5.shiftRightUnsigned(0) & 0xff).toInt();
+    o[21] = (x5.shiftRightUnsigned(8) & 0xff).toInt();
+    o[22] = (x5.shiftRightUnsigned(16) & 0xff).toInt();
+    o[23] = (x5.shiftRightUnsigned(24) & 0xff).toInt();
+
+    o[24] = (x6.shiftRightUnsigned(0) & 0xff).toInt();
+    o[25] = (x6.shiftRightUnsigned(8) & 0xff).toInt();
+    o[26] = (x6.shiftRightUnsigned(16) & 0xff).toInt();
+    o[27] = (x6.shiftRightUnsigned(24) & 0xff).toInt();
+
+    o[28] = (x7.shiftRightUnsigned(0) & 0xff).toInt();
+    o[29] = (x7.shiftRightUnsigned(8) & 0xff).toInt();
+    o[30] = (x7.shiftRightUnsigned(16) & 0xff).toInt();
+    o[31] = (x7.shiftRightUnsigned(24) & 0xff).toInt();
+
+    o[32] = (x8.shiftRightUnsigned(0) & 0xff).toInt();
+    o[33] = (x8.shiftRightUnsigned(8) & 0xff).toInt();
+    o[34] = (x8.shiftRightUnsigned(16) & 0xff).toInt();
+    o[35] = (x8.shiftRightUnsigned(24) & 0xff).toInt();
+
+    o[36] = (x9.shiftRightUnsigned(0) & 0xff).toInt();
+    o[37] = (x9.shiftRightUnsigned(8) & 0xff).toInt();
+    o[38] = (x9.shiftRightUnsigned(16) & 0xff).toInt();
+    o[39] = (x9.shiftRightUnsigned(24) & 0xff).toInt();
+
+    o[40] = (x10.shiftRightUnsigned(0) & 0xff).toInt();
+    o[41] = (x10.shiftRightUnsigned(8) & 0xff).toInt();
+    o[42] = (x10.shiftRightUnsigned(16) & 0xff).toInt();
+    o[43] = (x10.shiftRightUnsigned(24) & 0xff).toInt();
+
+    o[44] = (x11.shiftRightUnsigned(0) & 0xff).toInt();
+    o[45] = (x11.shiftRightUnsigned(8) & 0xff).toInt();
+    o[46] = (x11.shiftRightUnsigned(16) & 0xff).toInt();
+    o[47] = (x11.shiftRightUnsigned(24) & 0xff).toInt();
+
+    o[48] = (x12.shiftRightUnsigned(0) & 0xff).toInt();
+    o[49] = (x12.shiftRightUnsigned(8) & 0xff).toInt();
+    o[50] = (x12.shiftRightUnsigned(16) & 0xff).toInt();
+    o[51] = (x12.shiftRightUnsigned(24) & 0xff).toInt();
+
+    o[52] = (x13.shiftRightUnsigned(0) & 0xff).toInt();
+    o[53] = (x13.shiftRightUnsigned(8) & 0xff).toInt();
+    o[54] = (x13.shiftRightUnsigned(16) & 0xff).toInt();
+    o[55] = (x13.shiftRightUnsigned(24) & 0xff).toInt();
+
+    o[56] = (x14.shiftRightUnsigned(0) & 0xff).toInt();
+    o[57] = (x14.shiftRightUnsigned(8) & 0xff).toInt();
+    o[58] = (x14.shiftRightUnsigned(16) & 0xff).toInt();
+    o[59] = (x14.shiftRightUnsigned(24) & 0xff).toInt();
+
+    o[60] = (x15.shiftRightUnsigned(0) & 0xff).toInt();
+    o[61] = (x15.shiftRightUnsigned(8) & 0xff).toInt();
+    o[62] = (x15.shiftRightUnsigned(16) & 0xff).toInt();
+    o[63] = (x15.shiftRightUnsigned(24) & 0xff).toInt();
+  }
+
+  static void _core_hsalsa20(
+      Uint8List o, Uint8List p, Uint8List k, Uint8List c) {
+    int j0 = c[0] & 0xff |
+    (c[1] & 0xff) << 8 |
+    (c[2] & 0xff) << 16 |
+    (c[3] & 0xff) << 24,
+        j1 = k[0] & 0xff |
+        (k[1] & 0xff) << 8 |
+        (k[2] & 0xff) << 16 |
+        (k[3] & 0xff) << 24,
+        j2 = k[4] & 0xff |
+        (k[5] & 0xff) << 8 |
+        (k[6] & 0xff) << 16 |
+        (k[7] & 0xff) << 24,
+        j3 = k[8] & 0xff |
+        (k[9] & 0xff) << 8 |
+        (k[10] & 0xff) << 16 |
+        (k[11] & 0xff) << 24,
+        j4 = k[12] & 0xff |
+        (k[13] & 0xff) << 8 |
+        (k[14] & 0xff) << 16 |
+        (k[15] & 0xff) << 24,
+        j5 = c[4] & 0xff |
+        (c[5] & 0xff) << 8 |
+        (c[6] & 0xff) << 16 |
+        (c[7] & 0xff) << 24,
+        j6 = p[0] & 0xff |
+        (p[1] & 0xff) << 8 |
+        (p[2] & 0xff) << 16 |
+        (p[3] & 0xff) << 24,
+        j7 = p[4] & 0xff |
+        (p[5] & 0xff) << 8 |
+        (p[6] & 0xff) << 16 |
+        (p[7] & 0xff) << 24,
+        j8 = p[8] & 0xff |
+        (p[9] & 0xff) << 8 |
+        (p[10] & 0xff) << 16 |
+        (p[11] & 0xff) << 24,
+        j9 = p[12] & 0xff |
+        (p[13] & 0xff) << 8 |
+        (p[14] & 0xff) << 16 |
+        (p[15] & 0xff) << 24,
+        j10 = c[8] & 0xff |
+        (c[9] & 0xff) << 8 |
+        (c[10] & 0xff) << 16 |
+        (c[11] & 0xff) << 24,
+        j11 = k[16] & 0xff |
+        (k[17] & 0xff) << 8 |
+        (k[18] & 0xff) << 16 |
+        (k[19] & 0xff) << 24,
+        j12 = k[20] & 0xff |
+        (k[21] & 0xff) << 8 |
+        (k[22] & 0xff) << 16 |
+        (k[23] & 0xff) << 24,
+        j13 = k[24] & 0xff |
+        (k[25] & 0xff) << 8 |
+        (k[26] & 0xff) << 16 |
+        (k[27] & 0xff) << 24,
+        j14 = k[28] & 0xff |
+        (k[29] & 0xff) << 8 |
+        (k[30] & 0xff) << 16 |
+        (k[31] & 0xff) << 24,
+        j15 = c[12] & 0xff |
+        (c[13] & 0xff) << 8 |
+        (c[14] & 0xff) << 16 |
+        (c[15] & 0xff) << 24;
+
+    Int32 x0 = Int32(j0),
+        x1 = Int32(j1),
+        x2 = Int32(j2),
+        x3 = Int32(j3),
+        x4 = Int32(j4),
+        x5 = Int32(j5),
+        x6 = Int32(j6),
+        x7 = Int32(j7),
+        x8 = Int32(j8),
+        x9 = Int32(j9),
+        x10 = Int32(j10),
+        x11 = Int32(j11),
+        x12 = Int32(j12),
+        x13 = Int32(j13),
+        x14 = Int32(j14),
+        x15 = Int32(j15),
+        u;
+
+    for (int i = 0; i < 20; i += 2) {
+      u = x0 + x12 | 0;
+      x4 ^= u << 7 | u.shiftRightUnsigned(32 - 7);
+      u = x4 + x0 | 0;
+      x8 ^= u << 9 | u.shiftRightUnsigned(32 - 9);
+      u = x8 + x4 | 0;
+      x12 ^= u << 13 | u.shiftRightUnsigned(32 - 13);
+      u = x12 + x8 | 0;
+      x0 ^= u << 18 | u.shiftRightUnsigned(32 - 18);
+
+      u = x5 + x1 | 0;
+      x9 ^= u << 7 | u.shiftRightUnsigned(32 - 7);
+      u = x9 + x5 | 0;
+      x13 ^= u << 9 | u.shiftRightUnsigned(32 - 9);
+      u = x13 + x9 | 0;
+      x1 ^= u << 13 | u.shiftRightUnsigned(32 - 13);
+      u = x1 + x13 | 0;
+      x5 ^= u << 18 | u.shiftRightUnsigned(32 - 18);
+
+      u = x10 + x6 | 0;
+      x14 ^= u << 7 | u.shiftRightUnsigned(32 - 7);
+      u = x14 + x10 | 0;
+      x2 ^= u << 9 | u.shiftRightUnsigned(32 - 9);
+      u = x2 + x14 | 0;
+      x6 ^= u << 13 | u.shiftRightUnsigned(32 - 13);
+      u = x6 + x2 | 0;
+      x10 ^= u << 18 | u.shiftRightUnsigned(32 - 18);
+
+      u = x15 + x11 | 0;
+      x3 ^= u << 7 | u.shiftRightUnsigned(32 - 7);
+      u = x3 + x15 | 0;
+      x7 ^= u << 9 | u.shiftRightUnsigned(32 - 9);
+      u = x7 + x3 | 0;
+      x11 ^= u << 13 | u.shiftRightUnsigned(32 - 13);
+      u = x11 + x7 | 0;
+      x15 ^= u << 18 | u.shiftRightUnsigned(32 - 18);
+
+      u = x0 + x3 | 0;
+      x1 ^= u << 7 | u.shiftRightUnsigned(32 - 7);
+      u = x1 + x0 | 0;
+      x2 ^= u << 9 | u.shiftRightUnsigned(32 - 9);
+      u = x2 + x1 | 0;
+      x3 ^= u << 13 | u.shiftRightUnsigned(32 - 13);
+      u = x3 + x2 | 0;
+      x0 ^= u << 18 | u.shiftRightUnsigned(32 - 18);
+
+      u = x5 + x4 | 0;
+      x6 ^= u << 7 | u.shiftRightUnsigned(32 - 7);
+      u = x6 + x5 | 0;
+      x7 ^= u << 9 | u.shiftRightUnsigned(32 - 9);
+      u = x7 + x6 | 0;
+      x4 ^= u << 13 | u.shiftRightUnsigned(32 - 13);
+      u = x4 + x7 | 0;
+      x5 ^= u << 18 | u.shiftRightUnsigned(32 - 18);
+
+      u = x10 + x9 | 0;
+      x11 ^= u << 7 | u.shiftRightUnsigned(32 - 7);
+      u = x11 + x10 | 0;
+      x8 ^= u << 9 | u.shiftRightUnsigned(32 - 9);
+      u = x8 + x11 | 0;
+      x9 ^= u << 13 | u.shiftRightUnsigned(32 - 13);
+      u = x9 + x8 | 0;
+      x10 ^= u << 18 | u.shiftRightUnsigned(32 - 18);
+
+      u = x15 + x14 | 0;
+      x12 ^= u << 7 | u.shiftRightUnsigned(32 - 7);
+      u = x12 + x15 | 0;
+      x13 ^= u << 9 | u.shiftRightUnsigned(32 - 9);
+      u = x13 + x12 | 0;
+      x14 ^= u << 13 | u.shiftRightUnsigned(32 - 13);
+      u = x14 + x13 | 0;
+      x15 ^= u << 18 | u.shiftRightUnsigned(32 - 18);
+    }
+
+    o[0] = (x0.shiftRightUnsigned(0) & 0xff).toInt();
+    o[1] = (x0.shiftRightUnsigned(8) & 0xff).toInt();
+    o[2] = (x0.shiftRightUnsigned(16) & 0xff).toInt();
+    o[3] = (x0.shiftRightUnsigned(24) & 0xff).toInt();
+
+    o[4] = (x5.shiftRightUnsigned(0) & 0xff).toInt();
+    o[5] = (x5.shiftRightUnsigned(8) & 0xff).toInt();
+    o[6] = (x5.shiftRightUnsigned(16) & 0xff).toInt();
+    o[7] = (x5.shiftRightUnsigned(24) & 0xff).toInt();
+
+    o[8] = (x10.shiftRightUnsigned(0) & 0xff).toInt();
+    o[9] = (x10.shiftRightUnsigned(8) & 0xff).toInt();
+    o[10] = (x10.shiftRightUnsigned(16) & 0xff).toInt();
+    o[11] = (x10.shiftRightUnsigned(24) & 0xff).toInt();
+
+    o[12] = (x15.shiftRightUnsigned(0) & 0xff).toInt();
+    o[13] = (x15.shiftRightUnsigned(8) & 0xff).toInt();
+    o[14] = (x15.shiftRightUnsigned(16) & 0xff).toInt();
+    o[15] = (x15.shiftRightUnsigned(24) & 0xff).toInt();
+
+    o[16] = (x6.shiftRightUnsigned(0) & 0xff).toInt();
+    o[17] = (x6.shiftRightUnsigned(8) & 0xff).toInt();
+    o[18] = (x6.shiftRightUnsigned(16) & 0xff).toInt();
+    o[19] = (x6.shiftRightUnsigned(24) & 0xff).toInt();
+
+    o[20] = (x7.shiftRightUnsigned(0) & 0xff).toInt();
+    o[21] = (x7.shiftRightUnsigned(8) & 0xff).toInt();
+    o[22] = (x7.shiftRightUnsigned(16) & 0xff).toInt();
+    o[23] = (x7.shiftRightUnsigned(24) & 0xff).toInt();
+
+    o[24] = (x8.shiftRightUnsigned(0) & 0xff).toInt();
+    o[25] = (x8.shiftRightUnsigned(8) & 0xff).toInt();
+    o[26] = (x8.shiftRightUnsigned(16) & 0xff).toInt();
+    o[27] = (x8.shiftRightUnsigned(24) & 0xff).toInt();
+
+    o[28] = (x9.shiftRightUnsigned(0) & 0xff).toInt();
+    o[29] = (x9.shiftRightUnsigned(8) & 0xff).toInt();
+    o[30] = (x9.shiftRightUnsigned(16) & 0xff).toInt();
+    o[31] = (x9.shiftRightUnsigned(24) & 0xff).toInt();
+  }
+
+  static int crypto_core_salsa20(
+      Uint8List out, Uint8List input, Uint8List k, Uint8List c) {
+    _core_salsa20(out, input, k, c);
+    return 0;
+  }
+
+  static int crypto_core_hsalsa20(
+      Uint8List out, Uint8List input, Uint8List k, Uint8List c) {
+    _core_hsalsa20(out, input, k, c);
+    return 0;
+  }
+
+// "expand 32-byte k"
+  static final Uint8List _sigma = Uint8List.fromList([
+    101,
+    120,
+    112,
+    97,
+    110,
+    100,
+    32,
+    51,
+    50,
+    45,
+    98,
+    121,
+    116,
+    101,
+    32,
+    107
+  ]);
+
+  static int _crypto_stream_salsa20_xor(Uint8List c, int cpos, Uint8List m,
+      int mpos, int b, Uint8List n, Uint8List k) {
+    Uint8List z = Uint8List(16), x = Uint8List(64);
+    int i;
+    Int32 u;
+    for (i = 0; i < 16; i++) z[i] = 0;
+    for (i = 0; i < 8; i++) z[i] = n[i];
+    while (b >= 64) {
+      crypto_core_salsa20(x, z, k, _sigma);
+      for (i = 0; i < 64; i++)
+        c[cpos + i] = ((m[mpos + i] ^ x[i]) & 0xff).toInt();
+      u = Int32(1);
+      for (i = 8; i < 16; i++) {
+        u = u + (z[i] & 0xff) | 0;
+        z[i] = (u & 0xff).toInt();
+        u = u.shiftRightUnsigned(8);
+      }
+      b -= 64;
+      cpos += 64;
+      mpos += 64;
+    }
+    if (b > 0) {
+      crypto_core_salsa20(x, z, k, _sigma);
+      for (i = 0; i < b; i++)
+        c[cpos + i] = ((m[mpos + i] ^ x[i]) & 0xff).toInt();
+    }
+
+    return 0;
+  }
+
+  static int crypto_stream_salsa20(
+      Uint8List c, int cpos, int b, Uint8List n, Uint8List k) {
+    Uint8List z = Uint8List(16), x = Uint8List(64);
+    int i;
+    Int32 u;
+    for (i = 0; i < 16; i++) z[i] = 0;
+    for (i = 0; i < 8; i++) z[i] = n[i];
+    while (b >= 64) {
+      crypto_core_salsa20(x, z, k, _sigma);
+      for (i = 0; i < 64; i++) c[cpos + i] = x[i];
+      u = Int32(1);
+      for (i = 8; i < 16; i++) {
+        u = u + (z[i] & 0xff) | 0;
+        z[i] = (u & 0xff).toInt();
+        u = u.shiftRightUnsigned(8);
+      }
+      b -= 64;
+      cpos += 64;
+    }
+    if (b > 0) {
+      crypto_core_salsa20(x, z, k, _sigma);
+      for (i = 0; i < b; i++) c[cpos + i] = x[i];
+    }
+
+    return 0;
+  }
+
+  static int crypto_stream(
+      Uint8List c, int cpos, int d, Uint8List n, Uint8List k) {
+    Uint8List s = Uint8List(32);
+    crypto_core_hsalsa20(s, n, k, _sigma);
+    Uint8List sn = Uint8List(8);
+    for (int i = 0; i < 8; i++) sn[i] = n[i + 16];
+    return crypto_stream_salsa20(c, cpos, d, sn, s);
+  }
+
+  static int crypto_stream_xor(Uint8List c, int cpos, Uint8List m, int mpos,
+      int d, Uint8List n, Uint8List k) {
+    Uint8List s = Uint8List(32);
+
+    crypto_core_hsalsa20(s, n, k, _sigma);
+    Uint8List sn = Uint8List(8);
+    for (int i = 0; i < 8; i++) sn[i] = n[i + 16];
+    return _crypto_stream_salsa20_xor(c, cpos, m, mpos, d, sn, s);
   }
 
   static void _set25519(Int64List r, Int64List a) {
@@ -124,6 +761,10 @@ class CatapultNacl {
       o[i] = v - c * 65536;
     }
     o[0] += c - 1 + 37 * (c - 1);
+  }
+
+  static void _sel25519(Int64List p, Int64List q, int b) {
+    _sel25519_off(p, 0, q, 0, b);
   }
 
   static void _sel25519_off(
@@ -711,7 +1352,709 @@ class CatapultNacl {
     for (a = 0; a < 16; a++) o[a] = c[a];
   }
 
-  ///private static void add(gf p[4],gf q[4])
+  static int crypto_scalarmult(Uint8List q, Uint8List n, Uint8List p) {
+    Uint8List z = Uint8List(32);
+    Int64List x = Int64List(80);
+    int r, i;
+    Int64List a = Int64List(16),
+        b = Int64List(16),
+        c = Int64List(16),
+        d = Int64List(16),
+        e = Int64List(16),
+        f = Int64List(16);
+    for (i = 0; i < 31; i++) z[i] = n[i];
+    z[31] = (((n[31] & 127) | 64) & 0xff).toInt();
+    z[0] &= 248;
+    unpack25519(x, p);
+    for (i = 0; i < 16; i++) {
+      b[i] = x[i];
+      d[i] = a[i] = c[i] = 0;
+    }
+    a[0] = d[0] = 1;
+    for (i = 254; i >= 0; --i) {
+      r = (Int32(z[Int32(i).shiftRightUnsigned(3).toInt()])
+          .shiftRightUnsigned(i & 7))
+          .toInt() &
+      1;
+      _sel25519(a, b, r);
+      _sel25519(c, d, r);
+      _A(e, a, c);
+      _Z(a, a, c);
+      _A(c, b, d);
+      _Z(b, b, d);
+      _S(d, e);
+      _S(f, a);
+      _M(a, c, a);
+      _M(c, b, e);
+      _A(e, a, c);
+      _Z(a, a, c);
+      _S(b, a);
+      _Z(c, d, f);
+      _M(a, c, _121665);
+      _A(a, a, d);
+      _M(c, c, a);
+      _M(a, d, f);
+      _M(d, b, x);
+      _S(b, e);
+      _sel25519(a, b, r);
+      _sel25519(c, d, r);
+    }
+    for (i = 0; i < 16; i++) {
+      x[i + 16] = a[i];
+      x[i + 32] = c[i];
+      x[i + 48] = b[i];
+      x[i + 64] = d[i];
+    }
+    _inv25519(x, 32, x, 32);
+    _M_off(x, 16, x, 16, x, 32);
+    _pack25519(q, x, 16);
+
+    return 0;
+  }
+
+  static int crypto_scalarmult_base(Uint8List q, Uint8List n) {
+    return crypto_scalarmult(q, n, _9);
+  }
+
+  static int crypto_box_keypair(Uint8List y, Uint8List x) {
+    randombytes_array_len(x, 32);
+    return crypto_scalarmult_base(y, x);
+  }
+
+  static int crypto_box_beforenm(Uint8List k, Uint8List y, Uint8List x) {
+    Uint8List s = Uint8List(32);
+    crypto_scalarmult(s, x, y);
+
+/*String dbgt = "";
+		for (int dbg = 0; dbg < s.length; dbg ++) dbgt += " "+s[dbg];
+		Log.d(TAG, "crypto_box_beforenm -> "+dbgt);
+
+	    dbgt = "";
+		for (int dbg = 0; dbg < x.length; dbg ++) dbgt += " "+x[dbg];
+		Log.d(TAG, "crypto_box_beforenm, x -> "+dbgt);
+	    dbgt = "";
+		for (int dbg = 0; dbg < y.length; dbg ++) dbgt += " "+y[dbg];
+		Log.d(TAG, "crypto_box_beforenm, y -> "+dbgt);
+		*/
+
+    return crypto_core_hsalsa20(k, _0, s, _sigma);
+  }
+
+  static final Int64List K = Int64List.fromList([
+    0x428a2f98d728ae22,
+    0x7137449123ef65cd,
+    0xb5c0fbcfec4d3b2f,
+    0xe9b5dba58189dbbc,
+    0x3956c25bf348b538,
+    0x59f111f1b605d019,
+    0x923f82a4af194f9b,
+    0xab1c5ed5da6d8118,
+    0xd807aa98a3030242,
+    0x12835b0145706fbe,
+    0x243185be4ee4b28c,
+    0x550c7dc3d5ffb4e2,
+    0x72be5d74f27b896f,
+    0x80deb1fe3b1696b1,
+    0x9bdc06a725c71235,
+    0xc19bf174cf692694,
+    0xe49b69c19ef14ad2,
+    0xefbe4786384f25e3,
+    0x0fc19dc68b8cd5b5,
+    0x240ca1cc77ac9c65,
+    0x2de92c6f592b0275,
+    0x4a7484aa6ea6e483,
+    0x5cb0a9dcbd41fbd4,
+    0x76f988da831153b5,
+    0x983e5152ee66dfab,
+    0xa831c66d2db43210,
+    0xb00327c898fb213f,
+    0xbf597fc7beef0ee4,
+    0xc6e00bf33da88fc2,
+    0xd5a79147930aa725,
+    0x06ca6351e003826f,
+    0x142929670a0e6e70,
+    0x27b70a8546d22ffc,
+    0x2e1b21385c26c926,
+    0x4d2c6dfc5ac42aed,
+    0x53380d139d95b3df,
+    0x650a73548baf63de,
+    0x766a0abb3c77b2a8,
+    0x81c2c92e47edaee6,
+    0x92722c851482353b,
+    0xa2bfe8a14cf10364,
+    0xa81a664bbc423001,
+    0xc24b8b70d0f89791,
+    0xc76c51a30654be30,
+    0xd192e819d6ef5218,
+    0xd69906245565a910,
+    0xf40e35855771202a,
+    0x106aa07032bbd1b8,
+    0x19a4c116b8d2d0c8,
+    0x1e376c085141ab53,
+    0x2748774cdf8eeb99,
+    0x34b0bcb5e19b48a8,
+    0x391c0cb3c5c95a63,
+    0x4ed8aa4ae3418acb,
+    0x5b9cca4f7763e373,
+    0x682e6ff3d6b2b8a3,
+    0x748f82ee5defb2fc,
+    0x78a5636f43172f60,
+    0x84c87814a1f0ab72,
+    0x8cc702081a6439ec,
+    0x90befffa23631e28,
+    0xa4506cebde82bde9,
+    0xbef9a3f7b2c67915,
+    0xc67178f2e372532b,
+    0xca273eceea26619c,
+    0xd186b8c721c0c207,
+    0xeada7dd6cde0eb1e,
+    0xf57d4f7fee6ed178,
+    0x06f067aa72176fba,
+    0x0a637dc5a2c898a6,
+    0x113f9804bef90dae,
+    0x1b710b35131c471b,
+    0x28db77f523047d84,
+    0x32caab7b40c72493,
+    0x3c9ebe0a15c9bebc,
+    0x431d67c49c100d4c,
+    0x4cc5d4becb3e42b6,
+    0x597f299cfc657e2a,
+    0x5fcb6fab3ad6faec,
+    0x6c44198c4a475817
+  ]);
+
+  static int crypto_hashblocks_hl(
+      List<Int32> hh, List<Int32> hl, Uint8List m, final int moff, int n) {
+    ///String dbgt = "";
+    ///for (int dbg = 0; dbg < n; dbg ++) dbgt += " "+m[dbg+moff];
+    ///Log.d(TAG, "crypto_hashblocks_hl m/"+n + "-> "+dbgt);
+
+    int i, j;
+
+    List<Int32> wh = List<Int32>(16), wl = List<Int32>(16);
+    Int32 bh0,
+        bh1,
+        bh2,
+        bh3,
+        bh4,
+        bh5,
+        bh6,
+        bh7,
+        bl0,
+        bl1,
+        bl2,
+        bl3,
+        bl4,
+        bl5,
+        bl6,
+        bl7,
+        th,
+        tl,
+        h,
+        l,
+        a,
+        b,
+        c,
+        d;
+
+    Int32 ah0 = hh[0],
+        ah1 = hh[1],
+        ah2 = hh[2],
+        ah3 = hh[3],
+        ah4 = hh[4],
+        ah5 = hh[5],
+        ah6 = hh[6],
+        ah7 = hh[7],
+        al0 = hl[0],
+        al1 = hl[1],
+        al2 = hl[2],
+        al3 = hl[3],
+        al4 = hl[4],
+        al5 = hl[5],
+        al6 = hl[6],
+        al7 = hl[7];
+
+    int pos = 0;
+    while (n >= 128) {
+      for (i = 0; i < 16; i++) {
+        j = 8 * i + pos;
+        wh[i] = Int32((m[j + 0 + moff] & 0xff) << 24) |
+        ((m[j + 1 + moff] & 0xff) << 16) |
+        ((m[j + 2 + moff] & 0xff) << 8) |
+        ((m[j + 3 + moff] & 0xff) << 0);
+        wl[i] = Int32((m[j + 4 + moff] & 0xff) << 24) |
+        ((m[j + 5 + moff] & 0xff) << 16) |
+        ((m[j + 6 + moff] & 0xff) << 8) |
+        ((m[j + 7 + moff] & 0xff) << 0);
+      }
+      for (i = 0; i < 80; i++) {
+        bh0 = ah0;
+        bh1 = ah1;
+        bh2 = ah2;
+        bh3 = ah3;
+        bh4 = ah4;
+        bh5 = ah5;
+        bh6 = ah6;
+        bh7 = ah7;
+
+        bl0 = al0;
+        bl1 = al1;
+        bl2 = al2;
+        bl3 = al3;
+        bl4 = al4;
+        bl5 = al5;
+        bl6 = al6;
+        bl7 = al7;
+
+        // add
+        h = ah7;
+        l = al7;
+
+        a = l & 0xffff;
+        b = l.shiftRightUnsigned(16);
+        c = h & 0xffff;
+        d = h.shiftRightUnsigned(16);
+
+        // Sigma1
+        h = ((ah4.shiftRightUnsigned(14)) | (al4 << (32 - 14))) ^
+        ((ah4.shiftRightUnsigned(18)) | (al4 << (32 - 18))) ^
+        ((al4.shiftRightUnsigned((41 - 32))) | (ah4 << (32 - (41 - 32))));
+        l = ((al4.shiftRightUnsigned(14)) | (ah4 << (32 - 14))) ^
+        ((al4.shiftRightUnsigned(18)) | (ah4 << (32 - 18))) ^
+        ((ah4.shiftRightUnsigned((41 - 32))) | (al4 << (32 - (41 - 32))));
+
+        a += l & 0xffff;
+        b += l.shiftRightUnsigned(16);
+        c += h & 0xffff;
+        d += h.shiftRightUnsigned(16);
+
+        // Ch
+        h = (ah4 & ah5) ^ (~ah4 & ah6);
+        l = (al4 & al5) ^ (~al4 & al6);
+
+        a += l & 0xffff;
+        b += l.shiftRightUnsigned(16);
+        c += h & 0xffff;
+        d += h.shiftRightUnsigned(16);
+
+        // K
+        ///h = K[i*2];
+        ///l = K[i*2+1];
+        h = Int32(((Int64(K[i]).shiftRightUnsigned(32)) & 0xffffffff).toInt());
+        l = Int32(((Int64(K[i]).shiftRightUnsigned(0)) & 0xffffffff).toInt());
+
+        ///Log.d(TAG, "i"+i + ",h:0x"+Integer.toHexString(h) + ",l:0x"+Integer.toHexString(l));
+
+        a += l & 0xffff;
+        b += l.shiftRightUnsigned(16);
+        c += h & 0xffff;
+        d += h.shiftRightUnsigned(16);
+
+        // w
+        h = wh[i % 16];
+        l = wl[i % 16];
+
+        a += l & 0xffff;
+        b += l.shiftRightUnsigned(16);
+        c += h & 0xffff;
+        d += h.shiftRightUnsigned(16);
+
+        b += a.shiftRightUnsigned(16);
+        c += b.shiftRightUnsigned(16);
+        d += c.shiftRightUnsigned(16);
+
+        th = c & 0xffff | d << 16;
+        tl = a & 0xffff | b << 16;
+
+        // add
+        h = th;
+        l = tl;
+
+        a = l & 0xffff;
+        b = l.shiftRightUnsigned(16);
+        c = h & 0xffff;
+        d = h.shiftRightUnsigned(16);
+
+        // Sigma0
+        h = ((ah0.shiftRightUnsigned(28)) | (al0 << (32 - 28))) ^
+        ((al0.shiftRightUnsigned((34 - 32))) | (ah0 << (32 - (34 - 32)))) ^
+        ((al0.shiftRightUnsigned((39 - 32))) | (ah0 << (32 - (39 - 32))));
+        l = ((al0.shiftRightUnsigned(28)) | (ah0 << (32 - 28))) ^
+        ((ah0.shiftRightUnsigned((34 - 32))) | (al0 << (32 - (34 - 32)))) ^
+        ((ah0.shiftRightUnsigned((39 - 32))) | (al0 << (32 - (39 - 32))));
+
+        a += l & 0xffff;
+        b += l.shiftRightUnsigned(16);
+        c += h & 0xffff;
+        d += h.shiftRightUnsigned(16);
+
+        // Maj
+        h = (ah0 & ah1) ^ (ah0 & ah2) ^ (ah1 & ah2);
+        l = (al0 & al1) ^ (al0 & al2) ^ (al1 & al2);
+
+        a += l & 0xffff;
+        b += l.shiftRightUnsigned(16);
+        c += h & 0xffff;
+        d += h.shiftRightUnsigned(16);
+
+        b += a.shiftRightUnsigned(16);
+        c += b.shiftRightUnsigned(16);
+        d += c.shiftRightUnsigned(16);
+
+        bh7 = (c & 0xffff) | (d << 16);
+        bl7 = (a & 0xffff) | (b << 16);
+
+        // add
+        h = bh3;
+        l = bl3;
+
+        a = l & 0xffff;
+        b = l.shiftRightUnsigned(16);
+        c = h & 0xffff;
+        d = h.shiftRightUnsigned(16);
+
+        h = th;
+        l = tl;
+
+        a += l & 0xffff;
+        b += l.shiftRightUnsigned(16);
+        c += h & 0xffff;
+        d += h.shiftRightUnsigned(16);
+
+        b += a.shiftRightUnsigned(16);
+        c += b.shiftRightUnsigned(16);
+        d += c.shiftRightUnsigned(16);
+
+        bh3 = (c & 0xffff) | (d << 16);
+        bl3 = (a & 0xffff) | (b << 16);
+
+        ah1 = bh0;
+        ah2 = bh1;
+        ah3 = bh2;
+        ah4 = bh3;
+        ah5 = bh4;
+        ah6 = bh5;
+        ah7 = bh6;
+        ah0 = bh7;
+
+        al1 = bl0;
+        al2 = bl1;
+        al3 = bl2;
+        al4 = bl3;
+        al5 = bl4;
+        al6 = bl5;
+        al7 = bl6;
+        al0 = bl7;
+
+        if (i % 16 == 15) {
+          for (j = 0; j < 16; j++) {
+            // add
+            h = wh[j];
+            l = wl[j];
+
+            a = l & 0xffff;
+            b = l.shiftRightUnsigned(16);
+            c = h & 0xffff;
+            d = h.shiftRightUnsigned(16);
+
+            h = wh[(j + 9) % 16];
+            l = wl[(j + 9) % 16];
+
+            a += l & 0xffff;
+            b += l.shiftRightUnsigned(16);
+            c += h & 0xffff;
+            d += h.shiftRightUnsigned(16);
+
+            // sigma0
+            th = wh[(j + 1) % 16];
+            tl = wl[(j + 1) % 16];
+            h = ((th.shiftRightUnsigned(1)) | (tl << (32 - 1))) ^
+            ((th.shiftRightUnsigned(8)) | (tl << (32 - 8))) ^
+            (th.shiftRightUnsigned(7));
+            l = ((tl.shiftRightUnsigned(1)) | (th << (32 - 1))) ^
+            ((tl.shiftRightUnsigned(8)) | (th << (32 - 8))) ^
+            ((tl.shiftRightUnsigned(7)) | (th << (32 - 7)));
+
+            a += l & 0xffff;
+            b += l.shiftRightUnsigned(16);
+            c += h & 0xffff;
+            d += h.shiftRightUnsigned(16);
+
+            // sigma1
+            th = wh[(j + 14) % 16];
+            tl = wl[(j + 14) % 16];
+            h = ((th.shiftRightUnsigned(19)) | (tl << (32 - 19))) ^
+            ((tl.shiftRightUnsigned((61 - 32))) |
+            (th << (32 - (61 - 32)))) ^
+            (th.shiftRightUnsigned(6));
+            l = ((tl.shiftRightUnsigned(19)) | (th << (32 - 19))) ^
+            ((th.shiftRightUnsigned((61 - 32))) |
+            (tl << (32 - (61 - 32)))) ^
+            ((tl.shiftRightUnsigned(6)) | (th << (32 - 6)));
+
+            a += l & 0xffff;
+            b += l.shiftRightUnsigned(16);
+            c += h & 0xffff;
+            d += h.shiftRightUnsigned(16);
+
+            b += a.shiftRightUnsigned(16);
+            c += b.shiftRightUnsigned(16);
+            d += c.shiftRightUnsigned(16);
+
+            wh[j] = ((c & 0xffff) | (d << 16));
+            wl[j] = ((a & 0xffff) | (b << 16));
+          }
+        }
+      }
+
+      // add
+      h = ah0;
+      l = al0;
+
+      a = l & 0xffff;
+      b = l.shiftRightUnsigned(16);
+      c = h & 0xffff;
+      d = h.shiftRightUnsigned(16);
+
+      h = hh[0];
+      l = hl[0];
+
+      a += l & 0xffff;
+      b += l.shiftRightUnsigned(16);
+      c += h & 0xffff;
+      d += h.shiftRightUnsigned(16);
+
+      b += a.shiftRightUnsigned(16);
+      c += b.shiftRightUnsigned(16);
+      d += c.shiftRightUnsigned(16);
+
+      hh[0] = ah0 = (c & 0xffff) | (d << 16);
+      hl[0] = al0 = (a & 0xffff) | (b << 16);
+
+      h = ah1;
+      l = al1;
+
+      a = l & 0xffff;
+      b = l.shiftRightUnsigned(16);
+      c = h & 0xffff;
+      d = h.shiftRightUnsigned(16);
+
+      h = hh[1];
+      l = hl[1];
+
+      a += l & 0xffff;
+      b += l.shiftRightUnsigned(16);
+      c += h & 0xffff;
+      d += h.shiftRightUnsigned(16);
+
+      b += a.shiftRightUnsigned(16);
+      c += b.shiftRightUnsigned(16);
+      d += c.shiftRightUnsigned(16);
+
+      hh[1] = ah1 = (c & 0xffff) | (d << 16);
+      hl[1] = al1 = (a & 0xffff) | (b << 16);
+
+      h = ah2;
+      l = al2;
+
+      a = l & 0xffff;
+      b = l.shiftRightUnsigned(16);
+      c = h & 0xffff;
+      d = h.shiftRightUnsigned(16);
+
+      h = hh[2];
+      l = hl[2];
+
+      a += l & 0xffff;
+      b += l.shiftRightUnsigned(16);
+      c += h & 0xffff;
+      d += h.shiftRightUnsigned(16);
+
+      b += a.shiftRightUnsigned(16);
+      c += b.shiftRightUnsigned(16);
+      d += c.shiftRightUnsigned(16);
+
+      hh[2] = ah2 = (c & 0xffff) | (d << 16);
+      hl[2] = al2 = (a & 0xffff) | (b << 16);
+
+      h = ah3;
+      l = al3;
+
+      a = l & 0xffff;
+      b = l.shiftRightUnsigned(16);
+      c = h & 0xffff;
+      d = h.shiftRightUnsigned(16);
+
+      h = hh[3];
+      l = hl[3];
+
+      a += l & 0xffff;
+      b += l.shiftRightUnsigned(16);
+      c += h & 0xffff;
+      d += h.shiftRightUnsigned(16);
+
+      b += a.shiftRightUnsigned(16);
+      c += b.shiftRightUnsigned(16);
+      d += c.shiftRightUnsigned(16);
+
+      hh[3] = ah3 = (c & 0xffff) | (d << 16);
+      hl[3] = al3 = (a & 0xffff) | (b << 16);
+
+      h = ah4;
+      l = al4;
+
+      a = l & 0xffff;
+      b = l.shiftRightUnsigned(16);
+      c = h & 0xffff;
+      d = h.shiftRightUnsigned(16);
+
+      h = hh[4];
+      l = hl[4];
+
+      a += l & 0xffff;
+      b += l.shiftRightUnsigned(16);
+      c += h & 0xffff;
+      d += h.shiftRightUnsigned(16);
+
+      b += a.shiftRightUnsigned(16);
+      c += b.shiftRightUnsigned(16);
+      d += c.shiftRightUnsigned(16);
+
+      hh[4] = ah4 = (c & 0xffff) | (d << 16);
+      hl[4] = al4 = (a & 0xffff) | (b << 16);
+
+      h = ah5;
+      l = al5;
+
+      a = l & 0xffff;
+      b = l.shiftRightUnsigned(16);
+      c = h & 0xffff;
+      d = h.shiftRightUnsigned(16);
+
+      h = hh[5];
+      l = hl[5];
+
+      a += l & 0xffff;
+      b += l.shiftRightUnsigned(16);
+      c += h & 0xffff;
+      d += h.shiftRightUnsigned(16);
+
+      b += a.shiftRightUnsigned(16);
+      c += b.shiftRightUnsigned(16);
+      d += c.shiftRightUnsigned(16);
+
+      hh[5] = ah5 = (c & 0xffff) | (d << 16);
+      hl[5] = al5 = (a & 0xffff) | (b << 16);
+
+      h = ah6;
+      l = al6;
+
+      a = l & 0xffff;
+      b = l.shiftRightUnsigned(16);
+      c = h & 0xffff;
+      d = h.shiftRightUnsigned(16);
+
+      h = hh[6];
+      l = hl[6];
+
+      a += l & 0xffff;
+      b += l.shiftRightUnsigned(16);
+      c += h & 0xffff;
+      d += h.shiftRightUnsigned(16);
+
+      b += a.shiftRightUnsigned(16);
+      c += b.shiftRightUnsigned(16);
+      d += c.shiftRightUnsigned(16);
+
+      hh[6] = ah6 = (c & 0xffff) | (d << 16);
+      hl[6] = al6 = (a & 0xffff) | (b << 16);
+
+      h = ah7;
+      l = al7;
+
+      a = l & 0xffff;
+      b = l.shiftRightUnsigned(16);
+      c = h & 0xffff;
+      d = h.shiftRightUnsigned(16);
+
+      h = hh[7];
+      l = hl[7];
+
+      a += l & 0xffff;
+      b += l.shiftRightUnsigned(16);
+      c += h & 0xffff;
+      d += h.shiftRightUnsigned(16);
+
+      b += a.shiftRightUnsigned(16);
+      c += b.shiftRightUnsigned(16);
+      d += c.shiftRightUnsigned(16);
+
+      hh[7] = ah7 = (c & 0xffff) | (d << 16);
+      hl[7] = al7 = (a & 0xffff) | (b << 16);
+
+      pos += 128;
+      n -= 128;
+    }
+
+    return n;
+  }
+
+// TBD 64bits of n
+  static int crypto_hash_off(
+      Uint8List out, Uint8List m, final int moff, int n) {
+    List<Int32> hh = List<Int32>(8), hl = List<Int32>(8);
+    Uint8List x = Uint8List(256);
+    int i, b = n;
+    Int64 u;
+
+    hh[0] = Int32(0x6a09e667);
+    hh[1] = Int32(0xbb67ae85);
+    hh[2] = Int32(0x3c6ef372);
+    hh[3] = Int32(0xa54ff53a);
+    hh[4] = Int32(0x510e527f);
+    hh[5] = Int32(0x9b05688c);
+    hh[6] = Int32(0x1f83d9ab);
+    hh[7] = Int32(0x5be0cd19);
+
+    hl[0] = Int32(0xf3bcc908);
+    hl[1] = Int32(0x84caa73b);
+    hl[2] = Int32(0xfe94f82b);
+    hl[3] = Int32(0x5f1d36f1);
+    hl[4] = Int32(0xade682d1);
+    hl[5] = Int32(0x2b3e6c1f);
+    hl[6] = Int32(0xfb41bd6b);
+    hl[7] = Int32(0x137e2179);
+
+    if (n >= 128) {
+      crypto_hashblocks_hl(hh, hl, m, moff, n);
+      n %= 128;
+    }
+
+    for (i = 0; i < n; i++) x[i] = m[b - n + i + moff];
+    x[n] = 128;
+
+    n = 256 - 128 * (n < 112 ? 1 : 0);
+    x[n - 9] = 0;
+
+    _ts64(x, n - 8, Int64(b << 3) /*(b / 0x20000000) | 0, b << 3*/);
+
+    crypto_hashblocks_hl(hh, hl, x, 0, n);
+
+    for (i = 0; i < 8; i++) {
+      u = Int64(hh[i].toInt());
+      u <<= 32;
+      u |= Int64(hl[i].toInt()) & 0xffffffff;
+      _ts64(out, 8 * i, u);
+    }
+
+    return 0;
+  }
+
+  static int crypto_hash(Uint8List out, Uint8List m) {
+    return crypto_hash_off(out, m, 0, m != null ? m.length : 0);
+  }
+
+// gf: long[16]
   static void _add(List<Int64List> p, List<Int64List> q) {
     Int64List a = Int64List(16);
     Int64List b = Int64List(16);
@@ -787,8 +2130,8 @@ class CatapultNacl {
 
     for (i = 255; i >= 0; --i) {
       int b = ((Int32(s[(i / 8 + soff).toInt()]).shiftRightUnsigned(i & 7))
-              .toInt() &
-          1);
+          .toInt() &
+      1);
 
       _cswap(p, q, b);
       _add(q, p);
@@ -829,7 +2172,6 @@ class CatapultNacl {
     Uint8List raw = Uint8List(32);
     for (int i = 0; i < 32; i++) raw[i] = sk[i];
     var d = HashesSha3_512(raw);
-
     d[0] &= 248;
     d[31] &= 127;
     d[31] |= 64;
@@ -839,13 +2181,6 @@ class CatapultNacl {
 
     for (i = 0; i < 32; i++) sk[i + 32] = pk[i];
     return 0;
-  }
-
-// HashesSha3_512 return sha3 512 hash of byte
-  static void hashesSha3(Uint8List out, sk){
-    var hash = sha3.New512();
-    var p = hash.process(sk);
-    out = p;
   }
 
   static final Int64List _L = Int64List.fromList([
@@ -924,10 +2259,11 @@ class CatapultNacl {
     _modL(r, 0, x);
   }
 
-  ///int crypto_sign(Uint8List sm, long * smlen, Uint8List m, long n, Uint8List sk)
+// TBD... 64bits of n
   static int crypto_sign(Uint8List sm, int dummy /* *smlen not used*/,
       Uint8List m, final int moff, int /*long*/ n, Uint8List sk) {
-    Uint8List d = Uint8List(64), h = Uint8List(64), r = Uint8List(64);
+    Uint8List h = Uint8List(64), r = Uint8List(64);
+
     int i, j;
 
     Int64List x = Int64List(64);
@@ -940,22 +2276,23 @@ class CatapultNacl {
 
     Uint8List raw = Uint8List(32);
     for (int i = 0; i < 32; i++) raw[i] = sk[i];
-    d = HashesSha3_512(raw);
+    var d = HashesSha3_512(raw);
+
     d[0] &= 248;
     d[31] &= 127;
     d[31] |= 64;
-
-    ///*smlen = n+64;
 
     for (i = 0; i < n; i++) sm[64 + i] = m[i + moff];
 
     for (i = 0; i < 32; i++) sm[32 + i] = d[32 + i];
 
+    crypto_hash_off(r, sm, 32, n + 32);
     _reduce(r);
     _scalarbase(p, r, 0);
     _pack(sm, p);
 
     for (i = 0; i < 32; i++) sm[i + 32] = sk[i + 32];
+    crypto_hash_off(h, sm, 0, n + 64);
     _reduce(h);
 
     for (i = 0; i < 64; i++) x[i] = 0;
@@ -1016,10 +2353,10 @@ class CatapultNacl {
   }
 
   /// TBD 64bits of mlen
-  ///int crypto_sign_open(Uint8Listm,long *mlen,Uint8Listsm,long n,Uint8Listpk)
   static int crypto_sign_open(Uint8List m, int dummy /* *mlen not used*/,
       Uint8List sm, final int smoff, int /*long*/ n, Uint8List pk) {
     int i;
+
     Uint8List t = Uint8List(32), h = Uint8List(64);
     List<Int64List> p = List<Int64List>(4);
 
@@ -1042,6 +2379,8 @@ class CatapultNacl {
 
     for (i = 0; i < 32; i++) m[i + 32] = pk[i];
 
+    crypto_hash_off(h, m, 0, n);
+
     _reduce(h);
     _scalarmult(p, q, h, 0);
 
@@ -1053,10 +2392,19 @@ class CatapultNacl {
     if (_crypto_verify_32(sm, smoff, t, 0) != 0) {
       return -1;
     }
+
     return 0;
   }
 
   static var jrandom = Random.secure();
+
+  static Uint8List randombytes_array(Uint8List x) {
+    return randombytes_array_len(x, x.length);
+  }
+
+  static Uint8List randombytes(int len) {
+    return randombytes_array(Uint8List(len));
+  }
 
   static Uint8List randombytes_array_len(Uint8List x, int len) {
     int ret = len % 4;
@@ -1075,4 +2423,15 @@ class CatapultNacl {
     }
     return x;
   }
+
+  static final int nonceLength = 24;
+
+  static Uint8List makeBoxNonce() {
+    return randombytes(nonceLength);
+  }
+
+  static Uint8List makeSecretBoxNonce() {
+    return randombytes(nonceLength);
+  }
+
 }

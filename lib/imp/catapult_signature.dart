@@ -1,13 +1,11 @@
 part of nem2_crypto.ed25519;
 
-/*
- *   Signature algorithm, Implements ed25519.
- * */
 class Signature {
-  Uint8List _theirPublicKey;
-  Uint8List _mySecretKey;
 
-  Signature(this._theirPublicKey, this._mySecretKey);
+  Uint8List _theirPublicKey;
+  Uint8List _myprivateKey;
+
+  Signature(this._theirPublicKey, this._myprivateKey);
 
   /*
    *   Signs the message using the secret key and returns a signed message.
@@ -31,7 +29,7 @@ class Signature {
     // signed message
     Uint8List sm = Uint8List(mlen + nem2Const.signatureLength);
 
-    CatapultNacl.crypto_sign(sm, -1, message, moff, mlen, _mySecretKey);
+    CatapultNacl.crypto_sign(sm, -1, message, moff, mlen, _myprivateKey);
 
     return sm;
   }
@@ -111,27 +109,27 @@ class Signature {
     return kp;
   }
 
-  static KeyPair keyPair_fromSecretKey(Uint8List secretKey) {
+  static KeyPair keyPair_fromprivateKey(Uint8List privateKey) {
     KeyPair kp = new KeyPair();
     Uint8List pk = kp.publicKey.Raw;
     Uint8List sk = kp.privateKey.Raw;
 
     // copy sk
-    for (int i = 0; i < kp.privateKey.Raw.length; i++) sk[i] = secretKey[i];
+    for (int i = 0; i < kp.privateKey.Raw.length; i++) sk[i] = privateKey[i];
 
     // copy pk from sk
     for (int i = 0; i < kp.publicKey.Raw.length; i++)
-      pk[i] = secretKey[32 + i]; // hard-copy
+      pk[i] = privateKey[32 + i]; // hard-copy
 
     return kp;
   }
 
   static KeyPair keyPair_fromSeed(Uint8List seed) {
     KeyPair kp = new KeyPair();
+    Uint8List sk = kp.privateKey.Raw;
 
     // copy sk
-    for (int i = 0; i < nem2Const.seedLength; i++)
-      kp.privateKey.Raw[i] = seed[i];
+    for (int i = 0; i < nem2Const.seedLength; i++) sk[i] = seed[i];
 
     // generate pk from sk
     CatapultNacl.crypto_sign_keypair(kp, true);
