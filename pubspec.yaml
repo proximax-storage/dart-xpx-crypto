@@ -1,6 +1,6 @@
 name: nem2_crypto
 description: Pure Dart crypto for ProximaX/NEM Catapult.
-version: 1.0.0
+version: 1.0.2
 homepage: https://github.com/proximax-storage/nem2-crypto-dart
 author: Eleazar Garrido <eleazar.garrido@proximax.io>
 
@@ -8,7 +8,7 @@ environment:
   sdk: '>=2.0.0 <3.0.0'
 
 dependencies:
-  tweetnacl: ^0.3.1
+  fixnum: ^0.10.9
   pointycastle: ^1.0.1
   hex: ^0.1.2
 
