@@ -2,7 +2,7 @@ part of nem2_crypto.ed25519;
 
 class CatapultNacl {
   static final Uint8List _0 =
-  Uint8List.fromList([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]); //16
+      Uint8List.fromList([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]); //16
   static final Uint8List _9 = Uint8List.fromList([
     9,
     0,
@@ -39,9 +39,9 @@ class CatapultNacl {
   ]); //32
 
   static final Int64List _gf0 =
-  Int64List.fromList([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]); //16
+      Int64List.fromList([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]); //16
   static final Int64List _gf1 =
-  Int64List.fromList([1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]); //16
+      Int64List.fromList([1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]); //16
   static final Int64List _121665 = Int64List.fromList(
       [0xDB41, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]); //16
 
@@ -186,69 +186,69 @@ class CatapultNacl {
   static void _core_salsa20(
       Uint8List o, Uint8List p, Uint8List k, Uint8List c) {
     int j0 = c[0] & 0xff |
-    (c[1] & 0xff) << 8 |
-    (c[2] & 0xff) << 16 |
-    (c[3] & 0xff) << 24,
+            (c[1] & 0xff) << 8 |
+            (c[2] & 0xff) << 16 |
+            (c[3] & 0xff) << 24,
         j1 = k[0] & 0xff |
-        (k[1] & 0xff) << 8 |
-        (k[2] & 0xff) << 16 |
-        (k[3] & 0xff) << 24,
+            (k[1] & 0xff) << 8 |
+            (k[2] & 0xff) << 16 |
+            (k[3] & 0xff) << 24,
         j2 = k[4] & 0xff |
-        (k[5] & 0xff) << 8 |
-        (k[6] & 0xff) << 16 |
-        (k[7] & 0xff) << 24,
+            (k[5] & 0xff) << 8 |
+            (k[6] & 0xff) << 16 |
+            (k[7] & 0xff) << 24,
         j3 = k[8] & 0xff |
-        (k[9] & 0xff) << 8 |
-        (k[10] & 0xff) << 16 |
-        (k[11] & 0xff) << 24,
+            (k[9] & 0xff) << 8 |
+            (k[10] & 0xff) << 16 |
+            (k[11] & 0xff) << 24,
         j4 = k[12] & 0xff |
-        (k[13] & 0xff) << 8 |
-        (k[14] & 0xff) << 16 |
-        (k[15] & 0xff) << 24,
+            (k[13] & 0xff) << 8 |
+            (k[14] & 0xff) << 16 |
+            (k[15] & 0xff) << 24,
         j5 = c[4] & 0xff |
-        (c[5] & 0xff) << 8 |
-        (c[6] & 0xff) << 16 |
-        (c[7] & 0xff) << 24,
+            (c[5] & 0xff) << 8 |
+            (c[6] & 0xff) << 16 |
+            (c[7] & 0xff) << 24,
         j6 = p[0] & 0xff |
-        (p[1] & 0xff) << 8 |
-        (p[2] & 0xff) << 16 |
-        (p[3] & 0xff) << 24,
+            (p[1] & 0xff) << 8 |
+            (p[2] & 0xff) << 16 |
+            (p[3] & 0xff) << 24,
         j7 = p[4] & 0xff |
-        (p[5] & 0xff) << 8 |
-        (p[6] & 0xff) << 16 |
-        (p[7] & 0xff) << 24,
+            (p[5] & 0xff) << 8 |
+            (p[6] & 0xff) << 16 |
+            (p[7] & 0xff) << 24,
         j8 = p[8] & 0xff |
-        (p[9] & 0xff) << 8 |
-        (p[10] & 0xff) << 16 |
-        (p[11] & 0xff) << 24,
+            (p[9] & 0xff) << 8 |
+            (p[10] & 0xff) << 16 |
+            (p[11] & 0xff) << 24,
         j9 = p[12] & 0xff |
-        (p[13] & 0xff) << 8 |
-        (p[14] & 0xff) << 16 |
-        (p[15] & 0xff) << 24,
+            (p[13] & 0xff) << 8 |
+            (p[14] & 0xff) << 16 |
+            (p[15] & 0xff) << 24,
         j10 = c[8] & 0xff |
-        (c[9] & 0xff) << 8 |
-        (c[10] & 0xff) << 16 |
-        (c[11] & 0xff) << 24,
+            (c[9] & 0xff) << 8 |
+            (c[10] & 0xff) << 16 |
+            (c[11] & 0xff) << 24,
         j11 = k[16] & 0xff |
-        (k[17] & 0xff) << 8 |
-        (k[18] & 0xff) << 16 |
-        (k[19] & 0xff) << 24,
+            (k[17] & 0xff) << 8 |
+            (k[18] & 0xff) << 16 |
+            (k[19] & 0xff) << 24,
         j12 = k[20] & 0xff |
-        (k[21] & 0xff) << 8 |
-        (k[22] & 0xff) << 16 |
-        (k[23] & 0xff) << 24,
+            (k[21] & 0xff) << 8 |
+            (k[22] & 0xff) << 16 |
+            (k[23] & 0xff) << 24,
         j13 = k[24] & 0xff |
-        (k[25] & 0xff) << 8 |
-        (k[26] & 0xff) << 16 |
-        (k[27] & 0xff) << 24,
+            (k[25] & 0xff) << 8 |
+            (k[26] & 0xff) << 16 |
+            (k[27] & 0xff) << 24,
         j14 = k[28] & 0xff |
-        (k[29] & 0xff) << 8 |
-        (k[30] & 0xff) << 16 |
-        (k[31] & 0xff) << 24,
+            (k[29] & 0xff) << 8 |
+            (k[30] & 0xff) << 16 |
+            (k[31] & 0xff) << 24,
         j15 = c[12] & 0xff |
-        (c[13] & 0xff) << 8 |
-        (c[14] & 0xff) << 16 |
-        (c[15] & 0xff) << 24;
+            (c[13] & 0xff) << 8 |
+            (c[14] & 0xff) << 16 |
+            (c[15] & 0xff) << 24;
 
     Int32 x0 = Int32(j0),
         x1 = Int32(j1),
@@ -442,69 +442,69 @@ class CatapultNacl {
   static void _core_hsalsa20(
       Uint8List o, Uint8List p, Uint8List k, Uint8List c) {
     int j0 = c[0] & 0xff |
-    (c[1] & 0xff) << 8 |
-    (c[2] & 0xff) << 16 |
-    (c[3] & 0xff) << 24,
+            (c[1] & 0xff) << 8 |
+            (c[2] & 0xff) << 16 |
+            (c[3] & 0xff) << 24,
         j1 = k[0] & 0xff |
-        (k[1] & 0xff) << 8 |
-        (k[2] & 0xff) << 16 |
-        (k[3] & 0xff) << 24,
+            (k[1] & 0xff) << 8 |
+            (k[2] & 0xff) << 16 |
+            (k[3] & 0xff) << 24,
         j2 = k[4] & 0xff |
-        (k[5] & 0xff) << 8 |
-        (k[6] & 0xff) << 16 |
-        (k[7] & 0xff) << 24,
+            (k[5] & 0xff) << 8 |
+            (k[6] & 0xff) << 16 |
+            (k[7] & 0xff) << 24,
         j3 = k[8] & 0xff |
-        (k[9] & 0xff) << 8 |
-        (k[10] & 0xff) << 16 |
-        (k[11] & 0xff) << 24,
+            (k[9] & 0xff) << 8 |
+            (k[10] & 0xff) << 16 |
+            (k[11] & 0xff) << 24,
         j4 = k[12] & 0xff |
-        (k[13] & 0xff) << 8 |
-        (k[14] & 0xff) << 16 |
-        (k[15] & 0xff) << 24,
+            (k[13] & 0xff) << 8 |
+            (k[14] & 0xff) << 16 |
+            (k[15] & 0xff) << 24,
         j5 = c[4] & 0xff |
-        (c[5] & 0xff) << 8 |
-        (c[6] & 0xff) << 16 |
-        (c[7] & 0xff) << 24,
+            (c[5] & 0xff) << 8 |
+            (c[6] & 0xff) << 16 |
+            (c[7] & 0xff) << 24,
         j6 = p[0] & 0xff |
-        (p[1] & 0xff) << 8 |
-        (p[2] & 0xff) << 16 |
-        (p[3] & 0xff) << 24,
+            (p[1] & 0xff) << 8 |
+            (p[2] & 0xff) << 16 |
+            (p[3] & 0xff) << 24,
         j7 = p[4] & 0xff |
-        (p[5] & 0xff) << 8 |
-        (p[6] & 0xff) << 16 |
-        (p[7] & 0xff) << 24,
+            (p[5] & 0xff) << 8 |
+            (p[6] & 0xff) << 16 |
+            (p[7] & 0xff) << 24,
         j8 = p[8] & 0xff |
-        (p[9] & 0xff) << 8 |
-        (p[10] & 0xff) << 16 |
-        (p[11] & 0xff) << 24,
+            (p[9] & 0xff) << 8 |
+            (p[10] & 0xff) << 16 |
+            (p[11] & 0xff) << 24,
         j9 = p[12] & 0xff |
-        (p[13] & 0xff) << 8 |
-        (p[14] & 0xff) << 16 |
-        (p[15] & 0xff) << 24,
+            (p[13] & 0xff) << 8 |
+            (p[14] & 0xff) << 16 |
+            (p[15] & 0xff) << 24,
         j10 = c[8] & 0xff |
-        (c[9] & 0xff) << 8 |
-        (c[10] & 0xff) << 16 |
-        (c[11] & 0xff) << 24,
+            (c[9] & 0xff) << 8 |
+            (c[10] & 0xff) << 16 |
+            (c[11] & 0xff) << 24,
         j11 = k[16] & 0xff |
-        (k[17] & 0xff) << 8 |
-        (k[18] & 0xff) << 16 |
-        (k[19] & 0xff) << 24,
+            (k[17] & 0xff) << 8 |
+            (k[18] & 0xff) << 16 |
+            (k[19] & 0xff) << 24,
         j12 = k[20] & 0xff |
-        (k[21] & 0xff) << 8 |
-        (k[22] & 0xff) << 16 |
-        (k[23] & 0xff) << 24,
+            (k[21] & 0xff) << 8 |
+            (k[22] & 0xff) << 16 |
+            (k[23] & 0xff) << 24,
         j13 = k[24] & 0xff |
-        (k[25] & 0xff) << 8 |
-        (k[26] & 0xff) << 16 |
-        (k[27] & 0xff) << 24,
+            (k[25] & 0xff) << 8 |
+            (k[26] & 0xff) << 16 |
+            (k[27] & 0xff) << 24,
         j14 = k[28] & 0xff |
-        (k[29] & 0xff) << 8 |
-        (k[30] & 0xff) << 16 |
-        (k[31] & 0xff) << 24,
+            (k[29] & 0xff) << 8 |
+            (k[30] & 0xff) << 16 |
+            (k[31] & 0xff) << 24,
         j15 = c[12] & 0xff |
-        (c[13] & 0xff) << 8 |
-        (c[14] & 0xff) << 16 |
-        (c[15] & 0xff) << 24;
+            (c[13] & 0xff) << 8 |
+            (c[14] & 0xff) << 16 |
+            (c[15] & 0xff) << 24;
 
     Int32 x0 = Int32(j0),
         x1 = Int32(j1),
@@ -1373,9 +1373,9 @@ class CatapultNacl {
     a[0] = d[0] = 1;
     for (i = 254; i >= 0; --i) {
       r = (Int32(z[Int32(i).shiftRightUnsigned(3).toInt()])
-          .shiftRightUnsigned(i & 7))
-          .toInt() &
-      1;
+                  .shiftRightUnsigned(i & 7))
+              .toInt() &
+          1;
       _sel25519(a, b, r);
       _sel25519(c, d, r);
       _A(e, a, c);
@@ -1425,13 +1425,11 @@ class CatapultNacl {
     Uint8List s = Uint8List(32);
     crypto_scalarmult(s, x, y);
 
-
     return crypto_core_hsalsa20(k, _0, s, _sigma);
   }
 
   static int crypto_hashblocks_hl(
       List<Int32> hh, List<Int32> hl, Uint8List m, final int moff, int n) {
-
     int i, j;
 
     List<Int32> wh = List<Int32>(16), wl = List<Int32>(16);
@@ -1482,13 +1480,13 @@ class CatapultNacl {
       for (i = 0; i < 16; i++) {
         j = 8 * i + pos;
         wh[i] = Int32((m[j + 0 + moff] & 0xff) << 24) |
-        ((m[j + 1 + moff] & 0xff) << 16) |
-        ((m[j + 2 + moff] & 0xff) << 8) |
-        ((m[j + 3 + moff] & 0xff) << 0);
+            ((m[j + 1 + moff] & 0xff) << 16) |
+            ((m[j + 2 + moff] & 0xff) << 8) |
+            ((m[j + 3 + moff] & 0xff) << 0);
         wl[i] = Int32((m[j + 4 + moff] & 0xff) << 24) |
-        ((m[j + 5 + moff] & 0xff) << 16) |
-        ((m[j + 6 + moff] & 0xff) << 8) |
-        ((m[j + 7 + moff] & 0xff) << 0);
+            ((m[j + 5 + moff] & 0xff) << 16) |
+            ((m[j + 6 + moff] & 0xff) << 8) |
+            ((m[j + 7 + moff] & 0xff) << 0);
       }
       for (i = 0; i < 80; i++) {
         bh0 = ah0;
@@ -1520,11 +1518,11 @@ class CatapultNacl {
 
         // Sigma1
         h = ((ah4.shiftRightUnsigned(14)) | (al4 << (32 - 14))) ^
-        ((ah4.shiftRightUnsigned(18)) | (al4 << (32 - 18))) ^
-        ((al4.shiftRightUnsigned((41 - 32))) | (ah4 << (32 - (41 - 32))));
+            ((ah4.shiftRightUnsigned(18)) | (al4 << (32 - 18))) ^
+            ((al4.shiftRightUnsigned((41 - 32))) | (ah4 << (32 - (41 - 32))));
         l = ((al4.shiftRightUnsigned(14)) | (ah4 << (32 - 14))) ^
-        ((al4.shiftRightUnsigned(18)) | (ah4 << (32 - 18))) ^
-        ((ah4.shiftRightUnsigned((41 - 32))) | (al4 << (32 - (41 - 32))));
+            ((al4.shiftRightUnsigned(18)) | (ah4 << (32 - 18))) ^
+            ((ah4.shiftRightUnsigned((41 - 32))) | (al4 << (32 - (41 - 32))));
 
         a += l & 0xffff;
         b += l.shiftRightUnsigned(16);
@@ -1572,11 +1570,11 @@ class CatapultNacl {
 
         // Sigma0
         h = ((ah0.shiftRightUnsigned(28)) | (al0 << (32 - 28))) ^
-        ((al0.shiftRightUnsigned((34 - 32))) | (ah0 << (32 - (34 - 32)))) ^
-        ((al0.shiftRightUnsigned((39 - 32))) | (ah0 << (32 - (39 - 32))));
+            ((al0.shiftRightUnsigned((34 - 32))) | (ah0 << (32 - (34 - 32)))) ^
+            ((al0.shiftRightUnsigned((39 - 32))) | (ah0 << (32 - (39 - 32))));
         l = ((al0.shiftRightUnsigned(28)) | (ah0 << (32 - 28))) ^
-        ((ah0.shiftRightUnsigned((34 - 32))) | (al0 << (32 - (34 - 32)))) ^
-        ((ah0.shiftRightUnsigned((39 - 32))) | (al0 << (32 - (39 - 32))));
+            ((ah0.shiftRightUnsigned((34 - 32))) | (al0 << (32 - (34 - 32)))) ^
+            ((ah0.shiftRightUnsigned((39 - 32))) | (al0 << (32 - (39 - 32))));
 
         a += l & 0xffff;
         b += l.shiftRightUnsigned(16);
@@ -1664,11 +1662,11 @@ class CatapultNacl {
             th = wh[(j + 1) % 16];
             tl = wl[(j + 1) % 16];
             h = ((th.shiftRightUnsigned(1)) | (tl << (32 - 1))) ^
-            ((th.shiftRightUnsigned(8)) | (tl << (32 - 8))) ^
-            (th.shiftRightUnsigned(7));
+                ((th.shiftRightUnsigned(8)) | (tl << (32 - 8))) ^
+                (th.shiftRightUnsigned(7));
             l = ((tl.shiftRightUnsigned(1)) | (th << (32 - 1))) ^
-            ((tl.shiftRightUnsigned(8)) | (th << (32 - 8))) ^
-            ((tl.shiftRightUnsigned(7)) | (th << (32 - 7)));
+                ((tl.shiftRightUnsigned(8)) | (th << (32 - 8))) ^
+                ((tl.shiftRightUnsigned(7)) | (th << (32 - 7)));
 
             a += l & 0xffff;
             b += l.shiftRightUnsigned(16);
@@ -1679,13 +1677,13 @@ class CatapultNacl {
             th = wh[(j + 14) % 16];
             tl = wl[(j + 14) % 16];
             h = ((th.shiftRightUnsigned(19)) | (tl << (32 - 19))) ^
-            ((tl.shiftRightUnsigned((61 - 32))) |
-            (th << (32 - (61 - 32)))) ^
-            (th.shiftRightUnsigned(6));
+                ((tl.shiftRightUnsigned((61 - 32))) |
+                    (th << (32 - (61 - 32)))) ^
+                (th.shiftRightUnsigned(6));
             l = ((tl.shiftRightUnsigned(19)) | (th << (32 - 19))) ^
-            ((th.shiftRightUnsigned((61 - 32))) |
-            (tl << (32 - (61 - 32)))) ^
-            ((tl.shiftRightUnsigned(6)) | (th << (32 - 6)));
+                ((th.shiftRightUnsigned((61 - 32))) |
+                    (tl << (32 - (61 - 32)))) ^
+                ((tl.shiftRightUnsigned(6)) | (th << (32 - 6)));
 
             a += l & 0xffff;
             b += l.shiftRightUnsigned(16);
@@ -1970,8 +1968,8 @@ class CatapultNacl {
 
     for (i = 255; i >= 0; --i) {
       int b = ((Int32(s[(i / 8 + soff).toInt()]).shiftRightUnsigned(i & 7))
-          .toInt() &
-      1);
+              .toInt() &
+          1);
 
       _cswap(p, q, b);
       _add(q, p);
@@ -2100,9 +2098,9 @@ class CatapultNacl {
   }
 
 // TBD... 64bits of n
-  static int crypto_sign(Uint8List sm, int dummy, Uint8List message, final int moff, int /*long*/ n, Uint8List sk) {
+  static int crypto_sign(Uint8List sm, int dummy, Uint8List message,
+      final int moff, int /*long*/ n, Uint8List sk) {
     Uint8List r = Uint8List(32), g = Uint8List(32);
-
 
     int i, j;
 
@@ -2221,7 +2219,7 @@ class CatapultNacl {
     for (i = 0; i < 32; i++) m[i + 32] = pk[i];
 
 //    crypto_hash_off(h, m, 0, n);
-     var h = HashesSha3_512(m);
+    var h = HashesSha3_512(m);
 
     _reduce(h);
     _scalarmult(p, q, h, 0);
@@ -2275,5 +2273,4 @@ class CatapultNacl {
   static Uint8List makeSecretBoxNonce() {
     return randombytes(nonceLength);
   }
-
 }

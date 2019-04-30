@@ -1,7 +1,6 @@
 part of nem2_crypto.ed25519;
 
 class Signature {
-
   Uint8List _theirPublicKey;
   Uint8List _myprivateKey;
 

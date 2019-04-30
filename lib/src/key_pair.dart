@@ -2,8 +2,8 @@ part of nem2_crypto;
 
 // KeyPair represent the pair of keys - private & public
 class KeyPair {
-  PrivateKey _privateKey = null;
-  PublicKey _publicKey = null;
+  PrivateKey _privateKey;
+  PublicKey _publicKey;
 
   KeyPair() {
     _privateKey = PrivateKey();
@@ -39,7 +39,7 @@ class KeyPair {
     for (int i = 0; i < message.length; i++)
       sm[i + nem2Const.signatureLength] = message[i];
     return (ed25519.CatapultNacl.crypto_sign_open(
-        m, -1, sm, 0, sm.length, _publicKey.Raw) >=
+            m, -1, sm, 0, sm.length, _publicKey.Raw) >=
         0);
   }
 
@@ -72,7 +72,6 @@ KeyPair NewKeyPair(PrivateKey privateKey, PublicKey publicKey) {
 //NewRandomKeyPair creates a random key pair.
 KeyPair NewRandomKeyPair() {
   var randGen = new Random.secure();
-  var seed = new List<int>.generate(
-      64, (_) => randGen.nextInt(nem2Const.bits));
+  var seed = new List<int>.generate(64, (_) => randGen.nextInt(nem2Const.bits));
   return NewKeyPair(NewPrivateKey(Uint8List.fromList(seed.toList())), null);
 }
