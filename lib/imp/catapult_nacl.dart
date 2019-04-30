@@ -137,26 +137,26 @@ class CatapultNacl {
     0x2b83
   ]);
 
-  static void _ts64(Uint8List x, final int xoff, Int64 u) {
-
-    x[7 + xoff] = (u & 0xff).toInt();
-    u = u.shiftRightUnsigned(8);
-    x[6 + xoff] = (u & 0xff).toInt();
-    u = u.shiftRightUnsigned(8);
-    x[5 + xoff] = (u & 0xff).toInt();
-    u = u.shiftRightUnsigned(8);
-    x[4 + xoff] = (u & 0xff).toInt();
-    u = u.shiftRightUnsigned(8);
-    x[3 + xoff] = (u & 0xff).toInt();
-    u = u.shiftRightUnsigned(8);
-    x[2 + xoff] = (u & 0xff).toInt();
-    u = u.shiftRightUnsigned(8);
-    x[1 + xoff] = (u & 0xff).toInt();
-    u = u.shiftRightUnsigned(8);
-    x[0 + xoff] = (u & 0xff).toInt();
-
-    ///u >>= 8;
-  }
+//  static void _ts64(Uint8List x, final int xoff, Int64 u) {
+//
+//    x[7 + xoff] = (u & 0xff).toInt();
+//    u = u.shiftRightUnsigned(8);
+//    x[6 + xoff] = (u & 0xff).toInt();
+//    u = u.shiftRightUnsigned(8);
+//    x[5 + xoff] = (u & 0xff).toInt();
+//    u = u.shiftRightUnsigned(8);
+//    x[4 + xoff] = (u & 0xff).toInt();
+//    u = u.shiftRightUnsigned(8);
+//    x[3 + xoff] = (u & 0xff).toInt();
+//    u = u.shiftRightUnsigned(8);
+//    x[2 + xoff] = (u & 0xff).toInt();
+//    u = u.shiftRightUnsigned(8);
+//    x[1 + xoff] = (u & 0xff).toInt();
+//    u = u.shiftRightUnsigned(8);
+//    x[0 + xoff] = (u & 0xff).toInt();
+//
+//    ///u >>= 8;
+//  }
 
   static int _vn(
       Uint8List x, final int xoff, Uint8List y, final int yoff, int n) {
@@ -1425,109 +1425,12 @@ class CatapultNacl {
     Uint8List s = Uint8List(32);
     crypto_scalarmult(s, x, y);
 
-/*String dbgt = "";
-		for (int dbg = 0; dbg < s.length; dbg ++) dbgt += " "+s[dbg];
-		Log.d(TAG, "crypto_box_beforenm -> "+dbgt);
-
-	    dbgt = "";
-		for (int dbg = 0; dbg < x.length; dbg ++) dbgt += " "+x[dbg];
-		Log.d(TAG, "crypto_box_beforenm, x -> "+dbgt);
-	    dbgt = "";
-		for (int dbg = 0; dbg < y.length; dbg ++) dbgt += " "+y[dbg];
-		Log.d(TAG, "crypto_box_beforenm, y -> "+dbgt);
-		*/
 
     return crypto_core_hsalsa20(k, _0, s, _sigma);
   }
 
-  static final Int64List K = Int64List.fromList([
-    0x428a2f98d728ae22,
-    0x7137449123ef65cd,
-    0xb5c0fbcfec4d3b2f,
-    0xe9b5dba58189dbbc,
-    0x3956c25bf348b538,
-    0x59f111f1b605d019,
-    0x923f82a4af194f9b,
-    0xab1c5ed5da6d8118,
-    0xd807aa98a3030242,
-    0x12835b0145706fbe,
-    0x243185be4ee4b28c,
-    0x550c7dc3d5ffb4e2,
-    0x72be5d74f27b896f,
-    0x80deb1fe3b1696b1,
-    0x9bdc06a725c71235,
-    0xc19bf174cf692694,
-    0xe49b69c19ef14ad2,
-    0xefbe4786384f25e3,
-    0x0fc19dc68b8cd5b5,
-    0x240ca1cc77ac9c65,
-    0x2de92c6f592b0275,
-    0x4a7484aa6ea6e483,
-    0x5cb0a9dcbd41fbd4,
-    0x76f988da831153b5,
-    0x983e5152ee66dfab,
-    0xa831c66d2db43210,
-    0xb00327c898fb213f,
-    0xbf597fc7beef0ee4,
-    0xc6e00bf33da88fc2,
-    0xd5a79147930aa725,
-    0x06ca6351e003826f,
-    0x142929670a0e6e70,
-    0x27b70a8546d22ffc,
-    0x2e1b21385c26c926,
-    0x4d2c6dfc5ac42aed,
-    0x53380d139d95b3df,
-    0x650a73548baf63de,
-    0x766a0abb3c77b2a8,
-    0x81c2c92e47edaee6,
-    0x92722c851482353b,
-    0xa2bfe8a14cf10364,
-    0xa81a664bbc423001,
-    0xc24b8b70d0f89791,
-    0xc76c51a30654be30,
-    0xd192e819d6ef5218,
-    0xd69906245565a910,
-    0xf40e35855771202a,
-    0x106aa07032bbd1b8,
-    0x19a4c116b8d2d0c8,
-    0x1e376c085141ab53,
-    0x2748774cdf8eeb99,
-    0x34b0bcb5e19b48a8,
-    0x391c0cb3c5c95a63,
-    0x4ed8aa4ae3418acb,
-    0x5b9cca4f7763e373,
-    0x682e6ff3d6b2b8a3,
-    0x748f82ee5defb2fc,
-    0x78a5636f43172f60,
-    0x84c87814a1f0ab72,
-    0x8cc702081a6439ec,
-    0x90befffa23631e28,
-    0xa4506cebde82bde9,
-    0xbef9a3f7b2c67915,
-    0xc67178f2e372532b,
-    0xca273eceea26619c,
-    0xd186b8c721c0c207,
-    0xeada7dd6cde0eb1e,
-    0xf57d4f7fee6ed178,
-    0x06f067aa72176fba,
-    0x0a637dc5a2c898a6,
-    0x113f9804bef90dae,
-    0x1b710b35131c471b,
-    0x28db77f523047d84,
-    0x32caab7b40c72493,
-    0x3c9ebe0a15c9bebc,
-    0x431d67c49c100d4c,
-    0x4cc5d4becb3e42b6,
-    0x597f299cfc657e2a,
-    0x5fcb6fab3ad6faec,
-    0x6c44198c4a475817
-  ]);
-
   static int crypto_hashblocks_hl(
       List<Int32> hh, List<Int32> hl, Uint8List m, final int moff, int n) {
-    ///String dbgt = "";
-    ///for (int dbg = 0; dbg < n; dbg ++) dbgt += " "+m[dbg+moff];
-    ///Log.d(TAG, "crypto_hashblocks_hl m/"+n + "-> "+dbgt);
 
     int i, j;
 
@@ -1636,14 +1539,6 @@ class CatapultNacl {
         b += l.shiftRightUnsigned(16);
         c += h & 0xffff;
         d += h.shiftRightUnsigned(16);
-
-        // K
-        ///h = K[i*2];
-        ///l = K[i*2+1];
-        h = Int32(((Int64(K[i]).shiftRightUnsigned(32)) & 0xffffffff).toInt());
-        l = Int32(((Int64(K[i]).shiftRightUnsigned(0)) & 0xffffffff).toInt());
-
-        ///Log.d(TAG, "i"+i + ",h:0x"+Integer.toHexString(h) + ",l:0x"+Integer.toHexString(l));
 
         a += l & 0xffff;
         b += l.shiftRightUnsigned(16);
@@ -1999,61 +1894,6 @@ class CatapultNacl {
     return n;
   }
 
-// TBD 64bits of n
-  static int crypto_hash_off(
-      Uint8List out, Uint8List m, final int moff, int n) {
-    List<Int32> hh = List<Int32>(8), hl = List<Int32>(8);
-    Uint8List x = Uint8List(256);
-    int i, b = n;
-    Int64 u;
-
-    hh[0] = Int32(0x6a09e667);
-    hh[1] = Int32(0xbb67ae85);
-    hh[2] = Int32(0x3c6ef372);
-    hh[3] = Int32(0xa54ff53a);
-    hh[4] = Int32(0x510e527f);
-    hh[5] = Int32(0x9b05688c);
-    hh[6] = Int32(0x1f83d9ab);
-    hh[7] = Int32(0x5be0cd19);
-
-    hl[0] = Int32(0xf3bcc908);
-    hl[1] = Int32(0x84caa73b);
-    hl[2] = Int32(0xfe94f82b);
-    hl[3] = Int32(0x5f1d36f1);
-    hl[4] = Int32(0xade682d1);
-    hl[5] = Int32(0x2b3e6c1f);
-    hl[6] = Int32(0xfb41bd6b);
-    hl[7] = Int32(0x137e2179);
-
-    if (n >= 128) {
-      crypto_hashblocks_hl(hh, hl, m, moff, n);
-      n %= 128;
-    }
-
-    for (i = 0; i < n; i++) x[i] = m[b - n + i + moff];
-    x[n] = 128;
-
-    n = 256 - 128 * (n < 112 ? 1 : 0);
-    x[n - 9] = 0;
-
-    _ts64(x, n - 8, Int64(b << 3) /*(b / 0x20000000) | 0, b << 3*/);
-
-    crypto_hashblocks_hl(hh, hl, x, 0, n);
-
-    for (i = 0; i < 8; i++) {
-      u = Int64(hh[i].toInt());
-      u <<= 32;
-      u |= Int64(hl[i].toInt()) & 0xffffffff;
-      _ts64(out, 8 * i, u);
-    }
-
-    return 0;
-  }
-
-  static int crypto_hash(Uint8List out, Uint8List m) {
-    return crypto_hash_off(out, m, 0, m != null ? m.length : 0);
-  }
-
 // gf: long[16]
   static void _add(List<Int64List> p, List<Int64List> q) {
     Int64List a = Int64List(16);
@@ -2260,9 +2100,9 @@ class CatapultNacl {
   }
 
 // TBD... 64bits of n
-  static int crypto_sign(Uint8List sm, int dummy /* *smlen not used*/,
-      Uint8List m, final int moff, int /*long*/ n, Uint8List sk) {
-    Uint8List h = Uint8List(64), r = Uint8List(64);
+  static int crypto_sign(Uint8List sm, int dummy, Uint8List message, final int moff, int /*long*/ n, Uint8List sk) {
+    Uint8List r = Uint8List(32), g = Uint8List(32);
+
 
     int i, j;
 
@@ -2274,37 +2114,38 @@ class CatapultNacl {
     p[2] = Int64List(16);
     p[3] = Int64List(16);
 
-    Uint8List raw = Uint8List(32);
-    for (int i = 0; i < 32; i++) raw[i] = sk[i];
-    var d = HashesSha3_512(raw);
+    for (int i = 0; i < 32; i++) r[i] = sk[i];
+    var d = HashesSha3_512(r);
 
     d[0] &= 248;
     d[31] &= 127;
     d[31] |= 64;
 
-    for (i = 0; i < n; i++) sm[64 + i] = m[i + moff];
+    for (i = 0; i < n; i++) sm[64 + i] = message[i + moff];
 
-    for (i = 0; i < 32; i++) sm[32 + i] = d[32 + i];
+    for (i = 0; i < 32; i++) sm[32 + i] = d[i];
 
-    crypto_hash_off(r, sm, 32, n + 32);
-    _reduce(r);
-    _scalarbase(p, r, 0);
+    for (int i = 0; i < 32; i++) g[i] = sm[i];
+
+    var m = HashesSha3_512(g);
+
+    _reduce(m);
+    _scalarbase(p, m, 0);
     _pack(sm, p);
 
     for (i = 0; i < 32; i++) sm[i + 32] = sk[i + 32];
-    crypto_hash_off(h, sm, 0, n + 64);
+    var h = HashesSha3_512(sm);
     _reduce(h);
 
     for (i = 0; i < 64; i++) x[i] = 0;
 
-    for (i = 0; i < 32; i++) x[i] = (r[i] & 0xff).toInt();
+    for (i = 0; i < 32; i++) x[i] = (m[i] & 0xff).toInt();
 
     for (i = 0; i < 32; i++)
       for (j = 0; j < 32; j++)
         x[i + j] += (h[i] & 0xff) * (d[j] & 0xff).toInt();
 
     _modL(sm, 32, x);
-
     return 0;
   }
 
@@ -2357,7 +2198,7 @@ class CatapultNacl {
       Uint8List sm, final int smoff, int /*long*/ n, Uint8List pk) {
     int i;
 
-    Uint8List t = Uint8List(32), h = Uint8List(64);
+    Uint8List t = Uint8List(32);
     List<Int64List> p = List<Int64List>(4);
 
     p[0] = Int64List(16);
@@ -2379,7 +2220,8 @@ class CatapultNacl {
 
     for (i = 0; i < 32; i++) m[i + 32] = pk[i];
 
-    crypto_hash_off(h, m, 0, n);
+//    crypto_hash_off(h, m, 0, n);
+     var h = HashesSha3_512(m);
 
     _reduce(h);
     _scalarmult(p, q, h, 0);
