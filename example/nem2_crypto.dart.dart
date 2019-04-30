@@ -1,8 +1,7 @@
-import "package:nem2_crypto/nem2_crypto.dart";
 import "dart:convert";
 import 'dart:typed_data';
 import 'package:hex/hex.dart';
-
+import "package:nem2_crypto/nem2_crypto.dart";
 
 void main() {
   String sk =
@@ -15,7 +14,6 @@ void main() {
   Uint8List msg = utf8.encode("test string");
 
   var sing = keyPair.sign(msg);
-
   print("Signature: \"${HEX.encode(sing).toUpperCase()}\"\n");
 
   bool result = keyPair.verify(msg,  sing);
