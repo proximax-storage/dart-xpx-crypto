@@ -1,4 +1,4 @@
-part of nem2_crypto.ed25519;
+part of xpx_crypto.ed25519;
 
 class CatapultNacl {
   static final Uint8List _0 =

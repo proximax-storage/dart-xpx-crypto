@@ -1,4 +1,4 @@
-part of nem2_crypto;
+part of xpx_crypto;
 
 // HashesSha3_256 return sha3 256 hash of byte
 Uint8List HashesSha3_256(Uint8List b) {

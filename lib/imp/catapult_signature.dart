@@ -1,4 +1,4 @@
-part of nem2_crypto.ed25519;
+part of xpx_crypto.ed25519;
 
 class Signature {
   Uint8List _theirPublicKey;
@@ -26,7 +26,7 @@ class Signature {
     if (!(message != null && message.length >= (moff + mlen))) return null;
 
     // signed message
-    Uint8List sm = Uint8List(mlen + nem2Const.signatureLength);
+    Uint8List sm = Uint8List(mlen + xpxConst.signatureLength);
 
     CatapultNacl.crypto_sign(sm, -1, message, moff, mlen, _myprivateKey);
 
@@ -54,7 +54,7 @@ class Signature {
     // check sm length
     if (!(signedMessage != null &&
         signedMessage.length >= (smoff + smlen) &&
-        smlen >= nem2Const.signatureLength)) return null;
+        smlen >= xpxConst.signatureLength)) return null;
 
     // temp buffer
     Uint8List tmp = Uint8List(smlen);
@@ -64,9 +64,9 @@ class Signature {
             tmp, -1, signedMessage, smoff, smlen, _theirPublicKey)) return null;
 
     // message
-    Uint8List msg = Uint8List(smlen - nem2Const.signatureLength);
+    Uint8List msg = Uint8List(smlen - xpxConst.signatureLength);
     for (int i = 0; i < msg.length; i++)
-      msg[i] = signedMessage[smoff + i + nem2Const.signatureLength];
+      msg[i] = signedMessage[smoff + i + xpxConst.signatureLength];
 
     return msg;
   }
@@ -76,7 +76,7 @@ class Signature {
    * */
   Uint8List detached(Uint8List message) {
     Uint8List signedMsg = this.sign(message);
-    Uint8List sig = Uint8List(nem2Const.signatureLength);
+    Uint8List sig = Uint8List(xpxConst.signatureLength);
     for (int i = 0; i < sig.length; i++) sig[i] = signedMsg[i];
     return sig;
   }
@@ -86,13 +86,13 @@ class Signature {
    *   returns true if verification succeeded or false if it failed.
    * */
   bool detached_verify(Uint8List message, Uint8List signature) {
-    if (signature.length != nem2Const.signatureLength) return false;
-    if (_theirPublicKey.length != nem2Const.publicKeyLength) return false;
-    Uint8List sm = Uint8List(nem2Const.signatureLength + message.length);
-    Uint8List m = Uint8List(nem2Const.signatureLength + message.length);
-    for (int i = 0; i < nem2Const.signatureLength; i++) sm[i] = signature[i];
+    if (signature.length != xpxConst.signatureLength) return false;
+    if (_theirPublicKey.length != xpxConst.publicKeyLength) return false;
+    Uint8List sm = Uint8List(xpxConst.signatureLength + message.length);
+    Uint8List m = Uint8List(xpxConst.signatureLength + message.length);
+    for (int i = 0; i < xpxConst.signatureLength; i++) sm[i] = signature[i];
     for (int i = 0; i < message.length; i++)
-      sm[i + nem2Const.signatureLength] = message[i];
+      sm[i + xpxConst.signatureLength] = message[i];
     return (CatapultNacl.crypto_sign_open(
             m, -1, sm, 0, sm.length, _theirPublicKey) >=
         0);
@@ -128,7 +128,7 @@ class Signature {
     Uint8List sk = kp.privateKey.Raw;
 
     // copy sk
-    for (int i = 0; i < nem2Const.seedLength; i++) sk[i] = seed[i];
+    for (int i = 0; i < xpxConst.seedLength; i++) sk[i] = seed[i];
 
     // generate pk from sk
     CatapultNacl.crypto_sign_keypair(kp, true);

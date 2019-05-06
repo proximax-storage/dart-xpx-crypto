@@ -1,7 +1,7 @@
-part of nem2_crypto;
+part of xpx_crypto;
 
 /// Package wide constants
-class nem2Const {
+class xpxConst {
   /// Result key
   static const String nem2ResultKey = 'result';
 

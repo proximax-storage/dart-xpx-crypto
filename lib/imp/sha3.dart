@@ -1,4 +1,4 @@
-library nem2_crypto.digest.sha3;
+library xpx_crypto.digest.sha3;
 
 import "dart:typed_data";
 

@@ -11,7 +11,7 @@ Add this to your package's pubspec.yaml file:
 
 ```dart
 dependencies:
-  nem2-crypto-dart: ^0.0.1
+  xpx_crypto-dart: ^0.0.1
 ```
 
 **2. Install it**
@@ -37,14 +37,14 @@ Alternatively, your editor might support pub get or flutter packages get. Check 
 Now in your Dart code, you can use:
 
 ```dart
-import 'package:nem2_crypto/nem2_crypto.dart';
+import 'package:xpx_crypto/xpx_crypto.dart';
 ```
 
 ## Wiki and Examples ##
 
-Examples are in the [examples](https://github.com/proximax-storage/nem2-crypto-dart/tree/master/examples) folder
+Examples are in the [examples](https://github.com/proximax-storage/xpx_crypto-dart/tree/master/examples) folder
 
-For more examples, go to our [wiki](https://github.com/proximax-storage/nem2-crypto-dart/wiki)
+For more examples, go to our [wiki](https://github.com/proximax-storage/xpx_crypto-dart/wiki)
 
 ## Contribution ##
 We'd love to get more people involved in the project. Please feel free to raise any issues or PR and we'll review your contribution.

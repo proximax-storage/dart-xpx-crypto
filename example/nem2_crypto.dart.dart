@@ -1,7 +1,7 @@
 import "dart:convert";
 import 'dart:typed_data';
 import 'package:hex/hex.dart';
-import "package:nem2_crypto/nem2_crypto.dart";
+import "package:xpx_crypto/xpx_crypto.dart";
 
 void main() {
   String sk =
@@ -11,7 +11,7 @@ void main() {
 
   print("${keyPair.toString()}\n");
 
-  Uint8List msg = utf8.encode("test string");
+  Uint8List msg = utf8.encode("NEM is awesome !");
 
   var sing = keyPair.sign(msg);
   print("Signature: \"${HEX.encode(sing).toUpperCase()}\"\n");

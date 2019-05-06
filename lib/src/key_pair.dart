@@ -1,4 +1,4 @@
-part of nem2_crypto;
+part of xpx_crypto;
 
 // KeyPair represent the pair of keys - private & public
 class KeyPair {
@@ -21,7 +21,7 @@ class KeyPair {
     Uint8List to = addUint8List(_privateKey.Raw, _publicKey.Raw);
     var key = ed25519.Signature(null, to);
     Uint8List signedMsg = key.sign(message);
-    Uint8List sig = Uint8List(nem2Const.signatureLength);
+    Uint8List sig = Uint8List(xpxConst.signatureLength);
     for (int i = 0; i < sig.length; i++) sig[i] = signedMsg[i];
     return sig;
   }
@@ -31,13 +31,13 @@ class KeyPair {
    *   returns true if verification succeeded or false if it failed.
    * */
   bool verify(Uint8List message, Uint8List signature) {
-    if (signature.length != nem2Const.signatureLength) return false;
-    if (_publicKey.Raw.length != nem2Const.publicKeyLength) return false;
-    Uint8List sm = Uint8List(nem2Const.signatureLength + message.length);
-    Uint8List m = Uint8List(nem2Const.signatureLength + message.length);
-    for (int i = 0; i < nem2Const.signatureLength; i++) sm[i] = signature[i];
+    if (signature.length != xpxConst.signatureLength) return false;
+    if (_publicKey.Raw.length != xpxConst.publicKeyLength) return false;
+    Uint8List sm = Uint8List(xpxConst.signatureLength + message.length);
+    Uint8List m = Uint8List(xpxConst.signatureLength + message.length);
+    for (int i = 0; i < xpxConst.signatureLength; i++) sm[i] = signature[i];
     for (int i = 0; i < message.length; i++)
-      sm[i + nem2Const.signatureLength] = message[i];
+      sm[i + xpxConst.signatureLength] = message[i];
     return (ed25519.CatapultNacl.crypto_sign_open(
             m, -1, sm, 0, sm.length, _publicKey.Raw) >=
         0);
@@ -59,7 +59,7 @@ KeyPair NewKeyPair(PrivateKey privateKey, PublicKey publicKey) {
   if (publicKey == null) {
     kp = ed25519.Signature.keyPair_fromSeed(privateKey.Raw);
 
-    Uint8List sk = Uint8List(nem2Const.privateKeyLen);
+    Uint8List sk = Uint8List(xpxConst.privateKeyLen);
     for (int i = 0; i < sk.length; i++) sk[i] = kp.privateKey.Raw[i];
     kp.privateKey.Raw = sk;
   } else {
@@ -72,6 +72,6 @@ KeyPair NewKeyPair(PrivateKey privateKey, PublicKey publicKey) {
 //NewRandomKeyPair creates a random key pair.
 KeyPair NewRandomKeyPair() {
   var randGen = new Random.secure();
-  var seed = new List<int>.generate(64, (_) => randGen.nextInt(nem2Const.bits));
+  var seed = new List<int>.generate(64, (_) => randGen.nextInt(xpxConst.bits));
   return NewKeyPair(NewPrivateKey(Uint8List.fromList(seed.toList())), null);
 }

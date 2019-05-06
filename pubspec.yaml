@@ -1,7 +1,7 @@
-name: nem2_crypto
-description: Pure Dart crypto for ProximaX/NEM Catapult.
-version: 1.0.3
-homepage: https://github.com/proximax-storage/nem2-crypto-dart
+name: xpx_crypto
+description: Official ProximaX Sirius Blockchain Catapult implementation ed26619 encryption modules for Dart.
+version: 0.0.1
+homepage: https://github.com/proximax-storage/xpx_crypto-dart
 author: Eleazar Garrido <eleazar.garrido@proximax.io>
 
 environment:

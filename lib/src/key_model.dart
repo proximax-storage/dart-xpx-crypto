@@ -1,4 +1,4 @@
-part of nem2_crypto;
+part of xpx_crypto;
 
 class PrivateKey {
 // I have kept this field for compatibility

@@ -1,4 +1,4 @@
-part of nem2_crypto;
+part of xpx_crypto;
 
 Uint8List bytesFromList(List<int> lst) => new Uint8List.fromList(lst);
 
