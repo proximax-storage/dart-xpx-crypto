@@ -137,27 +137,6 @@ class CatapultNacl {
     0x2b83
   ]);
 
-//  static void _ts64(Uint8List x, final int xoff, Int64 u) {
-//
-//    x[7 + xoff] = (u & 0xff).toInt();
-//    u = u.shiftRightUnsigned(8);
-//    x[6 + xoff] = (u & 0xff).toInt();
-//    u = u.shiftRightUnsigned(8);
-//    x[5 + xoff] = (u & 0xff).toInt();
-//    u = u.shiftRightUnsigned(8);
-//    x[4 + xoff] = (u & 0xff).toInt();
-//    u = u.shiftRightUnsigned(8);
-//    x[3 + xoff] = (u & 0xff).toInt();
-//    u = u.shiftRightUnsigned(8);
-//    x[2 + xoff] = (u & 0xff).toInt();
-//    u = u.shiftRightUnsigned(8);
-//    x[1 + xoff] = (u & 0xff).toInt();
-//    u = u.shiftRightUnsigned(8);
-//    x[0 + xoff] = (u & 0xff).toInt();
-//
-//    ///u >>= 8;
-//  }
-
   static int _vn(
       Uint8List x, final int xoff, Uint8List y, final int yoff, int n) {
     int i, d = 0;
@@ -651,7 +630,6 @@ class CatapultNacl {
     return 0;
   }
 
-// "expand 32-byte k"
   static final Uint8List _sigma = Uint8List.fromList([
     101,
     120,

@@ -2,9 +2,9 @@ part of xpx_crypto.ed25519;
 
 class Signature {
   Uint8List _theirPublicKey;
-  Uint8List _myprivateKey;
+  Uint8List _privateKey;
 
-  Signature(this._theirPublicKey, this._myprivateKey);
+  Signature(this._theirPublicKey, this._privateKey);
 
   /*
    *   Signs the message using the secret key and returns a signed message.
@@ -28,7 +28,7 @@ class Signature {
     // signed message
     Uint8List sm = Uint8List(mlen + xpxConst.signatureLength);
 
-    CatapultNacl.crypto_sign(sm, -1, message, moff, mlen, _myprivateKey);
+    CatapultNacl.crypto_sign(sm, -1, message, moff, mlen, _privateKey);
 
     return sm;
   }
