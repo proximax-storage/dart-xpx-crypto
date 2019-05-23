@@ -42,9 +42,9 @@ import 'package:xpx_crypto/xpx_crypto.dart';
 
 ## Wiki and Examples ##
 
-Examples are in the [examples](https://github.com/proximax-storage/xpx_crypto-dart/tree/master/examples) folder
+Examples are in the [examples](https://github.com/proximax-storage/xpx-crypto-dart/tree/master/example) folder
 
-For more examples, go to our [wiki](https://github.com/proximax-storage/xpx_crypto-dart/wiki)
+For more examples, go to our [wiki](https://github.com/proximax-storage/xpx-crypto-dart/wiki)
 
 ## Contribution ##
 We'd love to get more people involved in the project. Please feel free to raise any issues or PR and we'll review your contribution.
