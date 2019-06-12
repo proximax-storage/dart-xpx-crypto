@@ -14,6 +14,32 @@ class KeyPair {
 
   PrivateKey get privateKey => _privateKey;
 
+  /// NewKeyPair The public key is calculated from the private key.
+  KeyPair.fromPrivateKey(PrivateKey privateKey) {
+    final pk = ed25519.Signature.keyPair_fromSeed(privateKey.Raw);
+    final sk = new PrivateKey(Uint8List.fromList(pk._privateKey.Raw.getRange(0, 32).toList()));
+    _privateKey = sk;
+    _publicKey = pk._publicKey;
+  }
+
+  KeyPair.fromHexString(String sHex) {
+    var raw = HexDecodeStringOdd(sHex);
+    final sHexRaw = Uint8List.fromList(raw.toList());
+    final pk = ed25519.Signature.keyPair_fromSeed(sHexRaw);
+    final sk = new PrivateKey(Uint8List.fromList(pk._privateKey.Raw.getRange(0, 32).toList()));
+    _privateKey = sk;
+    _publicKey = pk._publicKey;
+  }
+  /// NewRandomKeyPair creates a random key pair.
+  KeyPair.fromRandomKeyPair() {
+    var randGen = new Random.secure();
+    var seed =
+        new List<int>.generate(64, (_) => randGen.nextInt(xpxConst.bits));
+    final kp = KeyPair.fromPrivateKey(new PrivateKey(Uint8List.fromList(seed.toList())));
+    _privateKey = kp._privateKey;
+    _publicKey = kp._publicKey;
+  }
+
   /*
    *   Signs the message using the secret key and returns a signature.
    * */
@@ -45,33 +71,12 @@ class KeyPair {
 
   @override
   String toString() =>
-      'KeyPair[PrivateKey=$_privateKey, PublicKey=$_publicKey]';
+      '{\n'
+          '\tprivateKey: $_privateKey,\n'
+          '\tpublicKey: $_publicKey\n'
+          '}\n';
 
   Map<String, dynamic> toJson() {
     return {'privateKey': _privateKey, 'publicKey': _publicKey};
   }
-}
-
-//NewKeyPair The public key is calculated from the private key.
-KeyPair NewKeyPair(PrivateKey privateKey, PublicKey publicKey) {
-  KeyPair kp = new KeyPair();
-
-  if (publicKey == null) {
-    kp = ed25519.Signature.keyPair_fromSeed(privateKey.Raw);
-
-    Uint8List sk = Uint8List(xpxConst.privateKeyLen);
-    for (int i = 0; i < sk.length; i++) sk[i] = kp.privateKey.Raw[i];
-    kp.privateKey.Raw = sk;
-  } else {
-    kp.publicKey.Raw = publicKey.Raw;
-    kp.privateKey.Raw = privateKey.Raw;
-  }
-  return kp;
-}
-
-//NewRandomKeyPair creates a random key pair.
-KeyPair NewRandomKeyPair() {
-  var randGen = new Random.secure();
-  var seed = new List<int>.generate(64, (_) => randGen.nextInt(xpxConst.bits));
-  return NewKeyPair(NewPrivateKey(Uint8List.fromList(seed.toList())), null);
 }

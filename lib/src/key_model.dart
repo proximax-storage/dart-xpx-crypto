@@ -4,30 +4,24 @@ class PrivateKey {
 // I have kept this field for compatibility
   Uint8List Raw = Uint8List(64);
 
-  PrivateKey();
+  // NewPrivateKey creates a new private key from []byte
+  PrivateKey([Uint8List raw]){
+    Raw = raw == null ? Uint8List(64) : Uint8List.fromList(raw.toList());
+  }
+
+  // NewPrivateKeyfromHexString creates a private key from a hex strings.
+  PrivateKey.fromHexString(String sHex) {
+    var raw = HexDecodeStringOdd(sHex);
+    Raw = Uint8List.fromList(raw.toList());
+  }
+
+  // NewPrivateKeyFromBigInt creates a new private key from BigInt
+  PrivateKey.fromBigInt(BigInt val) {
+    Raw = encodeBigInt(val);
+  }
 
   @override
   String toString() => HEX.encode(Raw.toList()).toUpperCase();
-}
-
-// NewPrivateKey creates a new private key from []byte
-PrivateKey NewPrivateKey(Uint8List raw) {
-  var sk = new PrivateKey();
-  sk.Raw = Uint8List.fromList(raw.toList());
-  return sk;
-}
-
-// NewPrivateKeyfromHexString creates a private key from a hex strings.
-PrivateKey NewPrivateKeyFromHexString(String sHex) {
-  var raw = HexDecodeStringOdd(sHex);
-  return NewPrivateKey(raw);
-}
-
-// NewPrivateKeyFromBigInt creates a new private key from BigInt
-PrivateKey NewPrivateKeyFromBigInt(BigInt val) {
-  var sk = new PrivateKey();
-  sk.Raw = encodeBigInt(val);
-  return sk;
 }
 
 class PublicKey {
