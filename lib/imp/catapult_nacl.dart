@@ -2078,7 +2078,7 @@ class CatapultNacl {
 // TBD... 64bits of n
   static int crypto_sign(Uint8List sm, int dummy, Uint8List message,
       final int moff, int /*long*/ n, Uint8List sk) {
-    Uint8List r = Uint8List(32), g = Uint8List(32);
+    Uint8List r = Uint8List(32);
 
     int i, j;
 
@@ -2097,20 +2097,25 @@ class CatapultNacl {
     d[31] &= 127;
     d[31] |= 64;
 
-    for (i = 0; i < n; i++) sm[64 + i] = message[i + moff];
 
-    for (i = 0; i < 32; i++) sm[32 + i] = d[i];
-
-    for (int i = 0; i < 32; i++) g[i] = sm[i];
-
-    var m = HashesSha3_512(g);
+    var g = sha3.New512();
+    final Uint8List m = new Uint8List(64); // seeded hash
+    g.reset();
+    g.update(d.sublist(32), 0, 32);
+    g.update(message, 0, message.length);
+    g.doFinal(m, 0);
 
     _reduce(m);
     _scalarbase(p, m, 0);
     _pack(sm, p);
 
-    for (i = 0; i < 32; i++) sm[i + 32] = sk[i + 32];
-    var h = HashesSha3_512(sm);
+    final Uint8List h = new Uint8List(64); // result
+    g.reset();
+    g.update(sm.sublist(0, 32), 0, 32);
+    g.update(sk.sublist(32), 0, 32);
+    g.update(message, 0, message.length);
+    g.doFinal(h, 0);
+
     _reduce(h);
 
     for (i = 0; i < 64; i++) x[i] = 0;
