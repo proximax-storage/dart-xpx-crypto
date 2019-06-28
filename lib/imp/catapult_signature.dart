@@ -26,7 +26,7 @@ class Signature {
     if (!(message != null && message.length >= (moff + mlen))) return null;
 
     // signed message
-    Uint8List sm = Uint8List(mlen + xpxConst.signatureLength);
+    Uint8List sm = Uint8List(mlen + XpxConst.signatureLength);
 
     CatapultNacl.crypto_sign(sm, -1, message, moff, mlen, _privateKey);
 
@@ -54,7 +54,7 @@ class Signature {
     // check sm length
     if (!(signedMessage != null &&
         signedMessage.length >= (smoff + smlen) &&
-        smlen >= xpxConst.signatureLength)) return null;
+        smlen >= XpxConst.signatureLength)) return null;
 
     // temp buffer
     Uint8List tmp = Uint8List(smlen);
@@ -64,10 +64,10 @@ class Signature {
             tmp, -1, signedMessage, smoff, smlen, _theirPublicKey)) return null;
 
     // message
-    Uint8List msg = Uint8List(smlen - xpxConst.signatureLength);
-    for (int i = 0; i < msg.length; i++)
-      msg[i] = signedMessage[smoff + i + xpxConst.signatureLength];
-
+    Uint8List msg = Uint8List(smlen - XpxConst.signatureLength);
+    for (int i = 0; i < msg.length; i++) {
+      msg[i] = signedMessage[smoff + i + XpxConst.signatureLength];
+    }
     return msg;
   }
 
@@ -76,8 +76,10 @@ class Signature {
    * */
   Uint8List detached(Uint8List message) {
     Uint8List signedMsg = this.sign(message);
-    Uint8List sig = Uint8List(xpxConst.signatureLength);
-    for (int i = 0; i < sig.length; i++) sig[i] = signedMsg[i];
+    Uint8List sig = Uint8List(XpxConst.signatureLength);
+    for (int i = 0; i < sig.length; i++) {
+      sig[i] = signedMsg[i];
+    }
     return sig;
   }
 
@@ -86,16 +88,19 @@ class Signature {
    *   returns true if verification succeeded or false if it failed.
    * */
   bool detached_verify(Uint8List message, Uint8List signature) {
-    if (signature.length != xpxConst.signatureLength) return false;
-    if (_theirPublicKey.length != xpxConst.publicKeyLength) return false;
-    Uint8List sm = Uint8List(xpxConst.signatureLength + message.length);
-    Uint8List m = Uint8List(xpxConst.signatureLength + message.length);
-    for (int i = 0; i < xpxConst.signatureLength; i++) sm[i] = signature[i];
-    for (int i = 0; i < message.length; i++)
-      sm[i + xpxConst.signatureLength] = message[i];
-    return (CatapultNacl.crypto_sign_open(
+    if (signature.length != XpxConst.signatureLength) return false;
+    if (_theirPublicKey.length != XpxConst.publicKeyLength) return false;
+    Uint8List sm = Uint8List(XpxConst.signatureLength + message.length);
+    Uint8List m = Uint8List(XpxConst.signatureLength + message.length);
+    for (int i = 0; i < XpxConst.signatureLength; i++) {
+      sm[i] = signature[i];
+    }
+    for (int i = 0; i < message.length; i++) {
+      sm[i + XpxConst.signatureLength] = message[i];
+    }
+    return CatapultNacl.crypto_sign_open(
             m, -1, sm, 0, sm.length, _theirPublicKey) >=
-        0);
+        0;
   }
 
   /*
@@ -109,26 +114,30 @@ class Signature {
   }
 
   static KeyPair keyPair_fromprivateKey(Uint8List privateKey) {
-    KeyPair kp = new KeyPair();
-    Uint8List pk = kp.publicKey.Raw;
-    Uint8List sk = kp.privateKey.Raw;
+    final KeyPair kp = new KeyPair.fromPrivateKey(PrivateKey(privateKey));
+    Uint8List pk = kp.publicKey.raw;
+    Uint8List sk = kp.privateKey.raw;
 
     // copy sk
-    for (int i = 0; i < kp.privateKey.Raw.length; i++) sk[i] = privateKey[i];
+    for (int i = 0; i < kp.privateKey.raw.length; i++) {
+      sk[i] = privateKey[i];
+    }
 
     // copy pk from sk
-    for (int i = 0; i < kp.publicKey.Raw.length; i++)
+    for (int i = 0; i < kp.publicKey.raw.length; i++) {
       pk[i] = privateKey[32 + i]; // hard-copy
-
+    }
     return kp;
   }
 
   static KeyPair keyPair_fromSeed(Uint8List seed) {
     KeyPair kp = new KeyPair();
-    Uint8List sk = kp.privateKey.Raw;
+    Uint8List sk = kp.privateKey.raw;
 
     // copy sk
-    for (int i = 0; i < xpxConst.seedLength; i++) sk[i] = seed[i];
+    for (int i = 0; i < XpxConst.seedLength; i++) {
+      sk[i] = seed[i];
+    }
 
     // generate pk from sk
     CatapultNacl.crypto_sign_keypair(kp, true);

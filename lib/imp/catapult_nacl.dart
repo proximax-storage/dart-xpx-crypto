@@ -1,5 +1,6 @@
 part of xpx_crypto.ed25519;
 
+// ignore: avoid_classes_with_only_static_members
 class CatapultNacl {
   static final Uint8List _0 =
       Uint8List.fromList([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]); //16
@@ -140,7 +141,9 @@ class CatapultNacl {
   static int _vn(
       Uint8List x, final int xoff, Uint8List y, final int yoff, int n) {
     int i, d = 0;
-    for (i = 0; i < n; i++) d |= (x[i + xoff] ^ y[i + yoff]) & 0xff;
+    for (i = 0; i < n; i++) {
+      d |= (x[i + xoff] ^ y[i + yoff]) & 0xff;
+    }
     return (1 & (Int32(d - 1).shiftRightUnsigned(8).toInt())) - 1;
   }
 
@@ -654,8 +657,12 @@ class CatapultNacl {
     Uint8List z = Uint8List(16), x = Uint8List(64);
     int i;
     Int32 u;
-    for (i = 0; i < 16; i++) z[i] = 0;
-    for (i = 0; i < 8; i++) z[i] = n[i];
+    for (i = 0; i < 16; i++) {
+      z[i] = 0;
+    }
+    for (i = 0; i < 8; i++) {
+      z[i] = n[i];
+    }
     while (b >= 64) {
       crypto_core_salsa20(x, z, k, _sigma);
       for (i = 0; i < 64; i++)
@@ -775,13 +782,11 @@ class CatapultNacl {
     }
     for (i = 0; i < 16; i++) {
       o[2 * i] = (t[i] & 0xff).toInt();
-      o[2 * i + 1] = (t[i] >> 8);
+      o[2 * i + 1] = t[i] >> 8;
     }
   }
 
-  static int _neq25519(Int64List a, Int64List b) {
-    return _neq25519_off(a, 0, b, 0);
-  }
+  static int _neq25519(Int64List a, Int64List b) => _neq25519_off(a, 0, b, 0);
 
   static int _neq25519_off(
       Int64List a, final int aoff, Int64List b, final int boff) {
@@ -791,14 +796,13 @@ class CatapultNacl {
     return _crypto_verify_32(c, 0, d, 0);
   }
 
-  static int _par25519(Int64List a) {
-    return _par25519_off(a, 0);
-  }
+  static int _par25519(Int64List a) => _par25519_off(a, 0);
 
+  // ignore: non_constant_identifier_names
   static int _par25519_off(Int64List a, final int aoff) {
     Uint8List d = Uint8List(32);
     _pack25519(d, a, aoff);
-    return (d[0] & 1);
+    return d[0] & 1;
   }
 
   static void unpack25519(Int64List o, Uint8List n) {
@@ -1972,8 +1976,8 @@ class CatapultNacl {
   }
 
   static int crypto_sign_keypair(KeyPair kp, bool seeded) {
-    Uint8List sk = kp.privateKey.Raw;
-    Uint8List pk = kp.publicKey.Raw;
+    Uint8List sk = kp.privateKey.raw;
+    Uint8List pk = kp.publicKey.raw;
 
     List<Int64List> p = List<Int64List>(4);
 
@@ -2096,7 +2100,6 @@ class CatapultNacl {
     d[0] &= 248;
     d[31] &= 127;
     d[31] |= 64;
-
 
     var g = sha3.New512();
     final Uint8List m = new Uint8List(64); // seeded hash

@@ -1,7 +1,8 @@
 part of xpx_crypto;
 
+// ignore: avoid_classes_with_only_static_members
 /// Package wide constants
-class xpxConst {
+class XpxConst {
   /// Result key
   static const String nem2ResultKey = 'result';
 
@@ -20,17 +21,17 @@ class xpxConst {
   static const int publicKeyLen = 32;
 
   /// Length of signing public key in bytes.
-  static final int publicKeyLength = 32;
+  static const int publicKeyLength = 32;
 
   /// Private character length
   static const int privateKeyLen = 32;
 
   /// Length of signing secret key in bytes.
-  static final int privateKeyLength = 64;
+  static const int privateKeyLength = 64;
 
   /// Length of seed for nacl.sign.keyPair.fromSeed in bytes.
-  static final int seedLength = 32;
+  static const int seedLength = 32;
 
   /// Length of signature in bytes.
-  static final int signatureLength = 64;
+  static const int signatureLength = 64;
 }

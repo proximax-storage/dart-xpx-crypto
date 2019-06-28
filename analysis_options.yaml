@@ -132,11 +132,6 @@ linter:
     # 0 issues
     - avoid_returning_null
 
-    # Avoid returning this from methods just to enable a fluent interface.
-    # recommendation: recommended
-    # 0 issues
-    - avoid_returning_this false
-
     # Avoid setters without getters.
     # recommendation: recommended
     # 0 issues
@@ -181,11 +176,6 @@ linter:
     # recommendation: required
     # 0 issues
     - cancel_subscriptions
-
-    # Cascade consecutive method invocations on the same reference.
-    # recommendation: optional
-    # 0 issues
-    - cascade_invocations false
 
     # Close instances of `dart.core.Sink`.
     # recommendation: required
@@ -368,11 +358,6 @@ linter:
     # 0 issues
     - prefer_const_literals_to_create_immutables
 
-    # Prefer defining constructors instead of static methods to create instances.
-    # recommendation: optional
-    # 0 issues
-    - prefer_constructors_over_static_methods false
-
     # Use contains for `List` and `String` instances.
     # recommendation: optional
     # 0 issues
@@ -469,12 +454,6 @@ linter:
     # recommendation: required
     # 0 issues
     - throw_in_finally
-
-    # Type annotate public APIs.
-    # recommendation: recommended
-    # reason: React component render() method can return either ReactElement or false. Use overrides.
-    # FIXME: 7 lint(s)
-    - type_annotate_public_apis false
 
     # Don't type annotate initializing formals.
     # recommendation: optional
