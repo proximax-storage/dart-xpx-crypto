@@ -1,22 +1,22 @@
-import "dart:convert";
+import 'dart:convert';
 import 'dart:typed_data';
-import 'package:hex/hex.dart';
-import "package:xpx_crypto/xpx_crypto.dart";
+import 'package:xpx_crypto/xpx_crypto.dart';
+import 'package:convert/convert.dart';
 
 void main() {
   /// New KeyPair from PrivateKey Hex String
-  String skHex =
-      "BB2B97D428832EFBA9816C62CC4911296EE3EE65DB19316D4AC1191028FE976C";
-  KeyPair kp = new KeyPair.fromHexString(skHex);
+  const String skHex =
+      '68f50e10e5b8be2b7e9ddb687a667d6e94dd55fe02b4aed8195f51f9a242558b';
+  final KeyPair kp = new KeyPair.fromHexString(skHex);
 
-  print("privateKey: \"${kp.privateKey}\"\n");
-  print("publicKey: \"${kp.publicKey}\"\n");
+  print('privateKey: \"${kp.privateKey}\"\n');
+  print('publicKey: \"${kp.publicKey}\"\n');
 
-  Uint8List msg = utf8.encode("Proximax is awesome !");
+  final Uint8List payload = utf8.encode('ProximaX Limited');
 
-  var sing = kp.sign(msg);
-  print("Signature: \"${HEX.encode(sing).toUpperCase()}\"\n");
+  final sing = kp.sign(payload);
+  print('Signature: \"${hex.encode(sing).toUpperCase()}\"\n');
 
-  bool result = kp.verify(msg, sing);
-  print("Verify: \"${result}\"");
+  final bool result = kp.verify(payload, sing);
+  print('Verify: \"$result\"');
 }
