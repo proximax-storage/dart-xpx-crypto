@@ -12,4 +12,6 @@
 [UPDATE] examples.
 
 ### Fixed bugs
-[FIXED] Undefined name 'HEX'.
+[FIXED] Undefined name 'hex'.
+
+[FIXED] fixed bug in sign data.
