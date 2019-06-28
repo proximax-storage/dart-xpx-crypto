@@ -2,15 +2,6 @@
 
 - Initial version, created by Eleazar Garrido.
 
-### New Features
-[ADD] Get Account MultiSig Info.
-
-[ADD] Get Account MultiSign Graph Info.
-
-[ADD] Get Transaction Status.
-
-[ADD] Get Transactions Statuses.
-
 ### Updates
 [UPDATE] Documentation fixes.
 
@@ -22,5 +13,3 @@
 
 ### Fixed bugs
 [FIXED] Undefined name 'HEX'.
-
-[DELETED] removed unused functions.
