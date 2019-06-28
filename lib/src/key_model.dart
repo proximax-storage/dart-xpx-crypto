@@ -21,7 +21,7 @@ class PrivateKey {
   Uint8List raw = Uint8List(64);
 
   @override
-  String toString() => HEX.encode(raw.toList()).toUpperCase();
+  String toString() => hex.encode(raw.toList()).toUpperCase();
 }
 
 class PublicKey {
@@ -31,9 +31,9 @@ class PublicKey {
     raw = Uint8List.fromList(raw.toList());
   }
 
-  // NewPrivateKeyfromHexString creates a private key from a hex strings.
-  PublicKey.fromHexString(String sHex) {
-    raw = HEX.decode(sHex);
+  // NewPrivateKeyFromHexString creates a private key from a hex strings.
+  PublicKey.fromhexString(String sHex) {
+    raw = hex.decode(sHex);
   }
 
   // NewPrivateKeyFromBigInt creates a new private key from BigInt
@@ -45,7 +45,7 @@ class PublicKey {
   Uint8List raw = Uint8List(32);
 
   @override
-  String toString() => HEX.encode(raw.toList()).toUpperCase();
+  String toString() => hex.encode(raw.toList()).toUpperCase();
 }
 
 // hexDecodeStringOdd return padding hex representation of string
@@ -54,5 +54,5 @@ Uint8List hexDecodeStringOdd(String s) {
     // ignore: parameter_assignments
     s = '0' + s;
   }
-  return HEX.decode(s);
+  return hex.decode(s);
 }
