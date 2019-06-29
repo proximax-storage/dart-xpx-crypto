@@ -665,8 +665,9 @@ class ChainNacl {
     }
     while (b >= 64) {
       crypto_core_salsa20(x, z, k, _sigma);
-      for (i = 0; i < 64; i++)
+      for (i = 0; i < 64; i++) {
         c[cpos + i] = ((m[mpos + i] ^ x[i]) & 0xff).toInt();
+      }
       u = Int32(1);
       for (i = 8; i < 16; i++) {
         u = u + (z[i] & 0xff) | 0;
@@ -679,8 +680,9 @@ class ChainNacl {
     }
     if (b > 0) {
       crypto_core_salsa20(x, z, k, _sigma);
-      for (i = 0; i < b; i++)
+      for (i = 0; i < b; i++) {
         c[cpos + i] = ((m[mpos + i] ^ x[i]) & 0xff).toInt();
+      }
     }
 
     return 0;
@@ -691,11 +693,17 @@ class ChainNacl {
     Uint8List z = Uint8List(16), x = Uint8List(64);
     int i;
     Int32 u;
-    for (i = 0; i < 16; i++) z[i] = 0;
-    for (i = 0; i < 8; i++) z[i] = n[i];
+    for (i = 0; i < 16; i++) {
+      z[i] = 0;
+    }
+    for (i = 0; i < 8; i++) {
+      z[i] = n[i];
+    }
     while (b >= 64) {
       crypto_core_salsa20(x, z, k, _sigma);
-      for (i = 0; i < 64; i++) c[cpos + i] = x[i];
+      for (i = 0; i < 64; i++) {
+        c[cpos + i] = x[i];
+      }
       u = Int32(1);
       for (i = 8; i < 16; i++) {
         u = u + (z[i] & 0xff) | 0;

@@ -16,7 +16,8 @@ Uint8List HashesSha3_512(Uint8List b) {
 Uint8List HashesRipemd160(Uint8List b) {
   var hash = new Digest("RIPEMD-160");
   Uint8List sk = Uint8List(hash.process(b).lengthInBytes);
-  for (int i = 0; i < hash.process(b).lengthInBytes; i++)
+  for (int i = 0; i < hash.process(b).lengthInBytes; i++) {
     sk[i] = hash.process(b)[i];
+  }
   return sk;
 }
