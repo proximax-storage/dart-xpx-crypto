@@ -1,9 +1,9 @@
 <p align="center"><a href="https://vuejs.org" target="_blank" rel="noopener noreferrer"><img width="150" src="https://user-images.githubusercontent.com/29048783/57234191-21b63680-6fee-11e9-92f1-3590472ec321.png" alt="Vue logo"></a></p>
-<h1 align="center">ProximaX Sirius Blockchain Catapult Crypto Dart</h1>
+<h1 align="center">ProximaX Sirius Blockchain Chain Crypto Dart</h1>
 
-Official ProximaX Sirius Blockchain Catapult implementation ed26619 encryption modules for Dart.
+Official ProximaX Sirius Blockchain implementation ed26619 encryption modules for Dart.
 
-The ProximaX Sirius Catapult Crypto Dart works as a lightweight Dart library for interacting with the Sirius Blockchain. It provides a complete library set coverage, and supports synchronous and asynchronous requests.
+The ProximaX Sirius Chain Crypto Dart works as a lightweight Dart library for interacting with the Sirius Blockchain. It provides a complete library set coverage, and supports synchronous and asynchronous requests.
 
 **1. Depend on it**
 
@@ -11,7 +11,7 @@ Add this to your package's pubspec.yaml file:
 
 ```dart
 dependencies:
-  xpx_crypto: ^0.0.1
+  xpx_crypto: ^0.0.2+2
 ```
 
 **2. Install it**
@@ -43,8 +43,6 @@ import 'package:xpx_crypto/xpx_crypto.dart';
 ## Wiki and Examples ##
 
 Examples are in the [examples](https://github.com/proximax-storage/xpx-crypto-dart/tree/master/example) folder
-
-For more examples, go to our [wiki](https://github.com/proximax-storage/xpx-crypto-dart/wiki)
 
 ## Contribution ##
 We'd love to get more people involved in the project. Please feel free to raise any issues or PR and we'll review your contribution.

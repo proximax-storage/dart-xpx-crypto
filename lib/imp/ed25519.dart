@@ -6,5 +6,5 @@ import 'package:fixnum/fixnum.dart';
 import 'package:xpx_crypto/xpx_crypto.dart';
 import 'package:xpx_crypto/imp/sha3.dart' as sha3;
 
-part 'catapult_signature.dart';
-part 'catapult_nacl.dart';
+part 'chain_signature.dart';
+part 'chain_nacl.dart';

@@ -1,7 +1,7 @@
 part of xpx_crypto.ed25519;
 
 // ignore: avoid_classes_with_only_static_members
-class CatapultNacl {
+class ChainNacl {
   static final Uint8List _0 =
       Uint8List.fromList([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]); //16
   static final Uint8List _9 = Uint8List.fromList([

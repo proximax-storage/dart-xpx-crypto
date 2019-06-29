@@ -28,7 +28,7 @@ class Signature {
     // signed message
     Uint8List sm = Uint8List(mlen + XpxConst.signatureLength);
 
-    CatapultNacl.crypto_sign(sm, -1, message, moff, mlen, _privateKey);
+    ChainNacl.crypto_sign(sm, -1, message, moff, mlen, _privateKey);
 
     return sm;
   }
@@ -60,7 +60,7 @@ class Signature {
     Uint8List tmp = Uint8List(smlen);
 
     if (0 !=
-        CatapultNacl.crypto_sign_open(
+        ChainNacl.crypto_sign_open(
             tmp, -1, signedMessage, smoff, smlen, _theirPublicKey)) return null;
 
     // message
@@ -98,7 +98,7 @@ class Signature {
     for (int i = 0; i < message.length; i++) {
       sm[i + XpxConst.signatureLength] = message[i];
     }
-    return CatapultNacl.crypto_sign_open(
+    return ChainNacl.crypto_sign_open(
             m, -1, sm, 0, sm.length, _theirPublicKey) >=
         0;
   }
@@ -109,7 +109,7 @@ class Signature {
   static KeyPair keyPair() {
     KeyPair kp = new KeyPair();
 
-    CatapultNacl.crypto_sign_keypair(kp, false);
+    ChainNacl.crypto_sign_keypair(kp, false);
     return kp;
   }
 
@@ -140,7 +140,7 @@ class Signature {
     }
 
     // generate pk from sk
-    CatapultNacl.crypto_sign_keypair(kp, true);
+    ChainNacl.crypto_sign_keypair(kp, true);
 
     return kp;
   }

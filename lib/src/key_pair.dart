@@ -66,7 +66,7 @@ class KeyPair {
     for (int i = 0; i < message.length; i++) {
       sm[i + XpxConst.signatureLength] = message[i];
     }
-    return ed25519.CatapultNacl.crypto_sign_open(
+    return ed25519.ChainNacl.crypto_sign_open(
             m, -1, sm, 0, sm.length, _publicKey.raw) >=
         0;
   }
