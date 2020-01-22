@@ -1,4 +1,4 @@
-<p align="center"><a href="https://vuejs.org" target="_blank" rel="noopener noreferrer"><img width="150" src="https://user-images.githubusercontent.com/29048783/57234191-21b63680-6fee-11e9-92f1-3590472ec321.png" alt="Vue logo"></a></p>
+<p align="center"><a href="https://vuejs.org" target="_blank" rel="noopener noreferrer"><img width="150" src="https://user-images.githubusercontent.com/29048783/72931039-2ad96600-3d2b-11ea-885c-cc253a610996.png" alt="Vue logo"></a></p>
 <h1 align="center">ProximaX Sirius Blockchain Catapult Crypto Dart</h1>
 
 Official ProximaX Sirius Blockchain Catapult implementation ed26619 encryption modules for Dart.
