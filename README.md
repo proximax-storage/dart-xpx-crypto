@@ -1,5 +1,5 @@
 <p align="center"><a href="https://vuejs.org" target="_blank" rel="noopener noreferrer"><img width="300" src="https://user-images.githubusercontent.com/29048783/72931039-2ad96600-3d2b-11ea-885c-cc253a610996.png" alt="Vue logo"></a></p>
-<h1 align="center">ProximaX Sirius Blockchain Catapult Crypto Dart</h1>
+<h1 align="center">ProximaX Sirius Blockchain Crypto Dart</h1>
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
