@@ -2,6 +2,7 @@
 <h1 align="center">ProximaX Sirius Blockchain Catapult Crypto Dart</h1>
 
 Official ProximaX Sirius Blockchain Catapult implementation ed26619 encryption modules for Dart.
+
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 The ProximaX Sirius Catapult Crypto Dart works as a lightweight Dart library for interacting with the Sirius Blockchain. It provides a complete library set coverage, and supports synchronous and asynchronous requests.
