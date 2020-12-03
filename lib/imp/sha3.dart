@@ -152,8 +152,7 @@ class _NewDigest extends BaseDigest implements Digest {
         break;
 
       default:
-        throw new ArgumentError(
-            "bitLength (${bitLength}) must be one of 224, 256, 384, or 512");
+        throw new ArgumentError("bitLength (${bitLength}) must be one of 224, 256, 384, or 512");
     }
   }
 
@@ -176,8 +175,7 @@ class _NewDigest extends BaseDigest implements Digest {
 
   void _initSponge(int rate, int capacity) {
     if ((rate + capacity) != 1600) {
-      throw new StateError(
-          "Value of (rate + capacity) is not 1600: ${rate + capacity}");
+      throw new StateError("Value of (rate + capacity) is not 1600: ${rate + capacity}");
     }
     if ((rate <= 0) || (rate >= 1600) || ((rate % 64) != 0)) {
       throw new StateError("Invalid rate value: ${rate}");
@@ -212,9 +210,7 @@ class _NewDigest extends BaseDigest implements Digest {
 
     i = 0;
     while (i < databitlen) {
-      if ((_bitsInQueue == 0) &&
-          (databitlen >= _rate) &&
-          (i <= (databitlen - _rate))) {
+      if ((_bitsInQueue == 0) && (databitlen >= _rate) && (i <= (databitlen - _rate))) {
         wholeBlocks = (databitlen - i) ~/ _rate;
 
         for (j = 0; j < wholeBlocks; j++) {
@@ -263,8 +259,7 @@ class _NewDigest extends BaseDigest implements Digest {
       _absorbQueue();
       _clearDataQueueSection(0, _rate ~/ 8);
     } else {
-      _clearDataQueueSection(
-          ((_bitsInQueue + 7) ~/ 8), (_rate ~/ 8 - (_bitsInQueue + 7) ~/ 8));
+      _clearDataQueueSection(((_bitsInQueue + 7) ~/ 8), (_rate ~/ 8 - (_bitsInQueue + 7) ~/ 8));
       _dataQueue[_bitsInQueue ~/ 8] |= 1 << (_bitsInQueue % 8);
     }
     _dataQueue[(_rate - 1) ~/ 8] |= 1 << ((_rate - 1) % 8);
@@ -289,8 +284,7 @@ class _NewDigest extends BaseDigest implements Digest {
     }
 
     if ((outputLength % 8) != 0) {
-      throw new StateError(
-          "Output length not a multiple of 8: ${outputLength}");
+      throw new StateError("Output length not a multiple of 8: ${outputLength}");
     }
 
     i = 0;
@@ -358,8 +352,7 @@ class _NewDigest extends BaseDigest implements Digest {
     _fromWordsToBytes(state, longState);
   }
 
-  void _keccakPermutationAfterXor(
-      Uint8List state, Uint8List data, int dataLengthInBytes) {
+  void _keccakPermutationAfterXor(Uint8List state, Uint8List data, int dataLengthInBytes) {
     for (int i = 0; i < dataLengthInBytes; i++) {
       state[i] ^= data[i];
     }
@@ -466,6 +459,10 @@ class _NewDigest extends BaseDigest implements Digest {
   void _keccakExtract(Uint8List byteState, Uint8List data, int laneCount) {
     data.setRange(0, laneCount * 8, byteState);
   }
+
+  @override
+  // TODO: implement byteLength
+  int get byteLength => throw UnimplementedError();
 }
 
 _NewDigest New256() => new _NewDigest(256);

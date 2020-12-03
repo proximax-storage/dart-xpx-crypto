@@ -1,5 +1,8 @@
 part of xpx_crypto;
 
+const int IV_SIZE = 16;
+const int KEY_SIZE = 32;
+
 Uint8List bytesFromList(List<int> lst) => new Uint8List.fromList(lst);
 
 int bytesToInteger(List<int> bytes) {
@@ -44,4 +47,155 @@ Uint8List addUint8List(Uint8List a, Uint8List b) {
     hash[i + a.length] = b[i];
   }
   return hash;
+}
+
+/// Creates random bytes with the given size.
+Uint8List secureRandomBytes(int len) {
+  return ed25519.SiriusNacl.randombytes(len);
+}
+
+/// Converts a hex string to a [Uint8List].
+Uint8List hexToBytes(String hexString) {
+  return Uint8List.fromList(hex.decode(hexString));
+}
+
+/// Converts a [Uint8List] to a hex string./
+String bytesToHex(Uint8List bytes) {
+  return hex.encode(bytes).toUpperCase();
+}
+
+/// Converts raw string into a string of single byte characters using UTF-8 encoding.
+String _rawStringToUtf8(final String input) {
+  final StringBuffer sb = new StringBuffer();
+  for (int i = 0; i < input.length; i++) {
+    final int cu = input.codeUnitAt(i);
+
+    if (128 > cu) {
+      sb.write(String.fromCharCode(cu));
+    } else if ((127 < cu) && (2048 > cu)) {
+      sb.write(String.fromCharCode((cu >> 6) | 192));
+      sb.write(String.fromCharCode((cu & 63) | 128));
+    } else {
+      sb.write(String.fromCharCode((cu >> 12) | 224));
+      sb.write(String.fromCharCode(((cu >> 6) & 63) | 128));
+      sb.write(String.fromCharCode((cu & 63) | 128));
+    }
+  }
+
+  return sb.toString();
+}
+
+/// Converts a UTF-8 [input] string to hex string.
+String utf8ToHex(final String input) {
+  final StringBuffer sb = new StringBuffer();
+  final String rawString = _rawStringToUtf8(input);
+  for (int i = 0; i < rawString.length; i++) {
+    sb.write(rawString.codeUnitAt(i).toRadixString(16));
+  }
+  return sb.toString();
+}
+
+/// Encrypts a [message] with a shared key derived from [senderPrivateKey] and
+/// [recipientPublicKey].
+///
+/// By default, the [message] is considered a UTF-8 plain text.
+String encryptMessage(final String message, final String senderPrivateKey, final String recipientPublicKey,
+    [final bool isHexMessage = false]) {
+  ArgumentError.checkNotNull(message);
+  ArgumentError.checkNotNull(senderPrivateKey);
+  ArgumentError.checkNotNull(recipientPublicKey);
+
+  String msg = isHexMessage ? message : utf8ToHex(message);
+
+  final salt = secureRandomBytes(KEY_SIZE);
+
+// Derive shared key
+  final Uint8List senderByte = hexToBytes(senderPrivateKey);
+  final Uint8List recipientByte = hexToBytes(recipientPublicKey);
+  final Uint8List sharedKey = deriveSharedKey(senderByte, recipientByte, salt);
+
+// Setup IV
+  final IV iv = IV(secureRandomBytes(IV_SIZE));
+
+// Setup AES cipher in CBC mode with PKCS7 padding
+  final Encrypter encrypter = Encrypter(AES(Key(sharedKey), mode: AESMode.cbc, padding: 'PKCS7'));
+  final Uint8List payload = hexToBytes(msg);
+  final encryptedMessage = encrypter.algo.encrypt(payload, iv: iv);
+
+// Creates a concatenated byte array as the encrypted payload
+  final result = bytesToHex(salt) + bytesToHex(iv.bytes) + bytesToHex(encryptedMessage.bytes);
+
+  return result;
+}
+
+/// Derives a shared key using the [privateKey] and [publicKey].
+Uint8List deriveSharedKey(final Uint8List privateKey, final Uint8List publicKey, final Uint8List salt) {
+  final Uint8List sharedSecret = deriveSharedSecret(privateKey, publicKey, salt);
+  final sha512digest = createSha3Digest(length: 32);
+  final sharedKey = sha512digest.process(sharedSecret);
+  return sharedKey;
+}
+
+Int64List gf([final Int64List init]) {
+  return ed25519.SiriusNacl.gf(init);
+}
+
+void clamp(final Uint8List d) {
+  d[0] &= 248;
+  d[31] &= 127;
+  d[31] |= 64;
+}
+
+/// Creates a non-Keccak SHA3 256/512 digest based on the given bit [length].
+///
+/// Providing bit length 32 returns the non-Keccak SHA3-256.
+/// Providing bit length 64 returns the non-Keccak SHA3-512. (Default return value)
+SHA3Digest createSha3Digest({final int length = 64}) {
+  if (length != 64 && length != 32) {
+    throw ArgumentError('Cannot create SHA3 hasher. Unexpected length: $length');
+  }
+
+  return 64 == length ? new SHA3Digest(512) : new SHA3Digest(256);
+}
+
+/// Computes the hash of a [secretKey] for scalar multiplication.
+Uint8List prepareForScalarMult(final Uint8List secretKey) {
+  final Uint8List hash = SHA3Digest(512).process(secretKey);
+  final List<int> d = Uint8List.fromList(hash.buffer.asUint8List(0, 64));
+
+  clamp(d);
+
+  return d;
+}
+
+/// Derives a shared secret using the [privateKey] and [publicKey].
+Uint8List deriveSharedSecret(final Uint8List privateKey, final Uint8List publicKey, final Uint8List salt) {
+  if (KEY_SIZE != publicKey.length) {
+    throw ArgumentError('Public key has unexpected size: ${publicKey.length}');
+  }
+
+  Uint8List d = prepareForScalarMult(privateKey);
+
+// sharedKey = pack(p = d (derived from privateKey) * q (derived from publicKey))
+  List<Int64List> q = [gf(), gf(), gf(), gf()];
+  List<Int64List> p = [gf(), gf(), gf(), gf()];
+
+// print(ByteUtils.bytesToHex(g.buffer.asUint8List()));
+
+  Uint8List sharedSecret = Uint8List(KEY_SIZE);
+
+  ed25519.SiriusNacl.unpack(q, publicKey);
+
+  ed25519.SiriusNacl.scalarmult(p, q, d, 0);
+
+  ed25519.SiriusNacl.pack(sharedSecret, p);
+//print('sharedSecret01: $sharedSecret');
+  print('\n');
+
+  for (int i = 0; i < 32; i++) {
+    sharedSecret[i] ^= salt[i];
+  }
+// print('sharedSecret02: $sharedSecret');
+
+  return sharedSecret;
 }

@@ -1,50 +1,14 @@
 part of xpx_crypto.ed25519;
 
 // ignore: avoid_classes_with_only_static_members
-class CatapultNacl {
-  static final Uint8List _0 =
-      Uint8List.fromList([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]); //16
-  static final Uint8List _9 = Uint8List.fromList([
-    9,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0
-  ]); //32
+class SiriusNacl {
+  static final Uint8List _0 = Uint8List.fromList([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]); //16
+  static final Uint8List _9 = Uint8List.fromList(
+      [9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]); //32
 
-  static final Int64List _gf0 =
-      Int64List.fromList([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]); //16
-  static final Int64List _gf1 =
-      Int64List.fromList([1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]); //16
-  static final Int64List _121665 = Int64List.fromList(
-      [0xDB41, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]); //16
+  static final Int64List _gf0 = Int64List.fromList([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]); //16
+  static final Int64List _gf1 = Int64List.fromList([1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]); //16
+  static final Int64List _121665 = Int64List.fromList([0xDB41, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]); //16
 
   static final Int64List _D = Int64List.fromList([
     0x78a3,
@@ -138,8 +102,7 @@ class CatapultNacl {
     0x2b83
   ]);
 
-  static int _vn(
-      Uint8List x, final int xoff, Uint8List y, final int yoff, int n) {
+  static int _vn(Uint8List x, final int xoff, Uint8List y, final int yoff, int n) {
     int i, d = 0;
     for (i = 0; i < n; i++) {
       d |= (x[i + xoff] ^ y[i + yoff]) & 0xff;
@@ -147,8 +110,7 @@ class CatapultNacl {
     return (1 & (Int32(d - 1).shiftRightUnsigned(8).toInt())) - 1;
   }
 
-  static int _crypto_verify_16(
-      Uint8List x, final int xoff, Uint8List y, final int yoff) {
+  static int _crypto_verify_16(Uint8List x, final int xoff, Uint8List y, final int yoff) {
     return _vn(x, xoff, y, yoff, 16);
   }
 
@@ -156,8 +118,7 @@ class CatapultNacl {
     return _crypto_verify_16(x, 0, y, 0);
   }
 
-  static int _crypto_verify_32(
-      Uint8List x, final int xoff, Uint8List y, final int yoff) {
+  static int _crypto_verify_32(Uint8List x, final int xoff, Uint8List y, final int yoff) {
     return _vn(x, xoff, y, yoff, 32);
   }
 
@@ -165,72 +126,23 @@ class CatapultNacl {
     return _crypto_verify_32(x, 0, y, 0);
   }
 
-  static void _core_salsa20(
-      Uint8List o, Uint8List p, Uint8List k, Uint8List c) {
-    int j0 = c[0] & 0xff |
-            (c[1] & 0xff) << 8 |
-            (c[2] & 0xff) << 16 |
-            (c[3] & 0xff) << 24,
-        j1 = k[0] & 0xff |
-            (k[1] & 0xff) << 8 |
-            (k[2] & 0xff) << 16 |
-            (k[3] & 0xff) << 24,
-        j2 = k[4] & 0xff |
-            (k[5] & 0xff) << 8 |
-            (k[6] & 0xff) << 16 |
-            (k[7] & 0xff) << 24,
-        j3 = k[8] & 0xff |
-            (k[9] & 0xff) << 8 |
-            (k[10] & 0xff) << 16 |
-            (k[11] & 0xff) << 24,
-        j4 = k[12] & 0xff |
-            (k[13] & 0xff) << 8 |
-            (k[14] & 0xff) << 16 |
-            (k[15] & 0xff) << 24,
-        j5 = c[4] & 0xff |
-            (c[5] & 0xff) << 8 |
-            (c[6] & 0xff) << 16 |
-            (c[7] & 0xff) << 24,
-        j6 = p[0] & 0xff |
-            (p[1] & 0xff) << 8 |
-            (p[2] & 0xff) << 16 |
-            (p[3] & 0xff) << 24,
-        j7 = p[4] & 0xff |
-            (p[5] & 0xff) << 8 |
-            (p[6] & 0xff) << 16 |
-            (p[7] & 0xff) << 24,
-        j8 = p[8] & 0xff |
-            (p[9] & 0xff) << 8 |
-            (p[10] & 0xff) << 16 |
-            (p[11] & 0xff) << 24,
-        j9 = p[12] & 0xff |
-            (p[13] & 0xff) << 8 |
-            (p[14] & 0xff) << 16 |
-            (p[15] & 0xff) << 24,
-        j10 = c[8] & 0xff |
-            (c[9] & 0xff) << 8 |
-            (c[10] & 0xff) << 16 |
-            (c[11] & 0xff) << 24,
-        j11 = k[16] & 0xff |
-            (k[17] & 0xff) << 8 |
-            (k[18] & 0xff) << 16 |
-            (k[19] & 0xff) << 24,
-        j12 = k[20] & 0xff |
-            (k[21] & 0xff) << 8 |
-            (k[22] & 0xff) << 16 |
-            (k[23] & 0xff) << 24,
-        j13 = k[24] & 0xff |
-            (k[25] & 0xff) << 8 |
-            (k[26] & 0xff) << 16 |
-            (k[27] & 0xff) << 24,
-        j14 = k[28] & 0xff |
-            (k[29] & 0xff) << 8 |
-            (k[30] & 0xff) << 16 |
-            (k[31] & 0xff) << 24,
-        j15 = c[12] & 0xff |
-            (c[13] & 0xff) << 8 |
-            (c[14] & 0xff) << 16 |
-            (c[15] & 0xff) << 24;
+  static void _core_salsa20(Uint8List o, Uint8List p, Uint8List k, Uint8List c) {
+    int j0 = c[0] & 0xff | (c[1] & 0xff) << 8 | (c[2] & 0xff) << 16 | (c[3] & 0xff) << 24,
+        j1 = k[0] & 0xff | (k[1] & 0xff) << 8 | (k[2] & 0xff) << 16 | (k[3] & 0xff) << 24,
+        j2 = k[4] & 0xff | (k[5] & 0xff) << 8 | (k[6] & 0xff) << 16 | (k[7] & 0xff) << 24,
+        j3 = k[8] & 0xff | (k[9] & 0xff) << 8 | (k[10] & 0xff) << 16 | (k[11] & 0xff) << 24,
+        j4 = k[12] & 0xff | (k[13] & 0xff) << 8 | (k[14] & 0xff) << 16 | (k[15] & 0xff) << 24,
+        j5 = c[4] & 0xff | (c[5] & 0xff) << 8 | (c[6] & 0xff) << 16 | (c[7] & 0xff) << 24,
+        j6 = p[0] & 0xff | (p[1] & 0xff) << 8 | (p[2] & 0xff) << 16 | (p[3] & 0xff) << 24,
+        j7 = p[4] & 0xff | (p[5] & 0xff) << 8 | (p[6] & 0xff) << 16 | (p[7] & 0xff) << 24,
+        j8 = p[8] & 0xff | (p[9] & 0xff) << 8 | (p[10] & 0xff) << 16 | (p[11] & 0xff) << 24,
+        j9 = p[12] & 0xff | (p[13] & 0xff) << 8 | (p[14] & 0xff) << 16 | (p[15] & 0xff) << 24,
+        j10 = c[8] & 0xff | (c[9] & 0xff) << 8 | (c[10] & 0xff) << 16 | (c[11] & 0xff) << 24,
+        j11 = k[16] & 0xff | (k[17] & 0xff) << 8 | (k[18] & 0xff) << 16 | (k[19] & 0xff) << 24,
+        j12 = k[20] & 0xff | (k[21] & 0xff) << 8 | (k[22] & 0xff) << 16 | (k[23] & 0xff) << 24,
+        j13 = k[24] & 0xff | (k[25] & 0xff) << 8 | (k[26] & 0xff) << 16 | (k[27] & 0xff) << 24,
+        j14 = k[28] & 0xff | (k[29] & 0xff) << 8 | (k[30] & 0xff) << 16 | (k[31] & 0xff) << 24,
+        j15 = c[12] & 0xff | (c[13] & 0xff) << 8 | (c[14] & 0xff) << 16 | (c[15] & 0xff) << 24;
 
     Int32 x0 = Int32(j0),
         x1 = Int32(j1),
@@ -421,72 +333,23 @@ class CatapultNacl {
     o[63] = (x15.shiftRightUnsigned(24) & 0xff).toInt();
   }
 
-  static void _core_hsalsa20(
-      Uint8List o, Uint8List p, Uint8List k, Uint8List c) {
-    int j0 = c[0] & 0xff |
-            (c[1] & 0xff) << 8 |
-            (c[2] & 0xff) << 16 |
-            (c[3] & 0xff) << 24,
-        j1 = k[0] & 0xff |
-            (k[1] & 0xff) << 8 |
-            (k[2] & 0xff) << 16 |
-            (k[3] & 0xff) << 24,
-        j2 = k[4] & 0xff |
-            (k[5] & 0xff) << 8 |
-            (k[6] & 0xff) << 16 |
-            (k[7] & 0xff) << 24,
-        j3 = k[8] & 0xff |
-            (k[9] & 0xff) << 8 |
-            (k[10] & 0xff) << 16 |
-            (k[11] & 0xff) << 24,
-        j4 = k[12] & 0xff |
-            (k[13] & 0xff) << 8 |
-            (k[14] & 0xff) << 16 |
-            (k[15] & 0xff) << 24,
-        j5 = c[4] & 0xff |
-            (c[5] & 0xff) << 8 |
-            (c[6] & 0xff) << 16 |
-            (c[7] & 0xff) << 24,
-        j6 = p[0] & 0xff |
-            (p[1] & 0xff) << 8 |
-            (p[2] & 0xff) << 16 |
-            (p[3] & 0xff) << 24,
-        j7 = p[4] & 0xff |
-            (p[5] & 0xff) << 8 |
-            (p[6] & 0xff) << 16 |
-            (p[7] & 0xff) << 24,
-        j8 = p[8] & 0xff |
-            (p[9] & 0xff) << 8 |
-            (p[10] & 0xff) << 16 |
-            (p[11] & 0xff) << 24,
-        j9 = p[12] & 0xff |
-            (p[13] & 0xff) << 8 |
-            (p[14] & 0xff) << 16 |
-            (p[15] & 0xff) << 24,
-        j10 = c[8] & 0xff |
-            (c[9] & 0xff) << 8 |
-            (c[10] & 0xff) << 16 |
-            (c[11] & 0xff) << 24,
-        j11 = k[16] & 0xff |
-            (k[17] & 0xff) << 8 |
-            (k[18] & 0xff) << 16 |
-            (k[19] & 0xff) << 24,
-        j12 = k[20] & 0xff |
-            (k[21] & 0xff) << 8 |
-            (k[22] & 0xff) << 16 |
-            (k[23] & 0xff) << 24,
-        j13 = k[24] & 0xff |
-            (k[25] & 0xff) << 8 |
-            (k[26] & 0xff) << 16 |
-            (k[27] & 0xff) << 24,
-        j14 = k[28] & 0xff |
-            (k[29] & 0xff) << 8 |
-            (k[30] & 0xff) << 16 |
-            (k[31] & 0xff) << 24,
-        j15 = c[12] & 0xff |
-            (c[13] & 0xff) << 8 |
-            (c[14] & 0xff) << 16 |
-            (c[15] & 0xff) << 24;
+  static void _core_hsalsa20(Uint8List o, Uint8List p, Uint8List k, Uint8List c) {
+    int j0 = c[0] & 0xff | (c[1] & 0xff) << 8 | (c[2] & 0xff) << 16 | (c[3] & 0xff) << 24,
+        j1 = k[0] & 0xff | (k[1] & 0xff) << 8 | (k[2] & 0xff) << 16 | (k[3] & 0xff) << 24,
+        j2 = k[4] & 0xff | (k[5] & 0xff) << 8 | (k[6] & 0xff) << 16 | (k[7] & 0xff) << 24,
+        j3 = k[8] & 0xff | (k[9] & 0xff) << 8 | (k[10] & 0xff) << 16 | (k[11] & 0xff) << 24,
+        j4 = k[12] & 0xff | (k[13] & 0xff) << 8 | (k[14] & 0xff) << 16 | (k[15] & 0xff) << 24,
+        j5 = c[4] & 0xff | (c[5] & 0xff) << 8 | (c[6] & 0xff) << 16 | (c[7] & 0xff) << 24,
+        j6 = p[0] & 0xff | (p[1] & 0xff) << 8 | (p[2] & 0xff) << 16 | (p[3] & 0xff) << 24,
+        j7 = p[4] & 0xff | (p[5] & 0xff) << 8 | (p[6] & 0xff) << 16 | (p[7] & 0xff) << 24,
+        j8 = p[8] & 0xff | (p[9] & 0xff) << 8 | (p[10] & 0xff) << 16 | (p[11] & 0xff) << 24,
+        j9 = p[12] & 0xff | (p[13] & 0xff) << 8 | (p[14] & 0xff) << 16 | (p[15] & 0xff) << 24,
+        j10 = c[8] & 0xff | (c[9] & 0xff) << 8 | (c[10] & 0xff) << 16 | (c[11] & 0xff) << 24,
+        j11 = k[16] & 0xff | (k[17] & 0xff) << 8 | (k[18] & 0xff) << 16 | (k[19] & 0xff) << 24,
+        j12 = k[20] & 0xff | (k[21] & 0xff) << 8 | (k[22] & 0xff) << 16 | (k[23] & 0xff) << 24,
+        j13 = k[24] & 0xff | (k[25] & 0xff) << 8 | (k[26] & 0xff) << 16 | (k[27] & 0xff) << 24,
+        j14 = k[28] & 0xff | (k[29] & 0xff) << 8 | (k[30] & 0xff) << 16 | (k[31] & 0xff) << 24,
+        j15 = c[12] & 0xff | (c[13] & 0xff) << 8 | (c[14] & 0xff) << 16 | (c[15] & 0xff) << 24;
 
     Int32 x0 = Int32(j0),
         x1 = Int32(j1),
@@ -621,39 +484,20 @@ class CatapultNacl {
     o[31] = (x9.shiftRightUnsigned(24) & 0xff).toInt();
   }
 
-  static int crypto_core_salsa20(
-      Uint8List out, Uint8List input, Uint8List k, Uint8List c) {
+  static int crypto_core_salsa20(Uint8List out, Uint8List input, Uint8List k, Uint8List c) {
     _core_salsa20(out, input, k, c);
     return 0;
   }
 
-  static int crypto_core_hsalsa20(
-      Uint8List out, Uint8List input, Uint8List k, Uint8List c) {
+  static int crypto_core_hsalsa20(Uint8List out, Uint8List input, Uint8List k, Uint8List c) {
     _core_hsalsa20(out, input, k, c);
     return 0;
   }
 
-  static final Uint8List _sigma = Uint8List.fromList([
-    101,
-    120,
-    112,
-    97,
-    110,
-    100,
-    32,
-    51,
-    50,
-    45,
-    98,
-    121,
-    116,
-    101,
-    32,
-    107
-  ]);
+  static final Uint8List _sigma =
+      Uint8List.fromList([101, 120, 112, 97, 110, 100, 32, 51, 50, 45, 98, 121, 116, 101, 32, 107]);
 
-  static int _crypto_stream_salsa20_xor(Uint8List c, int cpos, Uint8List m,
-      int mpos, int b, Uint8List n, Uint8List k) {
+  static int _crypto_stream_salsa20_xor(Uint8List c, int cpos, Uint8List m, int mpos, int b, Uint8List n, Uint8List k) {
     Uint8List z = Uint8List(16), x = Uint8List(64);
     int i;
     Int32 u;
@@ -665,8 +509,7 @@ class CatapultNacl {
     }
     while (b >= 64) {
       crypto_core_salsa20(x, z, k, _sigma);
-      for (i = 0; i < 64; i++)
-        c[cpos + i] = ((m[mpos + i] ^ x[i]) & 0xff).toInt();
+      for (i = 0; i < 64; i++) c[cpos + i] = ((m[mpos + i] ^ x[i]) & 0xff).toInt();
       u = Int32(1);
       for (i = 8; i < 16; i++) {
         u = u + (z[i] & 0xff) | 0;
@@ -679,15 +522,13 @@ class CatapultNacl {
     }
     if (b > 0) {
       crypto_core_salsa20(x, z, k, _sigma);
-      for (i = 0; i < b; i++)
-        c[cpos + i] = ((m[mpos + i] ^ x[i]) & 0xff).toInt();
+      for (i = 0; i < b; i++) c[cpos + i] = ((m[mpos + i] ^ x[i]) & 0xff).toInt();
     }
 
     return 0;
   }
 
-  static int crypto_stream_salsa20(
-      Uint8List c, int cpos, int b, Uint8List n, Uint8List k) {
+  static int crypto_stream_salsa20(Uint8List c, int cpos, int b, Uint8List n, Uint8List k) {
     Uint8List z = Uint8List(16), x = Uint8List(64);
     int i;
     Int32 u;
@@ -713,8 +554,7 @@ class CatapultNacl {
     return 0;
   }
 
-  static int crypto_stream(
-      Uint8List c, int cpos, int d, Uint8List n, Uint8List k) {
+  static int crypto_stream(Uint8List c, int cpos, int d, Uint8List n, Uint8List k) {
     Uint8List s = Uint8List(32);
     crypto_core_hsalsa20(s, n, k, _sigma);
     Uint8List sn = Uint8List(8);
@@ -722,8 +562,7 @@ class CatapultNacl {
     return crypto_stream_salsa20(c, cpos, d, sn, s);
   }
 
-  static int crypto_stream_xor(Uint8List c, int cpos, Uint8List m, int mpos,
-      int d, Uint8List n, Uint8List k) {
+  static int crypto_stream_xor(Uint8List c, int cpos, Uint8List m, int mpos, int d, Uint8List n, Uint8List k) {
     Uint8List s = Uint8List(32);
 
     crypto_core_hsalsa20(s, n, k, _sigma);
@@ -752,8 +591,7 @@ class CatapultNacl {
     _sel25519_off(p, 0, q, 0, b);
   }
 
-  static void _sel25519_off(
-      Int64List p, final int poff, Int64List q, final int qoff, int b) {
+  static void _sel25519_off(Int64List p, final int poff, Int64List q, final int qoff, int b) {
     int t, c = ~(b - 1);
     for (int i = 0; i < 16; i++) {
       t = c & (p[i + poff] ^ q[i + qoff]);
@@ -788,8 +626,7 @@ class CatapultNacl {
 
   static int _neq25519(Int64List a, Int64List b) => _neq25519_off(a, 0, b, 0);
 
-  static int _neq25519_off(
-      Int64List a, final int aoff, Int64List b, final int boff) {
+  static int _neq25519_off(Int64List a, final int aoff, Int64List b, final int boff) {
     Uint8List c = Uint8List(32), d = Uint8List(32);
     _pack25519(c, a, aoff);
     _pack25519(d, b, boff);
@@ -807,8 +644,7 @@ class CatapultNacl {
 
   static void unpack25519(Int64List o, Uint8List n) {
     int i;
-    for (i = 0; i < 16; i++)
-      o[i] = (n[2 * i] & 0xff) + (((n[2 * i + 1] << 8) & 0xffff));
+    for (i = 0; i < 16; i++) o[i] = (n[2 * i] & 0xff) + (((n[2 * i + 1] << 8) & 0xffff));
     o[15] &= 0x7fff;
   }
 
@@ -816,8 +652,7 @@ class CatapultNacl {
     _A_off(o, 0, a, 0, b, 0);
   }
 
-  static void _A_off(Int64List o, final int ooff, Int64List a, final int aoff,
-      Int64List b, final int boff) {
+  static void _A_off(Int64List o, final int ooff, Int64List a, final int aoff, Int64List b, final int boff) {
     int i;
     for (i = 0; i < 16; i++) o[i + ooff] = a[i + aoff] + b[i + boff];
   }
@@ -826,8 +661,7 @@ class CatapultNacl {
     _Z_off(o, 0, a, 0, b, 0);
   }
 
-  static void _Z_off(Int64List o, final int ooff, Int64List a, final int aoff,
-      Int64List b, final int boff) {
+  static void _Z_off(Int64List o, final int ooff, Int64List a, final int aoff, Int64List b, final int boff) {
     int i;
     for (i = 0; i < 16; i++) o[i + ooff] = a[i + aoff] - b[i + boff];
   }
@@ -836,8 +670,7 @@ class CatapultNacl {
     _M_off(o, 0, a, 0, b, 0);
   }
 
-  static void _M_off(Int64List o, final int ooff, Int64List a, final int aoff,
-      Int64List b, final int boff) {
+  static void _M_off(Int64List o, final int ooff, Int64List a, final int aoff, Int64List b, final int boff) {
     int v,
         c,
         t0 = 0,
@@ -1308,8 +1141,7 @@ class CatapultNacl {
     _M_off(o, ooff, a, aoff, a, aoff);
   }
 
-  static void _inv25519(
-      Int64List o, final int ooff, Int64List i, final int ioff) {
+  static void _inv25519(Int64List o, final int ooff, Int64List i, final int ioff) {
     Int64List c = Int64List(16);
     int a;
     for (a = 0; a < 16; a++) c[a] = i[a + ioff];
@@ -1334,6 +1166,24 @@ class CatapultNacl {
     for (a = 0; a < 16; a++) o[a] = c[a];
   }
 
+  static void scalarmult(List<Int64List> p, List<Int64List> q, Uint8List s, final int soff) {
+    int i;
+
+    _set25519(p[0], _gf0);
+    _set25519(p[1], _gf1);
+    _set25519(p[2], _gf1);
+    _set25519(p[3], _gf0);
+
+    for (i = 255; i >= 0; --i) {
+      int b = ((Int32(s[(i / 8 + soff).toInt()]).shiftRightUnsigned(i & 7)).toInt() & 1);
+
+      _cswap(p, q, b);
+      _add(q, p);
+      _add(p, p);
+      _cswap(p, q, b);
+    }
+  }
+
   static int crypto_scalarmult(Uint8List q, Uint8List n, Uint8List p) {
     Uint8List z = Uint8List(32);
     Int64List x = Int64List(80);
@@ -1354,10 +1204,7 @@ class CatapultNacl {
     }
     a[0] = d[0] = 1;
     for (i = 254; i >= 0; --i) {
-      r = (Int32(z[Int32(i).shiftRightUnsigned(3).toInt()])
-                  .shiftRightUnsigned(i & 7))
-              .toInt() &
-          1;
+      r = (Int32(z[Int32(i).shiftRightUnsigned(3).toInt()]).shiftRightUnsigned(i & 7)).toInt() & 1;
       _sel25519(a, b, r);
       _sel25519(c, d, r);
       _A(e, a, c);
@@ -1410,35 +1257,11 @@ class CatapultNacl {
     return crypto_core_hsalsa20(k, _0, s, _sigma);
   }
 
-  static int crypto_hashblocks_hl(
-      List<Int32> hh, List<Int32> hl, Uint8List m, final int moff, int n) {
+  static int crypto_hashblocks_hl(List<Int32> hh, List<Int32> hl, Uint8List m, final int moff, int n) {
     int i, j;
 
     List<Int32> wh = List<Int32>(16), wl = List<Int32>(16);
-    Int32 bh0,
-        bh1,
-        bh2,
-        bh3,
-        bh4,
-        bh5,
-        bh6,
-        bh7,
-        bl0,
-        bl1,
-        bl2,
-        bl3,
-        bl4,
-        bl5,
-        bl6,
-        bl7,
-        th,
-        tl,
-        h,
-        l,
-        a,
-        b,
-        c,
-        d;
+    Int32 bh0, bh1, bh2, bh3, bh4, bh5, bh6, bh7, bl0, bl1, bl2, bl3, bl4, bl5, bl6, bl7, th, tl, h, l, a, b, c, d;
 
     Int32 ah0 = hh[0],
         ah1 = hh[1],
@@ -1659,12 +1482,10 @@ class CatapultNacl {
             th = wh[(j + 14) % 16];
             tl = wl[(j + 14) % 16];
             h = ((th.shiftRightUnsigned(19)) | (tl << (32 - 19))) ^
-                ((tl.shiftRightUnsigned((61 - 32))) |
-                    (th << (32 - (61 - 32)))) ^
+                ((tl.shiftRightUnsigned((61 - 32))) | (th << (32 - (61 - 32)))) ^
                 (th.shiftRightUnsigned(6));
             l = ((tl.shiftRightUnsigned(19)) | (th << (32 - 19))) ^
-                ((th.shiftRightUnsigned((61 - 32))) |
-                    (tl << (32 - (61 - 32)))) ^
+                ((th.shiftRightUnsigned((61 - 32))) | (tl << (32 - (61 - 32)))) ^
                 ((tl.shiftRightUnsigned(6)) | (th << (32 - 6)));
 
             a += l & 0xffff;
@@ -1939,8 +1760,7 @@ class CatapultNacl {
     r[31] ^= _par25519_off(tx, 0) << 7;
   }
 
-  static void _scalarmult(
-      List<Int64List> p, List<Int64List> q, Uint8List s, final int soff) {
+  static void _scalarmult(List<Int64List> p, List<Int64List> q, Uint8List s, final int soff) {
     int i;
 
     _set25519(p[0], _gf0);
@@ -1949,9 +1769,7 @@ class CatapultNacl {
     _set25519(p[3], _gf0);
 
     for (i = 255; i >= 0; --i) {
-      int b = ((Int32(s[(i / 8 + soff).toInt()]).shiftRightUnsigned(i & 7))
-              .toInt() &
-          1);
+      int b = ((Int32(s[(i / 8 + soff).toInt()]).shiftRightUnsigned(i & 7)).toInt() & 1);
 
       _cswap(p, q, b);
       _add(q, p);
@@ -2080,8 +1898,7 @@ class CatapultNacl {
   }
 
 // TBD... 64bits of n
-  static int crypto_sign(Uint8List sm, int dummy, Uint8List message,
-      final int moff, int /*long*/ n, Uint8List sk) {
+  static int crypto_sign(Uint8List sm, int dummy, Uint8List message, final int moff, int /*long*/ n, Uint8List sk) {
     Uint8List r = Uint8List(32);
 
     int i, j;
@@ -2112,6 +1929,8 @@ class CatapultNacl {
     _scalarbase(p, m, 0);
     _pack(sm, p);
 
+    print(sm);
+
     final Uint8List h = new Uint8List(64); // result
     g.reset();
     g.update(sm.sublist(0, 32), 0, 32);
@@ -2119,17 +1938,68 @@ class CatapultNacl {
     g.update(message, 0, message.length);
     g.doFinal(h, 0);
 
+    print(h);
+
     _reduce(h);
 
     for (i = 0; i < 64; i++) x[i] = 0;
 
     for (i = 0; i < 32; i++) x[i] = (m[i] & 0xff).toInt();
 
-    for (i = 0; i < 32; i++)
-      for (j = 0; j < 32; j++)
-        x[i + j] += (h[i] & 0xff) * (d[j] & 0xff).toInt();
+    for (i = 0; i < 32; i++) for (j = 0; j < 32; j++) x[i + j] += (h[i] & 0xff) * (d[j] & 0xff).toInt();
 
     _modL(sm, 32, x);
+    return 0;
+  }
+
+  static Int64List gf([final Int64List init]) {
+    final Int64List r = new Int64List(16);
+    if (init != null) {
+      for (int i = 0; i < init.length; i++) {
+        r[i] = init[i];
+      }
+    }
+    return r;
+  }
+
+  // Developer's note:
+  // This is a custom unpack() function inline with the JavaScript/TypeScript implementation
+  // of TweetNaclFast.unpack(). The TweetNacFast implementation for Dart has no unpack() and
+  // only has the unpackneg() which gives a different result.
+  static int unpack(List<Int64List> r, Uint8List p) {
+    Int64List t = gf(), chk = gf(), num = gf(), den = gf(), den2 = gf(), den4 = gf(), den6 = gf();
+
+    _set25519(r[2], _gf1);
+    unpack25519(r[1], p);
+    _S(num, r[1]);
+    _M(den, num, _D);
+    _Z(num, num, r[2]);
+    _A(den, r[2], den);
+
+    _S(den2, den);
+    _S(den4, den2);
+    _M(den6, den4, den2);
+    _M(t, den6, num);
+    _M(t, t, den);
+
+    _pow2523(t, t);
+    _M(t, t, num);
+    _M(t, t, den);
+    _M(t, t, den);
+    _M(r[0], t, den);
+
+    _S(chk, r[0]);
+    _M(chk, chk, den);
+    if (_neq25519(chk, num) != 0) _M(r[0], r[0], _I);
+
+    _S(chk, r[0]);
+    _M(chk, chk, den);
+    if (_neq25519(chk, num) != 0) return -1;
+
+    if (_par25519(r[0]) != (Int32(p[31] & 0xFF).shiftRightUnsigned(7).toInt())) _Z(r[0], _gf0, r[0]);
+
+    _M(r[3], r[0], r[1]);
+
     return 0;
   }
 
@@ -2169,17 +2039,31 @@ class CatapultNacl {
     _M(chk, chk, den);
     if (_neq25519(chk, num) != 0) return -1;
 
-    if (_par25519(r[0]) == (Int32(p[31] & 0xFF).shiftRightUnsigned(7).toInt()))
-      _Z(r[0], _gf0, r[0]);
+    if (_par25519(r[0]) == (Int32(p[31] & 0xFF).shiftRightUnsigned(7).toInt())) _Z(r[0], _gf0, r[0]);
 
     _M(r[3], r[0], r[1]);
 
     return 0;
   }
 
+  static void pack(Uint8List r, List<Int64List> p) {
+    Int64List tx = gf();
+    Int64List ty = gf();
+    Int64List zi = gf();
+
+    _inv25519(zi, 0, p[2], 0);
+
+    _M(tx, p[0], zi);
+    _M(ty, p[1], zi);
+
+    _pack25519(r, ty, 0);
+
+    r[31] ^= _par25519(tx) << 7;
+  }
+
   /// TBD 64bits of mlen
-  static int crypto_sign_open(Uint8List m, int dummy /* *mlen not used*/,
-      Uint8List sm, final int smoff, int /*long*/ n, Uint8List pk) {
+  static int crypto_sign_open(
+      Uint8List m, int dummy /* *mlen not used*/, Uint8List sm, final int smoff, int /*long*/ n, Uint8List pk) {
     int i;
 
     Uint8List t = Uint8List(32);
@@ -2244,8 +2128,7 @@ class CatapultNacl {
     }
     if (ret > 0) {
       rnd = Int64(jrandom.nextInt(1 << 32));
-      for (int i = len - ret; i < len; i++)
-        x[i] = (rnd.shiftRightUnsigned(8 * i).toInt());
+      for (int i = len - ret; i < len; i++) x[i] = (rnd.shiftRightUnsigned(8 * i).toInt());
     }
     return x;
   }

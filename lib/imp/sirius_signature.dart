@@ -28,7 +28,7 @@ class Signature {
     // signed message
     Uint8List sm = Uint8List(mlen + XpxConst.signatureLength);
 
-    CatapultNacl.crypto_sign(sm, -1, message, moff, mlen, _privateKey);
+    SiriusNacl.crypto_sign(sm, -1, message, moff, mlen, _privateKey);
 
     return sm;
   }
@@ -49,19 +49,15 @@ class Signature {
     return open_len(signedMessage, smoff, signedMessage.length - smoff);
   }
 
-  Uint8List open_len(
-      Uint8List signedMessage, final int smoff, final int smlen) {
+  Uint8List open_len(Uint8List signedMessage, final int smoff, final int smlen) {
     // check sm length
-    if (!(signedMessage != null &&
-        signedMessage.length >= (smoff + smlen) &&
-        smlen >= XpxConst.signatureLength)) return null;
+    if (!(signedMessage != null && signedMessage.length >= (smoff + smlen) && smlen >= XpxConst.signatureLength))
+      return null;
 
     // temp buffer
     Uint8List tmp = Uint8List(smlen);
 
-    if (0 !=
-        CatapultNacl.crypto_sign_open(
-            tmp, -1, signedMessage, smoff, smlen, _theirPublicKey)) return null;
+    if (0 != SiriusNacl.crypto_sign_open(tmp, -1, signedMessage, smoff, smlen, _theirPublicKey)) return null;
 
     // message
     Uint8List msg = Uint8List(smlen - XpxConst.signatureLength);
@@ -98,9 +94,7 @@ class Signature {
     for (int i = 0; i < message.length; i++) {
       sm[i + XpxConst.signatureLength] = message[i];
     }
-    return CatapultNacl.crypto_sign_open(
-            m, -1, sm, 0, sm.length, _theirPublicKey) >=
-        0;
+    return SiriusNacl.crypto_sign_open(m, -1, sm, 0, sm.length, _theirPublicKey) >= 0;
   }
 
   /*
@@ -109,7 +103,7 @@ class Signature {
   static KeyPair keyPair() {
     KeyPair kp = new KeyPair();
 
-    CatapultNacl.crypto_sign_keypair(kp, false);
+    SiriusNacl.crypto_sign_keypair(kp, false);
     return kp;
   }
 
@@ -139,8 +133,10 @@ class Signature {
       sk[i] = seed[i];
     }
 
+//    print(sk);
+
     // generate pk from sk
-    CatapultNacl.crypto_sign_keypair(kp, true);
+    SiriusNacl.crypto_sign_keypair(kp, true);
 
     return kp;
   }

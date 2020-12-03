@@ -14,9 +14,6 @@ class XpxConst {
 
   static const int bits = 256;
 
-  /// Address character length
-  static const int addressLen = 40;
-
   /// PubicKey character length
   static const int publicKeyLen = 32;
 
