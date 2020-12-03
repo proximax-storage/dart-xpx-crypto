@@ -95,6 +95,42 @@ String utf8ToHex(final String input) {
   return sb.toString();
 }
 
+/// Converts [hex] string to a byte array.
+///
+/// Throws an exception upon failing.
+List<int> getBytes(final String hex) {
+  try {
+    return _getBytesInternal(hex);
+  } catch (e) {
+    throw new ArgumentError('Could not convert hex string into a byte array. Error: $e');
+  }
+}
+
+/// Converts a hex string into byte array. Also tries to correct malformed hex string.
+List<int> _getBytesInternal(final String hexString) {
+  final String paddedHexString = 0 == hexString.length % 2 ? hexString : '0$hexString';
+  final List<int> encodedBytes = utf8ToByte(paddedHexString);
+  return hex.decode(String.fromCharCodes(encodedBytes));
+}
+
+/// Converts a UTF-8 [input] string to an encoded byte array.
+List<int> utf8ToByte(final String input) {
+  return utf8.encode(input);
+}
+
+/// Converts an encoded byte array [input] to a UTF-8 string.
+String byteToUtf8(final List<int> input) {
+  return utf8.decode(input);
+}
+
+/// Converts byte array to a hex string.
+///
+/// Used for converting UTF-8 encoded data from and to bytes.
+String getString(final List<int> bytes) {
+  final String encodedString = hex.encode(bytes);
+  return byteToUtf8(encodedString.codeUnits);
+}
+
 /// Encrypts a [message] with a shared key derived from [senderPrivateKey] and
 /// [recipientPublicKey].
 ///
@@ -126,6 +162,73 @@ String encryptMessage(final String message, final String senderPrivateKey, final
   final result = bytesToHex(salt) + bytesToHex(iv.bytes) + bytesToHex(encryptedMessage.bytes);
 
   return result;
+}
+
+/// Get a list of code unit of a hex string.
+List<int> _getCodeUnits(final String hex) {
+  final List<int> codeUnits = <int>[];
+  for (int i = 0; i < hex.length; i += 2) {
+    codeUnits.add(int.parse(hex.substring(i, i + 2), radix: 16));
+  }
+
+  return codeUnits;
+}
+
+/// Tries to convert a [hex] string to a UTF-8 string.
+/// When it fails to decode UTF-8, it returns the non UTF-8 string instead.
+String tryHexToUtf8(final String hex) {
+  final List<int> codeUnits = _getCodeUnits(hex);
+  try {
+    return byteToUtf8(codeUnits);
+  } catch (e) {
+    return String.fromCharCodes(codeUnits);
+  }
+}
+
+/// Decrypts an [encryptedMessage] with a shared key derived from [recipientPrivateKey] and
+/// [senderPublicKey].
+///
+/// Throws a [CryptoException] when decryption process fails.
+/// By default, the [message] is considered a UTF-8 plain text.
+String decryptMessage(final String encryptedMessage, final String recipientPrivateKey, final String senderPublicKey,
+    [final bool isHexMessage = false]) {
+  ArgumentError.checkNotNull(encryptedMessage);
+  ArgumentError.checkNotNull(recipientPrivateKey);
+  ArgumentError.checkNotNull(senderPublicKey);
+
+  if (encryptedMessage.length < KEY_SIZE) {
+    throw new ArgumentError('the encrypted payload has an incorrect size');
+  }
+
+  final Uint8List payloadBytes = getBytes(encryptedMessage);
+
+  final Uint8List salt = Uint8List.fromList(payloadBytes.take(KEY_SIZE).toList());
+
+  final Uint8List iv = Uint8List.fromList(payloadBytes.sublist(KEY_SIZE, KEY_SIZE + IV_SIZE).toList());
+
+  final Uint8List encrypted = Uint8List.fromList(payloadBytes.skip(KEY_SIZE + IV_SIZE).toList());
+
+  try {
+// Derive shared key
+    final Uint8List recipientByte = hexToBytes(recipientPrivateKey);
+    final Uint8List senderByte = hexToBytes(senderPublicKey);
+    final Uint8List sharedKey = deriveSharedKey(recipientByte, senderByte, salt);
+
+    final Encrypter encrypter = Encrypter(AES(Key(sharedKey), mode: AESMode.cbc, padding: 'PKCS7'));
+
+    final encryptedValue = Encrypted(encrypted);
+    final ivValue = IV(iv);
+    final decryptBytes = encrypter.decryptBytes(encryptedValue, iv: ivValue);
+    final String decrypted = getString(decryptBytes);
+
+// dev note: Use HexUtils for converting hex instead of using the hex converter from
+// encrypt lib or any third party converter libs.
+    final String result = isHexMessage ? decrypted : tryHexToUtf8(decrypted);
+
+    return result;
+  } catch (e) {
+    throw new Exception('Failed to decrypt message');
+  }
 }
 
 /// Derives a shared key using the [privateKey] and [publicKey].

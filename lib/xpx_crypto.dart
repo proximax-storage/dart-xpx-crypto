@@ -1,5 +1,6 @@
 library xpx_crypto;
 
+import 'dart:convert';
 import 'dart:core';
 import 'dart:math';
 import 'dart:typed_data';
