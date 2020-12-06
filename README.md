@@ -11,7 +11,7 @@ Add this to your package's pubspec.yaml file:
 
 ```dart
 dependencies:
-  xpx_crypto: ^0.0.3+3
+  xpx_crypto: ^0.0.3+4
 ```
 
 **2. Install it**

@@ -1,6 +1,6 @@
 name: xpx_crypto
 description: Official ProximaX Sirius Blockchain implementation ed26619 encryption modules for Dart.
-version: 0.0.3+3
+version: 0.0.3+4
 homepage: https://github.com/proximax-storage/xpx_crypto-dart
 author: Eleazar Garrido <eleazar.garrido@proximax.io>
 
@@ -9,7 +9,7 @@ environment:
 
 dependencies:
   fixnum: '^0.10.9'
-  encrypt: ^4.1.0
+  encrypt: ^4.0.0
   convert: '^2.1.1'
 
 dev_dependencies:
