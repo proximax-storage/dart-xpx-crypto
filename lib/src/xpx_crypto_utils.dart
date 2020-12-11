@@ -248,7 +248,7 @@ Uint8List deriveSharedKey(final Uint8List privateKey, final Uint8List publicKey,
     final Uint8List salt) {
   final Uint8List sharedSecret =
       deriveSharedSecret(privateKey, publicKey, salt);
-  final sha512digest = createSha3Digest(length: 32);
+  final sha512digest = sha3.createSha3Digest(length: 32);
   final sharedKey = sha512digest.process(sharedSecret);
   return sharedKey;
 }
@@ -263,22 +263,9 @@ void clamp(final Uint8List d) {
   d[31] |= 64;
 }
 
-/// Creates a non-Keccak SHA3 256/512 digest based on the given bit [length].
-///
-/// Providing bit length 32 returns the non-Keccak SHA3-256.
-/// Providing bit length 64 returns the non-Keccak SHA3-512. (Default return value)
-SHA3Digest createSha3Digest({final int length = 64}) {
-  if (length != 64 && length != 32) {
-    throw ArgumentError(
-        'Cannot create SHA3 hasher. Unexpected length: $length');
-  }
-
-  return 64 == length ? new SHA3Digest(512) : new SHA3Digest(256);
-}
-
 /// Computes the hash of a [secretKey] for scalar multiplication.
 Uint8List prepareForScalarMult(final Uint8List secretKey) {
-  final Uint8List hash = SHA3Digest(512).process(secretKey);
+  final Uint8List hash = sha3.createSha3Digest(length: 64).process(secretKey);
   final List<int> d = Uint8List.fromList(hash.buffer.asUint8List(0, 64));
 
   clamp(d);

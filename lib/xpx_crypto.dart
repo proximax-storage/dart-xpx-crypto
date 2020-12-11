@@ -7,8 +7,6 @@ import 'dart:typed_data';
 
 import 'package:convert/convert.dart' show hex;
 import 'package:encrypt/encrypt.dart';
-import 'package:pointycastle/digests/sha3.dart';
-import 'package:pointycastle/pointycastle.dart';
 import 'package:xpx_crypto/imp/ed25519.dart' as ed25519;
 import 'package:xpx_crypto/imp/sha3.dart' as sha3;
 

@@ -10,25 +10,29 @@ class KeyPair {
   /// NewKeyPair The public key is calculated from the private key.
   KeyPair.fromPrivateKey(PrivateKey privateKey) {
     final pk = ed25519.Signature.keyPair_fromSeed(privateKey.raw);
-    final sk = PrivateKey(Uint8List.fromList(pk._privateKey.raw.getRange(0, 32).toList()));
+    final sk = PrivateKey(
+        Uint8List.fromList(pk._privateKey.raw.getRange(0, 32).toList()));
     _privateKey = sk;
     _publicKey = pk._publicKey;
   }
 
   KeyPair.fromHexString(String sHex) {
-    final raw = hexDecodeStringOdd(sHex);
-    final sHexRaw = Uint8List.fromList(raw.toList());
+    final sHexRaw = hexDecodeStringOdd(sHex);
     final pk = ed25519.Signature.keyPair_fromSeed(sHexRaw);
-    final sk = PrivateKey(Uint8List.fromList(pk._privateKey.raw.getRange(0, 32).toList()));
+
+    final sk = PrivateKey(
+        Uint8List.fromList(pk.privateKey.raw.getRange(0, 32).toList()));
     _privateKey = sk;
-    _publicKey = pk._publicKey;
+    _publicKey = pk.publicKey;
   }
 
   /// NewRandomKeyPair creates a random key pair.
   KeyPair.fromRandomKeyPair() {
     final randGen = Random.secure();
-    final seed = new List<int>.generate(64, (_) => randGen.nextInt(XpxConst.bits));
-    final kp = KeyPair.fromPrivateKey(new PrivateKey(Uint8List.fromList(seed.toList())));
+    final seed =
+        new List<int>.generate(64, (_) => randGen.nextInt(XpxConst.bits));
+    final kp = KeyPair.fromPrivateKey(
+        new PrivateKey(Uint8List.fromList(seed.toList())));
     _privateKey = kp._privateKey;
     _publicKey = kp._publicKey;
   }
@@ -62,7 +66,9 @@ class KeyPair {
     for (int i = 0; i < message.length; i++) {
       sm[i + XpxConst.signatureLength] = message[i];
     }
-    return ed25519.SiriusNacl.crypto_sign_open(m, -1, sm, 0, sm.length, _publicKey.raw) >= 0;
+    return ed25519.SiriusNacl.crypto_sign_open(
+            m, -1, sm, 0, sm.length, _publicKey.raw) >=
+        0;
   }
 
   @override
@@ -71,5 +77,6 @@ class KeyPair {
       '\tpublicKey: $_publicKey\n'
       '}\n';
 
-  Map<String, dynamic> toJson() => {'privateKey': _privateKey, 'publicKey': _publicKey};
+  Map<String, dynamic> toJson() =>
+      {'privateKey': _privateKey, 'publicKey': _publicKey};
 }

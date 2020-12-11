@@ -472,6 +472,17 @@ class _NewDigest extends BaseDigest implements Digest {
   int get byteLength => throw UnimplementedError();
 }
 
-_NewDigest New256() => new _NewDigest(256);
+/// Creates a non-Keccak SHA3 256/512 digest based on the given bit [length].
+///
+/// Providing bit length 32 returns the non-Keccak SHA3-256.
+/// Providing bit length 64 returns the non-Keccak SHA3-512. (Default return value)
+_NewDigest createSha3Digest({final int length = 64}) {
+  if (length != 64 && length != 32) {
+    throw ArgumentError(
+        'Cannot create SHA3 hasher. Unexpected length: $length');
+  }
 
-_NewDigest New512() => new _NewDigest(512);
+  return 64 == length ? new _NewDigest(512) : new _NewDigest(256);
+}
+
+Digest RIPEMD() => Digest("RIPEMD-160");
