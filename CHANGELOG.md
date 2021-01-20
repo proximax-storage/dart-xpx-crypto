@@ -1,5 +1,8 @@
-## 0.0.3.6
+## 0.0.3+6
+### Updates
+[UPDATE] Homepage URL.
 
+## 0.0.3+6
 ### ADD
 [ADD] encrypt messages support.
 
