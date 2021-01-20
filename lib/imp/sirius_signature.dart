@@ -101,14 +101,14 @@ class Signature {
    *   Signs the message using the secret key and returns a signed message.
    * */
   static KeyPair keyPair() {
-    KeyPair kp = new KeyPair();
+    KeyPair kp = KeyPair();
 
     SiriusNacl.crypto_sign_keypair(kp, false);
     return kp;
   }
 
   static KeyPair keyPair_fromprivateKey(Uint8List privateKey) {
-    final KeyPair kp = new KeyPair.fromPrivateKey(PrivateKey(privateKey));
+    final KeyPair kp = KeyPair.fromPrivateKey(PrivateKey(privateKey));
     final Uint8List pk = kp.publicKey.raw;
     final Uint8List sk = kp.privateKey.raw;
 
@@ -125,7 +125,7 @@ class Signature {
   }
 
   static KeyPair keyPair_fromSeed(Uint8List seed) {
-    final KeyPair kp = new KeyPair();
+    final KeyPair kp = KeyPair();
     final Uint8List sk = kp.privateKey.raw;
 
     // copy sk

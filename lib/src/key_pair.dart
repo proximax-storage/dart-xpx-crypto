@@ -27,8 +27,8 @@ class KeyPair {
   /// NewRandomKeyPair creates a random key pair.
   KeyPair.fromRandomKeyPair() {
     final randGen = Random.secure();
-    final seed = new List<int>.generate(64, (_) => randGen.nextInt(XpxConst.bits));
-    final kp = KeyPair.fromPrivateKey(new PrivateKey(Uint8List.fromList(seed.toList())));
+    final seed = List<int>.generate(64, (_) => randGen.nextInt(XpxConst.bits));
+    final kp = KeyPair.fromPrivateKey(PrivateKey(Uint8List.fromList(seed.toList())));
     _privateKey = kp._privateKey;
     _publicKey = kp._publicKey;
   }

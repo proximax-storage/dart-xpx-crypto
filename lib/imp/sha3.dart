@@ -14,7 +14,7 @@ class _NewDigest extends BaseDigest implements Digest {
     _init(bitLength);
   }
 
-  static final _keccakRoundConstants = new Register64List.from([
+  static final _keccakRoundConstants = Register64List.from([
     [0x00000000, 0x00000001],
     [0x00000000, 0x00008082],
     [0x80000000, 0x0000808a],
@@ -72,8 +72,8 @@ class _NewDigest extends BaseDigest implements Digest {
   int _rate;
   int _fixedOutputLength;
 
-  final _state = new Uint8List(200);
-  final _dataQueue = new Uint8List(192);
+  final _state = Uint8List(200);
+  final _dataQueue = Uint8List(192);
 
   int _bitsInQueue;
   bool _squeezing;
@@ -92,7 +92,7 @@ class _NewDigest extends BaseDigest implements Digest {
 
   @override
   void updateByte(int inp) {
-    _doUpdate(new Uint8List.fromList([inp]), 0, 8);
+    _doUpdate(Uint8List.fromList([inp]), 0, 8);
   }
 
   @override
@@ -112,13 +112,13 @@ class _NewDigest extends BaseDigest implements Digest {
 
   void absorbBits(int data, int bits) {
     if (bits < 1 || bits > 7) {
-      throw new StateError("'bits' must be in the range 1 to 7");
+      throw StateError("'bits' must be in the range 1 to 7");
     }
     if ((_bitsInQueue % 8) != 0) {
-      throw new StateError('attempt to absorb with odd length queue');
+      throw StateError('attempt to absorb with odd length queue');
     }
     if (_squeezing) {
-      throw new StateError('attempt to absorb while squeezing');
+      throw StateError('attempt to absorb while squeezing');
     }
     final int mask = (1 << bits) - 1;
     _dataQueue[_bitsInQueue >> 3] = data & mask;
@@ -148,7 +148,7 @@ class _NewDigest extends BaseDigest implements Digest {
         break;
 
       default:
-        throw new ArgumentError('bitLength ($bitLength) must be one of 224, 256, 384, or 512');
+        throw ArgumentError('bitLength ($bitLength) must be one of 224, 256, 384, or 512');
     }
   }
 
@@ -162,7 +162,7 @@ class _NewDigest extends BaseDigest implements Digest {
     } else {
       _absorb(data, off, dataBitLen - (dataBitLen % 8));
 
-      final lastByte = new Uint8List(1);
+      final lastByte = Uint8List(1);
 
       lastByte[0] = data[off + (dataBitLen ~/ 8)] >> (8 - (dataBitLen % 8));
       _absorb(lastByte, off, dataBitLen % 8);
@@ -210,7 +210,7 @@ class _NewDigest extends BaseDigest implements Digest {
         wholeBlocks = (dataBitLen - i) ~/ _rate;
 
         for (j = 0; j < wholeBlocks; j++) {
-          final chunk = new Uint8List(_rate ~/ 8);
+          final chunk = Uint8List(_rate ~/ 8);
 
           // ignore: unnecessary_parenthesis
           final offset = (off + (i ~/ 8) + (j * chunk.length));
@@ -282,7 +282,7 @@ class _NewDigest extends BaseDigest implements Digest {
     }
 
     if ((outputLength % 8) != 0) {
-      throw new StateError('Output length not a multiple of 8: $outputLength');
+      throw StateError('Output length not a multiple of 8: $outputLength');
     }
 
     i = 0;
@@ -313,7 +313,7 @@ class _NewDigest extends BaseDigest implements Digest {
   }
 
   void _fromBytesToWords(Register64List stateAsWords, Uint8List state) {
-    final r = new Register64();
+    final r = Register64();
 
     for (int i = 0; i < (1600 ~/ 64); i++) {
       final index = i * (64 ~/ 8);
@@ -329,7 +329,7 @@ class _NewDigest extends BaseDigest implements Digest {
   }
 
   void _fromWordsToBytes(Uint8List state, Register64List stateAsWords) {
-    final r = new Register64();
+    final r = Register64();
 
     for (int i = 0; i < (1600 ~/ 64); i++) {
       final index = i * (64 ~/ 8);
@@ -343,7 +343,7 @@ class _NewDigest extends BaseDigest implements Digest {
   }
 
   void _keccakPermutation(Uint8List state) {
-    final longState = new Register64List(state.length ~/ 8);
+    final longState = Register64List(state.length ~/ 8);
 
     _fromBytesToWords(longState, state);
     _keccakPermutationOnWords(longState);
@@ -368,9 +368,9 @@ class _NewDigest extends BaseDigest implements Digest {
   }
 
   void theta(Register64List A) {
-    final C = new Register64List(5);
-    final r0 = new Register64();
-    final r1 = new Register64();
+    final C = Register64List(5);
+    final r0 = Register64();
+    final r1 = Register64();
 
     for (int x = 0; x < 5; x++) {
       C[x].set(0);
@@ -397,7 +397,7 @@ class _NewDigest extends BaseDigest implements Digest {
   }
 
   void rho(Register64List A) {
-    final r = new Register64();
+    final r = Register64();
 
     for (int x = 0; x < 5; x++) {
       for (int y = 0; y < 5; y++) {
@@ -415,7 +415,7 @@ class _NewDigest extends BaseDigest implements Digest {
   }
 
   void pi(Register64List A) {
-    final tempA = new Register64List(25);
+    final tempA = Register64List(25);
 
     tempA.setRange(0, tempA.length, A);
 
@@ -427,7 +427,7 @@ class _NewDigest extends BaseDigest implements Digest {
   }
 
   void chi(Register64List A) {
-    final chiC = new Register64List(5);
+    final chiC = Register64List(5);
 
     for (int y = 0; y < 5; y++) {
       for (int x = 0; x < 5; x++) {
@@ -472,7 +472,7 @@ _NewDigest createSha3Digest({final int length = 64}) {
     throw ArgumentError('Cannot create SHA3 hasher. Unexpected length: $length');
   }
 
-  return 64 == length ? new _NewDigest(512) : new _NewDigest(256);
+  return 64 == length ? _NewDigest(512) : _NewDigest(256);
 }
 
 Digest RIPEMD() => Digest('RIPEMD-160');

@@ -7,7 +7,7 @@ import 'package:xpx_crypto/xpx_crypto.dart';
 void main() {
   /// New KeyPair from PrivateKey Hex String
   const String skHex = 'B38A1490B33A4BD718ABB0A1BEF389CAE07A435F3DEC39BC518D84B1ABF8531B';
-  final KeyPair kp = new KeyPair.fromHexString(skHex);
+  final KeyPair kp = KeyPair.fromHexString(skHex);
 
   print('privateKeyBytes: \"${kp.privateKey.raw}\"\n');
   print('publicKeyBytes: \"${kp.publicKey.raw}\"\n');

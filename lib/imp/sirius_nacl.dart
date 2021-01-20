@@ -1919,7 +1919,7 @@ class SiriusNacl {
     d[31] |= 64;
 
     var g = sha3.createSha3Digest(length: 64);
-    final Uint8List m = new Uint8List(64); // seeded hash
+    final Uint8List m = Uint8List(64); // seeded hash
     g.reset();
     g.update(d.sublist(32), 0, 32);
     g.update(message, 0, message.length);
@@ -1929,7 +1929,7 @@ class SiriusNacl {
     _scalarbase(p, m, 0);
     _pack(sm, p);
 
-    final Uint8List h = new Uint8List(64); // result
+    final Uint8List h = Uint8List(64); // result
     g.reset();
     g.update(sm.sublist(0, 32), 0, 32);
     g.update(sk.sublist(32), 0, 32);
@@ -1949,7 +1949,7 @@ class SiriusNacl {
   }
 
   static Int64List gf([final Int64List init]) {
-    final Int64List r = new Int64List(16);
+    final Int64List r = Int64List(16);
     if (init != null) {
       for (int i = 0; i < init.length; i++) {
         r[i] = init[i];

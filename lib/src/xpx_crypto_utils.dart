@@ -3,7 +3,7 @@ part of xpx_crypto;
 const int IV_SIZE = 16;
 const int KEY_SIZE = 32;
 
-Uint8List bytesFromList(List<int> lst) => new Uint8List.fromList(lst);
+Uint8List bytesFromList(List<int> lst) => Uint8List.fromList(lst);
 
 int bytesToInteger(List<int> bytes) {
   num value = 0;
@@ -15,13 +15,13 @@ int bytesToInteger(List<int> bytes) {
   return value.toInt();
 }
 
-var _byteMask = new BigInt.from(0xff);
+var _byteMask = BigInt.from(0xff);
 
 /// Encode a BigInt into bytes using big-endian encoding.
 Uint8List encodeBigInt(BigInt number) {
   // Not handling negative numbers. Decide how you want to do that.
   final int size = (number.bitLength + 7) >> 3;
-  final result = new Uint8List(size);
+  final result = Uint8List(size);
   for (int i = 0; i < size; i++) {
     result[size - i - 1] = (number & _byteMask).toInt();
     // ignore: parameter_assignments
@@ -31,7 +31,7 @@ Uint8List encodeBigInt(BigInt number) {
 }
 
 Uint8List integerToBytes(int e, int length) {
-  final byteList = new Uint8List(length);
+  final byteList = Uint8List(length);
   for (var i = 0; i < length; i++) {
     byteList[0 + i] = e >> (i * 8);
   }
@@ -60,7 +60,7 @@ String bytesToHex(Uint8List bytes) => hex.encode(bytes).toUpperCase();
 
 /// Converts raw string into a string of single byte characters using UTF-8 encoding.
 String _rawStringToUtf8(final String input) {
-  final StringBuffer sb = new StringBuffer();
+  final StringBuffer sb = StringBuffer();
   for (int i = 0; i < input.length; i++) {
     final int cu = input.codeUnitAt(i);
 
@@ -81,7 +81,7 @@ String _rawStringToUtf8(final String input) {
 
 /// Converts a UTF-8 [input] string to hex string.
 String utf8ToHex(final String input) {
-  final StringBuffer sb = new StringBuffer();
+  final StringBuffer sb = StringBuffer();
   final String rawString = _rawStringToUtf8(input);
   for (int i = 0; i < rawString.length; i++) {
     sb.write(rawString.codeUnitAt(i).toRadixString(16));
@@ -96,7 +96,7 @@ List<int> getBytes(final String hex) {
   try {
     return _getBytesInternal(hex);
   } catch (e) {
-    throw new ArgumentError('Could not convert hex string into a byte array. Error: $e');
+    throw ArgumentError('Could not convert hex string into a byte array. Error: $e');
   }
 }
 
@@ -187,7 +187,7 @@ String decryptMessage(final String encryptedMessage, final String recipientPriva
   ArgumentError.checkNotNull(senderPublicKey);
 
   if (encryptedMessage.length < KEY_SIZE) {
-    throw new ArgumentError('the encrypted payload has an incorrect size');
+    throw ArgumentError('the encrypted payload has an incorrect size');
   }
 
   final Uint8List payloadBytes = getBytes(encryptedMessage);
@@ -217,7 +217,7 @@ String decryptMessage(final String encryptedMessage, final String recipientPriva
 
     return result;
   } catch (e) {
-    throw new Exception('Failed to decrypt message');
+    throw Exception('Failed to decrypt message');
   }
 }
 
