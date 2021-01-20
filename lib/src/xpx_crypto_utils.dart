@@ -50,19 +50,13 @@ Uint8List addUint8List(Uint8List a, Uint8List b) {
 }
 
 /// Creates random bytes with the given size.
-Uint8List secureRandomBytes(int len) {
-  return ed25519.SiriusNacl.randombytes(len);
-}
+Uint8List secureRandomBytes(int len) => ed25519.SiriusNacl.randombytes(len);
 
 /// Converts a hex string to a [Uint8List].
-Uint8List hexToBytes(String hexString) {
-  return Uint8List.fromList(hex.decode(hexString));
-}
+Uint8List hexToBytes(String hexString) => Uint8List.fromList(hex.decode(hexString));
 
 /// Converts a [Uint8List] to a hex string./
-String bytesToHex(Uint8List bytes) {
-  return hex.encode(bytes).toUpperCase();
-}
+String bytesToHex(Uint8List bytes) => hex.encode(bytes).toUpperCase();
 
 /// Converts raw string into a string of single byte characters using UTF-8 encoding.
 String _rawStringToUtf8(final String input) {
@@ -102,28 +96,22 @@ List<int> getBytes(final String hex) {
   try {
     return _getBytesInternal(hex);
   } catch (e) {
-    throw new ArgumentError(
-        'Could not convert hex string into a byte array. Error: $e');
+    throw new ArgumentError('Could not convert hex string into a byte array. Error: $e');
   }
 }
 
 /// Converts a hex string into byte array. Also tries to correct malformed hex string.
 List<int> _getBytesInternal(final String hexString) {
-  final String paddedHexString =
-      0 == hexString.length % 2 ? hexString : '0$hexString';
+  final String paddedHexString = 0 == hexString.length % 2 ? hexString : '0$hexString';
   final List<int> encodedBytes = utf8ToByte(paddedHexString);
   return hex.decode(String.fromCharCodes(encodedBytes));
 }
 
 /// Converts a UTF-8 [input] string to an encoded byte array.
-List<int> utf8ToByte(final String input) {
-  return utf8.encode(input);
-}
+List<int> utf8ToByte(final String input) => utf8.encode(input);
 
 /// Converts an encoded byte array [input] to a UTF-8 string.
-String byteToUtf8(final List<int> input) {
-  return utf8.decode(input);
-}
+String byteToUtf8(final List<int> input) => utf8.decode(input);
 
 /// Converts byte array to a hex string.
 ///
@@ -137,14 +125,13 @@ String getString(final List<int> bytes) {
 /// [recipientPublicKey].
 ///
 /// By default, the [message] is considered a UTF-8 plain text.
-String encryptMessage(final String message, final String senderPrivateKey,
-    final String recipientPublicKey,
+String encryptMessage(final String message, final String senderPrivateKey, final String recipientPublicKey,
     [final bool isHexMessage = false]) {
   ArgumentError.checkNotNull(message);
   ArgumentError.checkNotNull(senderPrivateKey);
   ArgumentError.checkNotNull(recipientPublicKey);
 
-  String msg = isHexMessage ? message : utf8ToHex(message);
+  final String msg = isHexMessage ? message : utf8ToHex(message);
 
   final salt = secureRandomBytes(KEY_SIZE);
 
@@ -157,15 +144,12 @@ String encryptMessage(final String message, final String senderPrivateKey,
   final IV iv = IV(secureRandomBytes(IV_SIZE));
 
 // Setup AES cipher in CBC mode with PKCS7 padding
-  final Encrypter encrypter =
-      Encrypter(AES(Key(sharedKey), mode: AESMode.cbc, padding: 'PKCS7'));
+  final Encrypter encrypter = Encrypter(AES(Key(sharedKey), mode: AESMode.cbc, padding: 'PKCS7'));
   final Uint8List payload = hexToBytes(msg);
   final encryptedMessage = encrypter.algo.encrypt(payload, iv: iv);
 
 // Creates a concatenated byte array as the encrypted payload
-  final result = bytesToHex(salt) +
-      bytesToHex(iv.bytes) +
-      bytesToHex(encryptedMessage.bytes);
+  final result = bytesToHex(salt) + bytesToHex(iv.bytes) + bytesToHex(encryptedMessage.bytes);
 
   return result;
 }
@@ -196,8 +180,7 @@ String tryHexToUtf8(final String hex) {
 ///
 /// Throws a [CryptoException] when decryption process fails.
 /// By default, the [message] is considered a UTF-8 plain text.
-String decryptMessage(final String encryptedMessage,
-    final String recipientPrivateKey, final String senderPublicKey,
+String decryptMessage(final String encryptedMessage, final String recipientPrivateKey, final String senderPublicKey,
     [final bool isHexMessage = false]) {
   ArgumentError.checkNotNull(encryptedMessage);
   ArgumentError.checkNotNull(recipientPrivateKey);
@@ -209,24 +192,19 @@ String decryptMessage(final String encryptedMessage,
 
   final Uint8List payloadBytes = getBytes(encryptedMessage);
 
-  final Uint8List salt =
-      Uint8List.fromList(payloadBytes.take(KEY_SIZE).toList());
+  final Uint8List salt = Uint8List.fromList(payloadBytes.take(KEY_SIZE).toList());
 
-  final Uint8List iv = Uint8List.fromList(
-      payloadBytes.sublist(KEY_SIZE, KEY_SIZE + IV_SIZE).toList());
+  final Uint8List iv = Uint8List.fromList(payloadBytes.sublist(KEY_SIZE, KEY_SIZE + IV_SIZE).toList());
 
-  final Uint8List encrypted =
-      Uint8List.fromList(payloadBytes.skip(KEY_SIZE + IV_SIZE).toList());
+  final Uint8List encrypted = Uint8List.fromList(payloadBytes.skip(KEY_SIZE + IV_SIZE).toList());
 
   try {
 // Derive shared key
     final Uint8List recipientByte = hexToBytes(recipientPrivateKey);
     final Uint8List senderByte = hexToBytes(senderPublicKey);
-    final Uint8List sharedKey =
-        deriveSharedKey(recipientByte, senderByte, salt);
+    final Uint8List sharedKey = deriveSharedKey(recipientByte, senderByte, salt);
 
-    final Encrypter encrypter =
-        Encrypter(AES(Key(sharedKey), mode: AESMode.cbc, padding: 'PKCS7'));
+    final Encrypter encrypter = Encrypter(AES(Key(sharedKey), mode: AESMode.cbc, padding: 'PKCS7'));
 
     final encryptedValue = Encrypted(encrypted);
     final ivValue = IV(iv);
@@ -244,18 +222,14 @@ String decryptMessage(final String encryptedMessage,
 }
 
 /// Derives a shared key using the [privateKey] and [publicKey].
-Uint8List deriveSharedKey(final Uint8List privateKey, final Uint8List publicKey,
-    final Uint8List salt) {
-  final Uint8List sharedSecret =
-      deriveSharedSecret(privateKey, publicKey, salt);
+Uint8List deriveSharedKey(final Uint8List privateKey, final Uint8List publicKey, final Uint8List salt) {
+  final Uint8List sharedSecret = deriveSharedSecret(privateKey, publicKey, salt);
   final sha512digest = sha3.createSha3Digest(length: 32);
   final sharedKey = sha512digest.process(sharedSecret);
   return sharedKey;
 }
 
-Int64List gf([final Int64List init]) {
-  return ed25519.SiriusNacl.gf(init);
-}
+Int64List gf([final Int64List init]) => ed25519.SiriusNacl.gf(init);
 
 void clamp(final Uint8List d) {
   d[0] &= 248;
@@ -274,8 +248,7 @@ Uint8List prepareForScalarMult(final Uint8List secretKey) {
 }
 
 /// Derives a shared secret using the [privateKey] and [publicKey].
-Uint8List deriveSharedSecret(final Uint8List privateKey,
-    final Uint8List publicKey, final Uint8List salt) {
+Uint8List deriveSharedSecret(final Uint8List privateKey, final Uint8List publicKey, final Uint8List salt) {
   if (KEY_SIZE != publicKey.length) {
     throw ArgumentError('Public key has unexpected size: ${publicKey.length}');
   }
@@ -286,22 +259,17 @@ Uint8List deriveSharedSecret(final Uint8List privateKey,
   List<Int64List> q = [gf(), gf(), gf(), gf()];
   List<Int64List> p = [gf(), gf(), gf(), gf()];
 
-// print(ByteUtils.bytesToHex(g.buffer.asUint8List()));
-
-  Uint8List sharedSecret = Uint8List(KEY_SIZE);
+  final Uint8List sharedSecret = Uint8List(KEY_SIZE);
 
   ed25519.SiriusNacl.unpack(q, publicKey);
 
   ed25519.SiriusNacl.scalarmult(p, q, d, 0);
 
   ed25519.SiriusNacl.pack(sharedSecret, p);
-//print('sharedSecret01: $sharedSecret');
-  print('\n');
 
   for (int i = 0; i < 32; i++) {
     sharedSecret[i] ^= salt[i];
   }
-// print('sharedSecret02: $sharedSecret');
 
   return sharedSecret;
 }

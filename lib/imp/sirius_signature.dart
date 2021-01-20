@@ -1,10 +1,10 @@
 part of xpx_crypto.ed25519;
 
 class Signature {
-  Uint8List _theirPublicKey;
-  Uint8List _privateKey;
-
   Signature(this._theirPublicKey, this._privateKey);
+
+  final Uint8List _theirPublicKey;
+  final Uint8List _privateKey;
 
   /*
    *   Signs the message using the secret key and returns a signed message.
@@ -26,7 +26,7 @@ class Signature {
     if (!(message != null && message.length >= (moff + mlen))) return null;
 
     // signed message
-    Uint8List sm = Uint8List(mlen + XpxConst.signatureLength);
+    final Uint8List sm = Uint8List(mlen + XpxConst.signatureLength);
 
     SiriusNacl.crypto_sign(sm, -1, message, moff, mlen, _privateKey);
 
@@ -60,7 +60,7 @@ class Signature {
     if (0 != SiriusNacl.crypto_sign_open(tmp, -1, signedMessage, smoff, smlen, _theirPublicKey)) return null;
 
     // message
-    Uint8List msg = Uint8List(smlen - XpxConst.signatureLength);
+    final Uint8List msg = Uint8List(smlen - XpxConst.signatureLength);
     for (int i = 0; i < msg.length; i++) {
       msg[i] = signedMessage[smoff + i + XpxConst.signatureLength];
     }
@@ -71,7 +71,7 @@ class Signature {
    *   Signs the message using the secret key and returns a signature.
    * */
   Uint8List detached(Uint8List message) {
-    Uint8List signedMsg = this.sign(message);
+    final Uint8List signedMsg = sign(message);
     Uint8List sig = Uint8List(XpxConst.signatureLength);
     for (int i = 0; i < sig.length; i++) {
       sig[i] = signedMsg[i];
@@ -86,8 +86,8 @@ class Signature {
   bool detached_verify(Uint8List message, Uint8List signature) {
     if (signature.length != XpxConst.signatureLength) return false;
     if (_theirPublicKey.length != XpxConst.publicKeyLength) return false;
-    Uint8List sm = Uint8List(XpxConst.signatureLength + message.length);
-    Uint8List m = Uint8List(XpxConst.signatureLength + message.length);
+    final Uint8List sm = Uint8List(XpxConst.signatureLength + message.length);
+    final Uint8List m = Uint8List(XpxConst.signatureLength + message.length);
     for (int i = 0; i < XpxConst.signatureLength; i++) {
       sm[i] = signature[i];
     }
@@ -109,8 +109,8 @@ class Signature {
 
   static KeyPair keyPair_fromprivateKey(Uint8List privateKey) {
     final KeyPair kp = new KeyPair.fromPrivateKey(PrivateKey(privateKey));
-    Uint8List pk = kp.publicKey.raw;
-    Uint8List sk = kp.privateKey.raw;
+    final Uint8List pk = kp.publicKey.raw;
+    final Uint8List sk = kp.privateKey.raw;
 
     // copy sk
     for (int i = 0; i < kp.privateKey.raw.length; i++) {
@@ -125,15 +125,13 @@ class Signature {
   }
 
   static KeyPair keyPair_fromSeed(Uint8List seed) {
-    KeyPair kp = new KeyPair();
-    Uint8List sk = kp.privateKey.raw;
+    final KeyPair kp = new KeyPair();
+    final Uint8List sk = kp.privateKey.raw;
 
     // copy sk
     for (int i = 0; i < XpxConst.seedLength; i++) {
       sk[i] = seed[i];
     }
-
-//    print(sk);
 
     // generate pk from sk
     SiriusNacl.crypto_sign_keypair(kp, true);

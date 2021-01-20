@@ -1,24 +1,18 @@
 library xpx_crypto.digest.sha3;
 
-import "dart:typed_data";
+import 'dart:typed_data';
 
-import "package:pointycastle/api.dart";
-import "package:pointycastle/src/impl/base_digest.dart";
-import "package:pointycastle/src/registry/registry.dart";
-import "package:pointycastle/src/ufixnum.dart";
+import 'package:pointycastle/api.dart';
+// ignore: implementation_imports
+import 'package:pointycastle/src/impl/base_digest.dart';
+// ignore: implementation_imports
+import 'package:pointycastle/src/ufixnum.dart';
 
 /// Implementation of SHA-3 digest.
 class _NewDigest extends BaseDigest implements Digest {
-  static final RegExp _NAME_REGEX = new RegExp(r"^SHA-3\/([0-9]+)$");
-
-  /// Intended for internal use.
-  static final FactoryConfig FACTORY_CONFIG = new DynamicFactoryConfig(
-      Digest,
-      _NAME_REGEX,
-      (_, final Match match) => () {
-            int bitLength = int.parse(match.group(1));
-            return new _NewDigest(bitLength);
-          });
+  _NewDigest([int bitLength = 0]) {
+    _init(bitLength);
+  }
 
   static final _keccakRoundConstants = new Register64List.from([
     [0x00000000, 0x00000001],
@@ -85,26 +79,28 @@ class _NewDigest extends BaseDigest implements Digest {
   bool _squeezing;
   int _bitsAvailableForSqueezing;
 
-  _NewDigest([int bitLength = 0]) {
-    _init(bitLength);
-  }
+  @override
+  String get algorithmName => 'SHA-3/$_fixedOutputLength';
 
-  String get algorithmName => "SHA-3/${_fixedOutputLength}";
+  @override
+  int get digestSize => _fixedOutputLength ~/ 8;
 
-  int get digestSize => (_fixedOutputLength ~/ 8);
-
+  @override
   void reset() {
     _init(_fixedOutputLength);
   }
 
+  @override
   void updateByte(int inp) {
     _doUpdate(new Uint8List.fromList([inp]), 0, 8);
   }
 
+  @override
   void update(Uint8List inp, int inpOff, int len) {
     _doUpdate(inp, inpOff, len * 8);
   }
 
+  @override
   int doFinal(Uint8List out, int outOff) {
     absorbBits(0x02, 2);
     _squeeze(out, outOff, _fixedOutputLength);
@@ -119,12 +115,12 @@ class _NewDigest extends BaseDigest implements Digest {
       throw new StateError("'bits' must be in the range 1 to 7");
     }
     if ((_bitsInQueue % 8) != 0) {
-      throw new StateError("attempt to absorb with odd length queue");
+      throw new StateError('attempt to absorb with odd length queue');
     }
     if (_squeezing) {
-      throw new StateError("attempt to absorb while squeezing");
+      throw new StateError('attempt to absorb while squeezing');
     }
-    int mask = (1 << bits) - 1;
+    final int mask = (1 << bits) - 1;
     _dataQueue[_bitsInQueue >> 3] = data & mask;
     _bitsInQueue += bits;
   }
@@ -152,8 +148,7 @@ class _NewDigest extends BaseDigest implements Digest {
         break;
 
       default:
-        throw new ArgumentError(
-            "bitLength (${bitLength}) must be one of 224, 256, 384, or 512");
+        throw new ArgumentError('bitLength ($bitLength) must be one of 224, 256, 384, or 512');
     }
   }
 
@@ -161,26 +156,25 @@ class _NewDigest extends BaseDigest implements Digest {
     _dataQueue.fillRange(off, off + len, 0);
   }
 
-  void _doUpdate(Uint8List data, int off, int databitlen) {
-    if ((databitlen % 8) == 0) {
-      _absorb(data, off, databitlen);
+  void _doUpdate(Uint8List data, int off, int dataBitLen) {
+    if ((dataBitLen % 8) == 0) {
+      _absorb(data, off, dataBitLen);
     } else {
-      _absorb(data, off, databitlen - (databitlen % 8));
+      _absorb(data, off, dataBitLen - (dataBitLen % 8));
 
-      var lastByte = new Uint8List(1);
+      final lastByte = new Uint8List(1);
 
-      lastByte[0] = data[off + (databitlen ~/ 8)] >> (8 - (databitlen % 8));
-      _absorb(lastByte, off, databitlen % 8);
+      lastByte[0] = data[off + (dataBitLen ~/ 8)] >> (8 - (dataBitLen % 8));
+      _absorb(lastByte, off, dataBitLen % 8);
     }
   }
 
   void _initSponge(int rate, int capacity) {
     if ((rate + capacity) != 1600) {
-      throw new StateError(
-          "Value of (rate + capacity) is not 1600: ${rate + capacity}");
+      throw new StateError('Value of (rate + capacity) is not 1600: ${rate + capacity}');
     }
     if ((rate <= 0) || (rate >= 1600) || ((rate % 64) != 0)) {
-      throw new StateError("Invalid rate value: ${rate}");
+      throw new StateError('Invalid rate value: $rate');
     }
 
     _rate = rate;
@@ -199,27 +193,26 @@ class _NewDigest extends BaseDigest implements Digest {
     _bitsInQueue = 0;
   }
 
-  void _absorb(Uint8List data, int off, int databitlen) {
+  void _absorb(Uint8List data, int off, int dataBitLen) {
     int i, j, wholeBlocks;
 
     if ((_bitsInQueue % 8) != 0) {
-      throw new StateError("Attempt to absorb with odd length queue");
+      throw new StateError('Attempt to absorb with odd length queue');
     }
 
     if (_squeezing) {
-      throw new StateError("Attempt to absorb while squeezing");
+      throw new StateError('Attempt to absorb while squeezing');
     }
 
     i = 0;
-    while (i < databitlen) {
-      if ((_bitsInQueue == 0) &&
-          (databitlen >= _rate) &&
-          (i <= (databitlen - _rate))) {
-        wholeBlocks = (databitlen - i) ~/ _rate;
+    while (i < dataBitLen) {
+      if ((_bitsInQueue == 0) && (dataBitLen >= _rate) && (i <= (dataBitLen - _rate))) {
+        wholeBlocks = (dataBitLen - i) ~/ _rate;
 
         for (j = 0; j < wholeBlocks; j++) {
           final chunk = new Uint8List(_rate ~/ 8);
 
+          // ignore: unnecessary_parenthesis
           final offset = (off + (i ~/ 8) + (j * chunk.length));
           chunk.setRange(0, chunk.length, data.sublist(offset));
 
@@ -228,18 +221,18 @@ class _NewDigest extends BaseDigest implements Digest {
 
         i += wholeBlocks * _rate;
       } else {
-        var partialBlock = (databitlen - i);
+        var partialBlock = dataBitLen - i;
 
         if ((partialBlock + _bitsInQueue) > _rate) {
-          partialBlock = (_rate - _bitsInQueue);
+          partialBlock = _rate - _bitsInQueue;
         }
 
-        final partialByte = (partialBlock % 8);
+        final partialByte = partialBlock % 8;
         partialBlock -= partialByte;
 
-        final start = (_bitsInQueue ~/ 8);
+        final start = _bitsInQueue ~/ 8;
         final end = start + (partialBlock ~/ 8);
-        final offset = (off + (i ~/ 8));
+        final offset = off + (i ~/ 8);
         _dataQueue.setRange(start, end, data.sublist(offset));
 
         _bitsInQueue += partialBlock;
@@ -248,8 +241,8 @@ class _NewDigest extends BaseDigest implements Digest {
           _absorbQueue();
         }
         if (partialByte > 0) {
-          int mask = (1 << partialByte) - 1;
-          _dataQueue[_bitsInQueue ~/ 8] = (data[off + (i ~/ 8)] & mask);
+          final int mask = (1 << partialByte) - 1;
+          _dataQueue[_bitsInQueue ~/ 8] = data[off + (i ~/ 8)] & mask;
           _bitsInQueue += partialByte;
           i += partialByte;
         }
@@ -263,8 +256,8 @@ class _NewDigest extends BaseDigest implements Digest {
       _absorbQueue();
       _clearDataQueueSection(0, _rate ~/ 8);
     } else {
-      _clearDataQueueSection(
-          ((_bitsInQueue + 7) ~/ 8), (_rate ~/ 8 - (_bitsInQueue + 7) ~/ 8));
+      // ignore: unnecessary_parenthesis
+      _clearDataQueueSection(((_bitsInQueue + 7) ~/ 8), (_rate ~/ 8 - (_bitsInQueue + 7) ~/ 8));
       _dataQueue[_bitsInQueue ~/ 8] |= 1 << (_bitsInQueue % 8);
     }
     _dataQueue[(_rate - 1) ~/ 8] |= 1 << ((_rate - 1) % 8);
@@ -289,8 +282,7 @@ class _NewDigest extends BaseDigest implements Digest {
     }
 
     if ((outputLength % 8) != 0) {
-      throw new StateError(
-          "Output length not a multiple of 8: ${outputLength}");
+      throw new StateError('Output length not a multiple of 8: $outputLength');
     }
 
     i = 0;
@@ -308,12 +300,12 @@ class _NewDigest extends BaseDigest implements Digest {
       }
       partialBlock = _bitsAvailableForSqueezing;
       if (partialBlock > (outputLength - i)) {
-        partialBlock = (outputLength - i);
+        partialBlock = outputLength - i;
       }
 
-      var start = (offset + (i ~/ 8));
-      var end = start + (partialBlock ~/ 8);
-      var offset2 = (_rate - _bitsAvailableForSqueezing) ~/ 8;
+      final start = offset + (i ~/ 8);
+      final end = start + (partialBlock ~/ 8);
+      final offset2 = (_rate - _bitsAvailableForSqueezing) ~/ 8;
       output.setRange(start, end, _dataQueue.sublist(offset2));
       _bitsAvailableForSqueezing -= partialBlock;
       i += partialBlock;
@@ -358,8 +350,7 @@ class _NewDigest extends BaseDigest implements Digest {
     _fromWordsToBytes(state, longState);
   }
 
-  void _keccakPermutationAfterXor(
-      Uint8List state, Uint8List data, int dataLengthInBytes) {
+  void _keccakPermutationAfterXor(Uint8List state, Uint8List data, int dataLengthInBytes) {
     for (int i = 0; i < dataLengthInBytes; i++) {
       state[i] ^= data[i];
     }
@@ -478,11 +469,10 @@ class _NewDigest extends BaseDigest implements Digest {
 /// Providing bit length 64 returns the non-Keccak SHA3-512. (Default return value)
 _NewDigest createSha3Digest({final int length = 64}) {
   if (length != 64 && length != 32) {
-    throw ArgumentError(
-        'Cannot create SHA3 hasher. Unexpected length: $length');
+    throw ArgumentError('Cannot create SHA3 hasher. Unexpected length: $length');
   }
 
   return 64 == length ? new _NewDigest(512) : new _NewDigest(256);
 }
 
-Digest RIPEMD() => Digest("RIPEMD-160");
+Digest RIPEMD() => Digest('RIPEMD-160');
