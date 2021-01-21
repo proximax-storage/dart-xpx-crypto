@@ -11,7 +11,7 @@ dependencies:
   fixnum: '^0.10.9'
   encrypt: '^4.0.0'
   convert: '^2.1.1'
-  pointycastle: '^2.0.1'
+#  pointycastle: '^2.0.1'
 
 dev_dependencies:
   test: '^1.5.3'
