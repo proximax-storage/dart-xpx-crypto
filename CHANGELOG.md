@@ -1,3 +1,7 @@
+## 0.0.3+8
+### Updates
+[UPDATE] dependencies.
+
 ## 0.0.3+7
 ### Updates
 [UPDATE] Homepage URL.
