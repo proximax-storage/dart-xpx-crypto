@@ -9,7 +9,7 @@ environment:
 
 dependencies:
   fixnum: '^1.0.0'
-  encrypt: '^4.0.0'
+  encrypt: '^3.0.0'
   convert: '^2.1.1'
 #  pointycastle: '^2.0.1'
 
