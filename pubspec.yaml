@@ -8,8 +8,8 @@ environment:
   sdk: '>=2.0.0 <3.0.0'
 
 dependencies:
-  fixnum: '^1.0.0'
-  encrypt: '^5.0.0-beta.1'
+  fixnum: '^0.10.11'
+  encrypt: '^4.1.0'
   convert: '^2.1.1'
 #  pointycastle: '^2.0.1'
 
