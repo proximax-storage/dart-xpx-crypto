@@ -1,3 +1,8 @@
+## 0.0.4+1
+
+### Updates
+[UPDATE] sdk: >=2.12.0
+
 ## 0.0.3+8
 ### Updates
 [UPDATE] dependencies.

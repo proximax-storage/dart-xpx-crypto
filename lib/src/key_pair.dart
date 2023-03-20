@@ -1,75 +1,102 @@
-part of xpx_crypto;
+import 'dart:typed_data';
 
-// KeyPair represent the pair of keys - private & public
+import 'package:cryptography/cryptography.dart' show Signature, SimplePublicKey;
+import 'package:cryptography/src/utils.dart'
+    show hexToBytes, hexFromBytes, fillBytesWithSecureRandom, constantTimeBytesEquality;
+import 'package:quiver/core.dart';
+
+import 'ed25519.dart';
+
 class KeyPair {
-  KeyPair() {
-    _privateKey = PrivateKey();
-    _publicKey = PublicKey();
-  }
+  static final _algorithm = SiriusEd25519();
+  late Uint8List publicKey;
+  late Uint8List secretKey;
 
-  /// NewKeyPair The public key is calculated from the private key.
-  KeyPair.fromPrivateKey(PrivateKey privateKey) {
-    final pk = ed25519.Signature.keyPair_fromSeed(privateKey.raw);
-    final sk = PrivateKey(Uint8List.fromList(pk._privateKey.raw.getRange(0, 32).toList()));
-    _privateKey = sk;
-    _publicKey = pk._publicKey;
-  }
+  // private constructor
+  KeyPair._(this.secretKey, this.publicKey);
 
-  KeyPair.fromHexString(String sHex) {
-    final sHexRaw = hexDecodeStringOdd(sHex);
-    final pk = ed25519.Signature.keyPair_fromSeed(sHexRaw);
-
-    final sk = PrivateKey(Uint8List.fromList(pk.privateKey.raw.getRange(0, 32).toList()));
-    _privateKey = sk;
-    _publicKey = pk.publicKey;
-  }
-
-  /// NewRandomKeyPair creates a random key pair.
-  KeyPair.fromRandomKeyPair() {
-    final randGen = Random.secure();
-    final seed = List<int>.generate(64, (_) => randGen.nextInt(XpxConst.bits));
-    final kp = KeyPair.fromPrivateKey(PrivateKey(Uint8List.fromList(seed.toList())));
-    _privateKey = kp._privateKey;
-    _publicKey = kp._publicKey;
-  }
-
-  PrivateKey _privateKey;
-  PublicKey _publicKey;
-
-  PublicKey get publicKey => _publicKey;
-
-  PrivateKey get privateKey => _privateKey;
-
-  Uint8List sign(Uint8List message) {
-    final Uint8List to = addUint8List(_privateKey.raw, _publicKey.raw);
-    final key = ed25519.Signature(null, to);
-    final Uint8List signedMsg = key.sign(message);
-    final Uint8List sig = Uint8List(XpxConst.signatureLength);
-    for (int i = 0; i < sig.length; i++) {
-      sig[i] = signedMsg[i];
+  // A private method that creates a new instance of [KeyPair].
+  // Throws an error when [privateKey] has an unexpected length.
+  static KeyPair _create(Uint8List privateKey, Uint8List publicKey) {
+    ArgumentError.checkNotNull(privateKey);
+    ArgumentError.checkNotNull(publicKey);
+    if (privateKey.lengthInBytes != 32) {
+      throw ArgumentError('Invalid length for privateKey. Length: ${privateKey.lengthInBytes}');
     }
-    return sig;
+    return KeyPair._(privateKey, publicKey);
   }
 
-  bool verify(Uint8List message, Uint8List signature) {
-    if (signature.length != XpxConst.signatureLength) return false;
-    if (_publicKey.raw.length != XpxConst.publicKeyLength) return false;
-    final Uint8List sm = Uint8List(XpxConst.signatureLength + message.length);
-    final Uint8List m = Uint8List(XpxConst.signatureLength + message.length);
-    for (int i = 0; i < XpxConst.signatureLength; i++) {
-      sm[i] = signature[i];
+  /// Creates a key pair from a [hexEncodedPrivateKey].
+  /// The public key is extracted from the private key.
+  ///
+  /// Throws a [CryptoException] when the private key has an invalid length.
+  static Future<KeyPair> fromPrivateKey(final String hexEncodedPrivateKey) async {
+    final privateKeySeed = hexToBytes(hexEncodedPrivateKey);
+    if (32 != privateKeySeed.length) {
+      throw ArgumentError('Private key has an unexpected size. '
+          'Expected: 32, Got: ${privateKeySeed.length}');
     }
-    for (int i = 0; i < message.length; i++) {
-      sm[i + XpxConst.signatureLength] = message[i];
+
+    final publicKey = await extractPublicKey(privateKeySeed);
+    return _create(Uint8List.fromList(privateKeySeed), publicKey);
+  }
+
+  /// Creates a random key pair based on the given [hashSize] (optional).
+  /// By default, the [hashSize] is set to 32-bytes.
+  static Future<KeyPair> random() async {
+    return KeyPair.fromPrivateKey(hexFromBytes(randomKey()));
+  }
+
+  /// Extract a public key byte from a [privateKeySeed].
+  static Future<Uint8List> extractPublicKey(final List<int> privateKeySeed) async {
+    if (privateKeySeed.isEmpty) {
+      return throw ArgumentError('Must not be empty');
     }
-    return ed25519.SiriusNacl.crypto_sign_open(m, -1, sm, 0, sm.length, _publicKey.raw) >= 0;
+    final _keyPair = await _algorithm.newKeyPairFromSeed(privateKeySeed);
+    return Uint8List.fromList((await _keyPair.extractPublicKey()).bytes);
+  }
+
+  /// Creates a random public key.
+  static Uint8List randomKey() {
+    var bytes = Uint8List(32);
+    fillBytesWithSecureRandom(bytes);
+    return bytes;
+  }
+
+  /// Signs the [data].
+  Future<Signature> sign(final Uint8List data) async {
+    final keyPair = await _algorithm.newKeyPairFromSeed(secretKey.toList());
+    return KeyPair._algorithm.sign(data, keyPair: keyPair);
+  }
+
+  /// Verifies that the [signature] is signed using the [publicKey] and the [data].
+  static Future<bool> verify(
+      {required Uint8List publicKey, required Uint8List data, required Signature signature}) async {
+    final signaturePublicKeyBytes = (signature.publicKey as SimplePublicKey).bytes;
+    if (!constantTimeBytesEquality.equals(publicKey.toList(), signaturePublicKeyBytes)) return false;
+    return _algorithm.verify(data, signature: signature);
   }
 
   @override
-  String toString() => '{\n'
-      '\tprivateKey: $_privateKey,\n'
-      '\tpublicKey: $_publicKey\n'
-      '}\n';
+  bool operator ==(final other) =>
+      identical(this, other) ||
+      other is KeyPair &&
+          runtimeType == other.runtimeType &&
+          listsEqual(secretKey, other.secretKey) &&
+          listsEqual(publicKey, other.publicKey);
 
-  Map<String, dynamic> toJson() => {'privateKey': _privateKey, 'publicKey': _publicKey};
+  @override
+  int get hashCode => hash2(secretKey.hashCode, publicKey.hashCode);
+}
+
+bool listsEqual(List? a, List? b) {
+  if (a == b) return true;
+  if (a == null || b == null) return false;
+  if (a.length != b.length) return false;
+
+  for (var i = 0; i < a.length; i++) {
+    if (a[i] != b[i]) return false;
+  }
+
+  return true;
 }
