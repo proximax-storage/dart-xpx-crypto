@@ -61,10 +61,10 @@ packages:
     dependency: transitive
     description:
       name: coverage
-      sha256: "2fb815080e44a09b85e0f2ca8a820b15053982b2e714b59267719e8a9ff17097"
+      sha256: ad538fa2e8f6b828d54c04a438af816ce814de404690136d3b9dfb3a436cd01c
       url: "https://pub.dev"
     source: hosted
-    version: "1.6.3"
+    version: "1.0.3"
   crypto:
     dependency: transitive
     description:
@@ -173,10 +173,10 @@ packages:
     dependency: transitive
     description:
       name: mime
-      sha256: e4ff8e8564c03f255408decd16e7899da1733852a9110a58fe6d1b817684a63e
+      sha256: a7a98ea7f366e2cc9d2b20873815aebec5e2bc124fe0da9d3f7f59b0625ea180
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.4"
+    version: "1.0.0"
   node_preamble:
     dependency: transitive
     description:
@@ -357,10 +357,10 @@ packages:
     dependency: transitive
     description:
       name: vm_service
-      sha256: eb3cf3f45fc1500ae30481ac9ab788302fa5e8edc3f3eaddf183945ee93a8bf3
+      sha256: "422eda09e2a50eb27fe9eca2c897d624cea7fa432a8442e1ea1a10d50a4321ab"
       url: "https://pub.dev"
     source: hosted
-    version: "11.2.0"
+    version: "6.2.0"
   watcher:
     dependency: transitive
     description:

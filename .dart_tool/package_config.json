@@ -45,9 +45,9 @@
     },
     {
       "name": "coverage",
-      "rootUri": "file:///home/jiaming/.pub-cache/hosted/pub.dev/coverage-1.6.3",
+      "rootUri": "file:///home/jiaming/.pub-cache/hosted/pub.dev/coverage-1.0.3",
       "packageUri": "lib/",
-      "languageVersion": "2.18"
+      "languageVersion": "2.12"
     },
     {
       "name": "crypto",
@@ -129,9 +129,9 @@
     },
     {
       "name": "mime",
-      "rootUri": "file:///home/jiaming/.pub-cache/hosted/pub.dev/mime-1.0.4",
+      "rootUri": "file:///home/jiaming/.pub-cache/hosted/pub.dev/mime-1.0.0",
       "packageUri": "lib/",
-      "languageVersion": "2.18"
+      "languageVersion": "2.12"
     },
     {
       "name": "node_preamble",
@@ -267,9 +267,9 @@
     },
     {
       "name": "vm_service",
-      "rootUri": "file:///home/jiaming/.pub-cache/hosted/pub.dev/vm_service-11.2.0",
+      "rootUri": "file:///home/jiaming/.pub-cache/hosted/pub.dev/vm_service-6.2.0",
       "packageUri": "lib/",
-      "languageVersion": "2.15"
+      "languageVersion": "2.12"
     },
     {
       "name": "watcher",
@@ -302,7 +302,7 @@
       "languageVersion": "2.16"
     }
   ],
-  "generated": "2023-03-20T06:57:52.619395Z",
+  "generated": "2023-03-20T07:39:06.585181Z",
   "generator": "pub",
   "generatorVersion": "2.19.4"
 }
