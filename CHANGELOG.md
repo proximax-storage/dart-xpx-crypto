@@ -1,3 +1,8 @@
+## 0.0.4+2
+
+### Updates
+[UPDATE] Fixed bug in ed25519 (unecessary async function)
+
 ## 0.0.4+1
 
 ### Updates
