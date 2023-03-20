@@ -1,7 +1,6 @@
-<p align="center"><a href="https://vuejs.org" target="_blank" rel="noopener noreferrer"><img width="150" src="https://user-images.githubusercontent.com/29048783/57234191-21b63680-6fee-11e9-92f1-3590472ec321.png" alt="Vue logo"></a></p>
 <h1 align="center">ProximaX Sirius Blockchain Crypto Dart</h1>
 
-Official ProximaX Sirius Blockchain implementation ed26619 encryption modules for Dart.
+Official ProximaX Sirius Blockchain implementation ed25519 encryption modules for Dart.
 
 The ProximaX Sirius Crypto Dart works as a lightweight Dart library for interacting with the Sirius Blockchain. It provides a complete library set coverage, and supports synchronous and asynchronous requests.
 
@@ -11,7 +10,7 @@ Add this to your package's pubspec.yaml file:
 
 ```dart
 dependencies:
-  xpx_crypto: ^0.0.3+7
+  xpx_crypto: ^0.0.4+1
 ```
 
 **2. Install it**
