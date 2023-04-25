@@ -174,7 +174,7 @@ class SiriusEd25519 extends Ed25519 {
     return sB.equals(rhA);
   }
 
-  Future<SimplePublicKey> _publicKey(List<int> seed) async {
+  SimplePublicKey _publicKey(List<int> seed) {
     // Take SHA3_512 hash of the private key.
     final sha3_512 = SHA3(512, SHA3_PADDING, 512);
     final hashOfPrivateKey = sha3_512.update(seed).digest();
