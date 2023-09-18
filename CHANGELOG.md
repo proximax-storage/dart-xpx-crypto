@@ -1,3 +1,13 @@
+## 0.0.4+2
+
+### Updates
+[UPDATE] Fixed bug in ed25519 (unecessary async function)
+
+## 0.0.4+1
+
+### Updates
+[UPDATE] sdk: >=2.12.0
+
 ## 0.0.3+8
 ### Updates
 [UPDATE] dependencies.
