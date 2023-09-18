@@ -27,8 +27,7 @@ import 'package:cryptography/cryptography.dart'
 import 'package:cryptography/src/cryptography/key_pair.dart';
 import 'package:cryptography/src/cryptography/secret_key.dart';
 import 'package:cryptography/src/dart/ed25519_impl.dart';
-import 'package:cryptography/src/utils.dart'
-    show bigIntFromBytes, fillBytesWithSecureRandom;
+import 'package:cryptography/src/utils.dart' show bigIntFromBytes;
 import 'package:sha3/sha3.dart';
 
 /// [Ed25519] signature algorithm implemented in pure Dart.
